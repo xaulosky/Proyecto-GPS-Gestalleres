@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import AuthContext from '../../context/AuthContex';
+import { Navigate } from 'react-router-dom';
 const TopBar = () => {
-  return (
-    <h1>topbar</h1>
-  );
+
+  const { auth } = useContext(AuthContext);
+  if (auth.logged)
+    return <h1>Hola</h1>
+  else
+    return <Navigate to="/"  />
+
+
+
 }
 
 export default TopBar;
