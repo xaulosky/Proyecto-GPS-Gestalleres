@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import TopNavBar from './ui/TopNavBar'
+import LoginScreen from './components/login/LoginScreen';
+
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <TopNavBar />
+
+    <LoginScreen />
   )
 }
 
