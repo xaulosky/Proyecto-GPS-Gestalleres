@@ -6,9 +6,6 @@ const initialAuth = { logged: false };
 
 const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(initialAuth);
-
-
-
     const data = {
         auth,
         setAuth

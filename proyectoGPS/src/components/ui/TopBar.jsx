@@ -7,7 +7,7 @@ const TopBar = () => {
   if (auth.logged)
     return <h1>Hola</h1>
   else
-    return <Navigate to="/"  />
+    return <Navigate to="/" />
 
 
 
