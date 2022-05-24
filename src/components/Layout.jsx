@@ -1,9 +1,9 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import ResponsiveDrawer from './ui/ResponsiveDrawer'
 const Layout = () => {
     return (
         <main>
-            <Outlet />
+            <ResponsiveDrawer />
         </main>
 
     )
