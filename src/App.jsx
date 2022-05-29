@@ -16,6 +16,7 @@ function App() {
           <Route path="/cliente" element={<ClienteScreen/>} />
           <Route path="/vehiculo" element={<VehiculoScreen  />} />
           <Route path="/usuarios" element={<UsuarioScreen />} />
+          
         </Route>
       </Routes>
     </BrowserRouter>
