@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route, Router } from 'react-router-dom';
 import ClienteScreen from './components/cliente/ClienteScreen';
 import VehiculoScreen from './components/vehiculo/VehiculoScreen';
 import Layout from './components/Layout';
-import ResponsiveDrawer from './components/ui/ResponsiveDrawer';
+import { useState } from 'react';
+import UsuarioScreen from './components/usuario/UsuarioScreen';
 
 function App() {
 
@@ -11,10 +12,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<LoginScreen />} />
-
-        <Route path="/" element={<ResponsiveDrawer />} >
-          <Route path="/cliente" element={<ClienteScreen />} />
-          <Route path="/vehiculo" element={<VehiculoScreen />} />
+        <Route path="/" element={<Layout />} >
+          <Route path="/cliente" element={<ClienteScreen/>} />
+          <Route path="/vehiculo" element={<VehiculoScreen  />} />
+          <Route path="/usuarios" element={<UsuarioScreen />} />
         </Route>
       </Routes>
     </BrowserRouter>

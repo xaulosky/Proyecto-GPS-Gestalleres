@@ -5,32 +5,12 @@ import CrearCliente from './CrearCliente'
 import ListaCliente from './ListaCliente'
 const ClienteScreen = () => {
 
-  const [regiones, setRegiones] = useState([])
-
-  useEffect(() => {
-    obtenerRegiones().then(data => {
-      setRegiones(data)
-    })
-  }, [])
-
-
-  return (
-    <div>
-      ClienteScreen
-      <BuscarCliente />
-      <ListaCliente />
-      {
-        regiones.map(region => {
-          return <div>{region.nombre}</div>
-        }
-        )
-      }
-
+    return (
       <div>
-        <CrearCliente />
+        <ListaCliente />
       </div>
-    </div>
-  )
+    )
+
 }
 
 export default ClienteScreen
