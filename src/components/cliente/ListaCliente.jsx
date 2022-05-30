@@ -1,7 +1,15 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useEffect } from 'react'
+import TablaClientes from './TablaClientes'
 
-export default function ListaCliente() {
+const ListaCliente = () => {
+
   return (
-    <div>ListaCliente</div>
+    <div>
+      <TablaClientes />
+    </div>
+
   )
 }
+
+export default ListaCliente
