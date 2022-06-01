@@ -1,16 +1,11 @@
-<<<<<<< HEAD
 import { Autocomplete, FormControl, FormHelperText, Input, InputLabel, Stack, TextField, Container, InputAdornment  } from '@mui/material'
 import React, { useEffect } from 'react'
-=======
-import { Box, Grid, TextField } from "@mui/material"
->>>>>>> 2384923d2f875fc920bdd487ae4766b6bf6e1485
 
 const CrearCliente = () => {
 
 
 
     return (
-<<<<<<< HEAD
 
         <>
         <Container maxWidth="lg">
@@ -74,22 +69,6 @@ const CrearCliente = () => {
         
 
         </>
-=======
-        <Box componet="form" >
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <TextField
-                        type={'text'}
-                        label={'Rut'}
-                        name={'rutC'}
-                        margin={'normal'}
-                        variant={'outlined'}
-                    />
-                    
-                </Grid>
-            </Grid>
-        </Box>
->>>>>>> 2384923d2f875fc920bdd487ae4766b6bf6e1485
     )
 }
 
