@@ -1,16 +1,20 @@
 import React, { useContext } from 'react'
-import { Outlet, Navigate } from 'react-router-dom'
+import { Outlet, Navigate, useLocation } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import NavBar from './ui/NavBar'
 import { Box, Grid } from '@mui/material'
 import SideBar from './ui/SideBar'
-import AuthContext from '../context/AuthContex'
+import AuthContext from '../context/AuthContext'
 
 const Layout = () => {
 
+    const location = useLocation();
+    console.log(location.pathname);
+
+
     const { auth } = useContext(AuthContext);
     if (auth.logged == false) {
-        return <Navigate to="/login" replace={true} />
+        return <Navigate to="/home" replace={true} />
     } else {
         return (
             <Grid container>

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
+<<<<<<< HEAD
 import { Filter } from '@mui/icons-material';
+=======
+>>>>>>> 87222311b0d8406cc7c0110227d77e8100c6cd30
 import { TextField } from '@mui/material';
 
 const paginationComponentOptions = {
@@ -78,6 +81,7 @@ const TablaClientes = () => {
             })
     }
 
+<<<<<<< HEAD
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = clientes.filter(
@@ -94,12 +98,24 @@ const TablaClientes = () => {
             <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText}/>
         );
     }, [filterText, resetPaginationToggle]);
+=======
+    /* filtrar clientes por rut */
+    const [rut, setRut] = useState('')
+    const [filtrarClientes, setFiltrarClientes] = useState([])
+
+    const onChangeRut = (e) => {
+        setRut(e.target.value)
+        const clientesFiltrados = clientes.filter(cliente => cliente.rutC.includes(e.target.value))
+        setFiltrarClientes(clientesFiltrados)
+    }
+>>>>>>> 87222311b0d8406cc7c0110227d77e8100c6cd30
 
     useEffect(() => {
         getClientes()
     }, [])
 
     return (
+<<<<<<< HEAD
         <DataTable
             title="Lista de clientes"
             columns={columns}
@@ -118,6 +134,40 @@ const TablaClientes = () => {
             paginationResetDefaultPage={resetPaginationToggle}
             subHeaderComponent={subHeaderComponentMemo}
         />
+=======
+        <>
+            <TextField
+                label="Buscar por Rut"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                name="search"
+                value={rut}
+                onChange={onChangeRut}
+            />
+
+            <DataTable
+                title="Lista de clientes"
+                columns={columns}
+                data={
+                    filtrarClientes.length > 0 ? filtrarClientes : clientes
+                }
+                direction="auto"
+                fixedHeader
+                fixedHeaderScrollHeight="300px"
+                highlightOnHover
+                noContextMenu
+                pagination
+                persistTableHead
+                pointerOnHover
+                responsive
+                subHeaderAlign="right"
+                subHeaderWrap
+                paginationComponentOptions={paginationComponentOptions}
+            />
+        </>
+
+>>>>>>> 87222311b0d8406cc7c0110227d77e8100c6cd30
 
     )
 }
