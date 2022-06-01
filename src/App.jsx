@@ -5,24 +5,22 @@ import VehiculoScreen from './components/vehiculo/VehiculoScreen';
 import Layout from './components/Layout';
 import { useState } from 'react';
 import UsuarioScreen from './components/usuario/UsuarioScreen';
-import { AuthProvider } from './context/AuthContex';
+
 
 function App() {
 
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/" element={<Layout />} >
-            <Route path="/cliente" element={<ClienteScreen />} />
-            <Route path="/vehiculo" element={<VehiculoScreen />} />
-            <Route path="/usuarios" element={<UsuarioScreen />} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginScreen />} />
+        <Route path="/" element={<Layout />} >
+          <Route path="/cliente" element={<ClienteScreen/>} />
+          <Route path="/vehiculo" element={<VehiculoScreen  />} />
+          <Route path="/usuarios" element={<UsuarioScreen />} />
 
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
