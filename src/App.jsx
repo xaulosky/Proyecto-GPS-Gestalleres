@@ -5,6 +5,8 @@ import VehiculoScreen from './components/vehiculo/VehiculoScreen';
 import Layout from './components/Layout';
 import { useState } from 'react';
 import UsuarioScreen from './components/usuario/UsuarioScreen';
+import InsumoScreen from './components/insumo/InsumoScreen';
+
 
 function App() {
 
@@ -16,6 +18,8 @@ function App() {
           <Route path="/cliente" element={<ClienteScreen/>} />
           <Route path="/vehiculo" element={<VehiculoScreen  />} />
           <Route path="/usuarios" element={<UsuarioScreen />} />
+          <Route path="/insumo" element={<InsumoScreen />} />
+
         </Route>
       </Routes>
     </BrowserRouter>

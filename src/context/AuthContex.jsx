@@ -2,7 +2,7 @@ import { createContext, useState } from "react";
 
 const AuthContext = createContext();
 
-const initialAuth = { logged: false };
+const initialAuth = { logged: true };
 
 const AuthProvider = ({ children }) => {
     const [auth, setAuth] = useState(initialAuth);
