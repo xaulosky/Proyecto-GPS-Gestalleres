@@ -1,41 +1,115 @@
-import { Box, Grid, TextField } from '@mui/material'
-import React from 'react'
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import { useState } from 'react'
 
-const CrearTrabajo = () => {
+
+export const CrearTrabajo = () => {
+    const[open, setOpen] = useState(false)
+
     return (
-        <Box component="form" m={1} style={{maxWidth: "600px"}}>
-            <Grid container spacing={3} direction = "column">
-                <Grid item>
-                    <TextField fullWidth
-                        type="text"
-                        label="Nombre del Trabajo"
-                        name="nombreTrabajo"
+        <>
+        <button onClick={() => setOpen(true)}>Crear Trabajo</button>
+        <Dialog
+            open={open}
+            onClose={() => setOpen(false)}
+            aria-labelledby='dialog-title'  
+            >
+            <DialogTitle id='dialog-title'>Crear Trabajo</DialogTitle>
+            <DialogContent>
+    
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            id="nombreTrabajo"
+            label="Nombre del Trabajo"
+            type="text"
+          />
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="Multiline"
+            multiline
+            rows={4}
+            label="Descripción"
+            name="descripcionTrabajo"
+            variant="outlined"
 
-                    />
-                </Grid>
-                <Grid item >
-                    <TextField fullWidth
-                        type="Multiline"
-                        multiline
-                        rows={4}
-                        label="Descripción"
-                        name="descripcionTrabajo"
-                        variant="outlined"
-                    />
-                </Grid>
-                <Grid item >
-                    <TextField fullWidth
-                        type="date"
-                        label="Fecha Estimada"
-                        name="fechaEstimada"
-                        defaultValue="2022-05-31"
+            />
+            <TextField
+            fullWidth
+            autoFocus
+            type="date"
+            label="Fecha Estimada"
+            name="fechaEstimada"
+            defaultValue="2022-05-31"
+            />
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="date"
+            label="Fecha Real"
+            name="fechaReal"
+            defaultValue="2022-05-31"
+            />
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="text"
+            label="Estado"
+            name="estado"
 
+            />
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="number"
+            label="Costo"
+            name="costo"
+            defaultValue="0"
+            />
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="number"
+            label="Horas"
+            name="horas"
+            defaultValue="0"
+            />
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="number"
+            label="Orden de Trabajo"
+            name="cOrdenTrabajo"
+            defaultValue="0"
+            />
+            <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="number"
+            label="Tipo de Trabajo"
+            name="cTipoT"
+            defaultValue="0"
+            />
+            
+        
 
-                    />
-                </Grid>
-            </Grid>
-        </Box>
+           </DialogContent>
+           <DialogActions>
+               <Button onClick={() => setOpen(False)}>Cerrar</Button>
+               <Button autoFocus onClick = {() => setOpen (False)}>Crear</Button>
+               </DialogActions>  
+
+        </Dialog>
+        </>
     )
 }
-
 export default CrearTrabajo
+
