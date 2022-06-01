@@ -52,8 +52,7 @@ export default function LoginScreen() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("hol")
-    axios.post('http://localhost/apigps/api/login.php', {
+    axios.post('http://localhost:8080/apigps/api/login.php', {
       email: values.email,
       clave: values.clave
     })
@@ -117,7 +116,6 @@ export default function LoginScreen() {
                   </Alert>
                   :
                   null
-
               }
               <TextField
                 margin="normal"
