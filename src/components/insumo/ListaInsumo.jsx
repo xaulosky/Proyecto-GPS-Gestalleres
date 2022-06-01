@@ -3,12 +3,12 @@ import axios from 'axios';
 import React, { useEffect, useState} from 'react'
 import DataTable from 'react-data-table-component';
 
-const paginationComponentOptions = {
+/* const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
   rangeSeparatorText: 'de',
   selectAllRowsItem: true,
   selectAllRowsItemText: 'Todos',
-};
+}; */
 
 const columna = [
   {
@@ -61,7 +61,7 @@ const ListaInsumo = () => {
     responsive
     subHeaderAlign="right"
     subHeaderWrap
-    paginationComponentOptions={paginationComponentOptions}
+    //paginationComponentOptions={paginationComponentOptions}
     />
   )
 }
