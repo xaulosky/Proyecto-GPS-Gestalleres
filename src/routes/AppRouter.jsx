@@ -17,7 +17,6 @@ const AppRouter = () => {
                     </PublicRoutes>
                 } />
 
-
                 <Route path="/*" element={
                     <PrivateRoutes>
                         <DashboardRoutes />

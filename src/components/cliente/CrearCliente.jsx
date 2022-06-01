@@ -1,31 +1,24 @@
-import { Autocomplete, FormControl, FormHelperText, Input, InputLabel, Stack, TextField } from '@mui/material'
-import React, { useEffect } from 'react'
+import { Box, Grid, TextField } from "@mui/material"
 
 const CrearCliente = () => {
-    
-    const options = [
-        "aa",
-        "bb",
-        "cc",
-    ];
+
+
+
     return (
-
-        <>
-            <FormControl>
-                <InputLabel htmlFor="my-input">Email address</InputLabel>
-                <Input id="my-input" aria-describedby="my-helper-text" />
-                <FormHelperText id="my-helper-text">We'll never share your email.</FormHelperText>
-            </FormControl>
-
-            <Stack spacing={2} width='250'>
-                <Autocomplete
-                    options={options}
-                    renderInput={(params) => <TextField {...params} label="With auto-complete" margin="normal" />}
-                />
-
-            </Stack>
-
-        </>
+        <Box componet="form" >
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        type={'text'}
+                        label={'Rut'}
+                        name={'rutC'}
+                        margin={'normal'}
+                        variant={'outlined'}
+                    />
+                    
+                </Grid>
+            </Grid>
+        </Box>
     )
 }
 
