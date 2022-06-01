@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import { useState } from 'react';
 import UsuarioScreen from './components/usuario/UsuarioScreen';
 import { AuthProvider } from './context/AuthContex';
+import TrabajoScreen from './components/trabajo/TrabajoScreen';
 
 function App() {
 
@@ -18,7 +19,7 @@ function App() {
             <Route path="/cliente" element={<ClienteScreen />} />
             <Route path="/vehiculo" element={<VehiculoScreen />} />
             <Route path="/usuarios" element={<UsuarioScreen />} />
-
+            <Route path="/trabajo" element={<TrabajoScreen />} />
           </Route>
         </Routes>
       </BrowserRouter>

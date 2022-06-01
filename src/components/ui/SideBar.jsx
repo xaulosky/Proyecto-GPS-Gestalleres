@@ -15,7 +15,7 @@ const SideBar = () => {
                     <ListItemIcon>
                         <i className="material-icons">person</i>
                     </ListItemIcon>
-                    <ListItemText primary="Usuários" />
+                    <ListItemText primary="Usuarios" />
                 </ListItem>
 
             </List>
