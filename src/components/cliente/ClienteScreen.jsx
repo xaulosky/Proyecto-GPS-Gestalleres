@@ -7,7 +7,8 @@ const ClienteScreen = () => {
 
     return (
       <div>
-        <ListaCliente />
+       {/*  <ListaCliente /> */}
+       <h1>Hola</h1>
       </div>
     )
 

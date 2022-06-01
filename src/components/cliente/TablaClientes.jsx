@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
+import { TextField } from '@mui/material';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -63,30 +64,54 @@ const TablaClientes = () => {
             })
     }
 
+    /* filtrar clientes por rut */
+    const [rut, setRut] = useState('')
+    const [filtrarClientes, setFiltrarClientes] = useState([])
+
+    const onChangeRut = (e) => {
+        setRut(e.target.value)
+        const clientesFiltrados = clientes.filter(cliente => cliente.rutC.includes(e.target.value))
+        setFiltrarClientes(clientesFiltrados)
+    }
+
     useEffect(() => {
         getClientes()
     }, [])
 
 
     return (
-        <DataTable
-            title="Lista de clientes"
-            columns={columns}
-            data={clientes}
-            direction="auto"
-            fixedHeader
-            fixedHeaderScrollHeight="300px"
-            highlightOnHover
-            noContextMenu
-            pagination
-            persistTableHead
-            pointerOnHover
-            responsive
-            subHeaderAlign="right"
-            subHeaderWrap
-            paginationComponentOptions={paginationComponentOptions}
+        <>
+            <TextField
+                label="Buscar por Rut"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                name="search"
+                value={rut}
+                onChange={onChangeRut}
+            />
 
-        />
+            <DataTable
+                title="Lista de clientes"
+                columns={columns}
+                data={
+                    filtrarClientes.length > 0 ? filtrarClientes : clientes
+                }
+                direction="auto"
+                fixedHeader
+                fixedHeaderScrollHeight="300px"
+                highlightOnHover
+                noContextMenu
+                pagination
+                persistTableHead
+                pointerOnHover
+                responsive
+                subHeaderAlign="right"
+                subHeaderWrap
+                paginationComponentOptions={paginationComponentOptions}
+            />
+        </>
+
 
     )
 }

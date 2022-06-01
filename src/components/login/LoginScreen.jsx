@@ -11,6 +11,10 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useContext, useState } from 'react';
+import axios from 'axios';
+import { Alert } from '@mui/material';
+import AuthContext from '../../context/AuthContext';
 
 
 
@@ -32,10 +36,43 @@ const theme = createTheme();
 
 export default function LoginScreen() {
 
+
+  const { setAuth } = useContext(AuthContext);
+
+  const [values, setValues] = useState({
+    email: '',
+    clave: '',
+  });
+
+  const [error, setError] = useState(false);
+
+  const handleChange = name => event => {
+    setValues({ ...values, [name]: event.target.value });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('handleSubmit');
-    
+    console.log("hol")
+    axios.post('http://localhost/apigps/api/login.php', {
+      email: values.email,
+      clave: values.clave
+    })
+      .then(res => {
+        console.log(res.data)
+        if (res.data.msg) {
+          setError(true);
+          setTimeout(() => {
+            setError(false);
+          }, 3000);
+        } else {
+          setAuth({
+            email: res.data.email,
+            cUsuario: res.data.cUsuario,
+            nombreU: res.data.nombreU,
+            logged: true
+          })
+        }
+      })
   }
 
   return (
@@ -73,6 +110,15 @@ export default function LoginScreen() {
               Iniciar Sesión
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              {
+                error ?
+                  <Alert severity="error">
+                    Usuario o contraseña incorrectos
+                  </Alert>
+                  :
+                  null
+
+              }
               <TextField
                 margin="normal"
                 required
@@ -82,16 +128,18 @@ export default function LoginScreen() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={handleChange('email')}
               />
               <TextField
                 margin="normal"
                 required
                 fullWidth
-                name="password"
+                name="clave"
                 label="Contraseña"
                 type="password"
-                id="password"
+                id="clave"
                 autoComplete="current-password"
+                onChange={handleChange('clave')}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
