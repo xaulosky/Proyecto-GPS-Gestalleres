@@ -6,8 +6,8 @@ const UsuarioScreen = () => {
   return (
     <div>
       <Grid container>
-        <Typography variant="h4">Usuários</Typography>
-        <Grid md={12}>
+        <Typography variant="h4" align = 'center'>Usuarios</Typography>
+        <Grid xs={12}>
           <ListaUsuarios />
         </ Grid>
       </Grid>
