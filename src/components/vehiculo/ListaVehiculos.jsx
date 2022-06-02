@@ -4,14 +4,6 @@ import DataTable from 'react-data-table-component';
 
 const columns = [
     {
-        name: 'ID',
-        selector: row => row.cVehiculo,
-        sortable: true,
-        width: '10%',
-        right: true,
-        center: true
-    },
-    {
         name: 'Patente',
         selector: row => row.patenteV,
         sortable: true
@@ -42,18 +34,8 @@ const columns = [
         sortable: true
     },
     {
-        name: 'ID Aseguradora',
-        selector: row => row.cAseguradora,
-        sortable: true
-    },
-    {
         name: 'Tipo Carroceria',
         selector: row => row.cTipoAseguradora,
-        sortable: true
-    },
-    {
-        name: 'ID cliente',
-        selector: row => row.cCliente,
         sortable: true
     }
 ];
@@ -75,7 +57,6 @@ const ListaVehiculos = () => {
 
     return (
         <DataTable
-            title="Lista de Vehiculos"
             columns={columns}
             data={vehiculos}
             dense

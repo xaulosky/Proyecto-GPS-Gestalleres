@@ -28,6 +28,14 @@ const SideBar = () => {
                     <ListItemText primary="Repuestos" />
                 </ListItem>
             </Link>
+            <Link to="/vehiculo">
+                <ListItem button>
+                    <ListItemIcon>
+                        <i className="material-icons">directions_car</i>
+                    </ListItemIcon>
+                    <ListItemText primary="Vehiculos" />
+                </ListItem>
+            </Link>
 
 
         </List>
