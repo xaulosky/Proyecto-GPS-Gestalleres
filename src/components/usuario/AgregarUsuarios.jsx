@@ -62,12 +62,6 @@ const AgregarUsuarios = () => {
         console.log(newdata)
     }
 
-    const [currency, setCurrency] = React.useState('EUR');
-
-  const handleChange = (event) => {
-    setCurrency(event.target.value);
-  };
-
   return (
     <div>
 
@@ -126,6 +120,12 @@ const AgregarUsuarios = () => {
                         type='submit'
                     >
                         Aceptar
+                    </Button>
+                    <Button 
+                        variant ='contained'
+                        onClick={handleClose}
+                    >
+                        Cancelar
                     </Button>
                 </Box>
             </Box>
