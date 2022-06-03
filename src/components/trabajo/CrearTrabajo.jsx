@@ -62,7 +62,8 @@ const CrearTrabajo = () => {
             type="number"
             label ="Costo"
             name="costo"
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            InputProps={{
+            startAdornment: <InputAdornment position="start">$</InputAdornment>}}
             />
             <TextField
             fullWidth
