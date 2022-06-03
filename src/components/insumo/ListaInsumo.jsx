@@ -24,10 +24,10 @@ const columna = [
     selector: row => row.cantidad,
   },
   {
-    name: 'Costo',
+    name: 'Valor',
     selector: row => row.costo,
   }
-];
+];  
 
 const ListaInsumo = () => {
 
@@ -67,3 +67,4 @@ const ListaInsumo = () => {
 }
 
 export default ListaInsumo
+/* "$"+ */

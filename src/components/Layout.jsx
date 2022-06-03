@@ -7,7 +7,7 @@ import SideBar from './ui/SideBar'
 const Layout = () => {
     return (
         <Grid container>
-            <Grid md={3}>
+            <Grid md={2}>
                 <SideBar style={{
                     position: 'sticky',
                     top: '0',
@@ -17,7 +17,7 @@ const Layout = () => {
                     color: '#fff'
                 }} />
             </Grid>
-            <Grid md={9}>
+            <Grid md={10}>
 
                 <NavBar />
                 <Box component="main" p={2}>
