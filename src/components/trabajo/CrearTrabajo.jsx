@@ -1,8 +1,8 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material'
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, TextField } from '@mui/material'
 import { useState } from 'react'
 
 
-export const CrearTrabajo = () => {
+const CrearTrabajo = () => {
     const[open, setOpen] = useState(false)
 
     return (
@@ -12,7 +12,7 @@ export const CrearTrabajo = () => {
             open={open}
             onClose={() => setOpen(false)}
             aria-labelledby='dialog-title'  
-            >
+        >
             <DialogTitle id='dialog-title'>Crear Trabajo</DialogTitle>
             <DialogContent>
     
@@ -53,23 +53,16 @@ export const CrearTrabajo = () => {
             name="fechaReal"
             defaultValue="2022-05-31"
             />
+          
             <TextField
             fullWidth
             autoFocus
-            margin="dense"
-            type="text"
-            label="Estado"
-            name="estado"
-
-            />
-            <TextField
-            fullWidth
-            autoFocus
+            id="standard-adornment-amount"
             margin="dense"
             type="number"
-            label="Costo"
+            label ="Costo"
             name="costo"
-            defaultValue="0"
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
             />
             <TextField
             fullWidth
@@ -98,6 +91,14 @@ export const CrearTrabajo = () => {
             name="cTipoT"
             defaultValue="0"
             />
+              <TextField
+            fullWidth
+            autoFocus
+            margin="dense"
+            type="text"
+            label="Estado"
+            name="tipoEstado"
+            />  
             
         
 
@@ -112,4 +113,3 @@ export const CrearTrabajo = () => {
     )
 }
 export default CrearTrabajo
-

@@ -1,9 +1,8 @@
 import LoginScreen from './components/login/LoginScreen';
-import { BrowserRouter, Routes, Route, Router } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ClienteScreen from './components/cliente/ClienteScreen';
 import VehiculoScreen from './components/vehiculo/VehiculoScreen';
 import Layout from './components/Layout';
-import { useState } from 'react';
 import UsuarioScreen from './components/usuario/UsuarioScreen';
 import { AuthProvider } from './context/AuthContex';
 import TrabajoScreen from './components/trabajo/TrabajoScreen';

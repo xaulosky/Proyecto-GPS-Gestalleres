@@ -42,11 +42,6 @@ const TablaTrabajos = () => {
             sortable: true
         }, 
         {
-            name: 'Estado',
-            selector: row => row.estadoT,
-            sortable: true
-        }, 
-        {
             name: 'Costo',
             selector: row => row.costoT,
             sortable: true
@@ -71,6 +66,11 @@ const TablaTrabajos = () => {
             selector: row => row.cEmpleado,
             sortable: true
         },
+        {
+            name: 'Tipo de Estado',
+            selector: row => row.cTipoE,
+            sortable: true
+        }
     ];
 
     const [trabajos, setTrabajos] = useState([])
