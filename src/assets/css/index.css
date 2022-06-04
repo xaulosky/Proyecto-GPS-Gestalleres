@@ -12,7 +12,6 @@ a {
 
 .sidebar {
     height: 100vh;
-    min-width: 200px;
 }
 
 .sidebar * {

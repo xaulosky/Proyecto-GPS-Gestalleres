@@ -10,10 +10,10 @@ const Layout = () => {
 
     return (
         <Grid container>
-            <Grid md={2} >
+            <Grid item md={2} >
                 <SideBar />
             </Grid>
-            <Grid md={10}>
+            <Grid item md={10}>
                 <NavBar />
                 <Box component="main" p={2}>
                     <Outlet />

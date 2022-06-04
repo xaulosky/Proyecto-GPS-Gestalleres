@@ -42,6 +42,14 @@ const SideBar = () => {
                         <ListItemText primary="Repuestos" />
                     </ListItem>
                 </NavLink>
+                <NavLink to="/vehiculo" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <i className="material-icons">persons</i>
+                        </ListItemIcon>
+                        <ListItemText primary="Vehiculos" />
+                    </ListItem>
+                </NavLink>
             </List>
         </Box >
 

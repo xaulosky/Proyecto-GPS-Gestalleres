@@ -45,7 +45,7 @@ const ListaVehiculos = () => {
     const [vehiculos, setVehiculos] = useState([]);
 
     const obtenerVehiculos = () => {
-        axios.get('http://localhost/APIgps/apigps/api/vehiculo.php')
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo.php')
             .then(respuesta => {
                 setVehiculos(respuesta.data);
             })

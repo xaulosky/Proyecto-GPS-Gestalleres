@@ -1,17 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { obtenerRegiones } from '../funciones/obtenerRegiones'
-import BuscarCliente from './BuscarCliente'
-import CrearCliente from './CrearCliente'
-import ListaCliente from './ListaCliente'
+import React from 'react'
+
 const ClienteScreen = () => {
-
-    return (
-      <div >
-        <CrearCliente />
-        <ListaCliente />
-      </div>
-    )
-
+  return (
+    <div>ClienteScreen</div>
+  )
 }
 
 export default ClienteScreen
