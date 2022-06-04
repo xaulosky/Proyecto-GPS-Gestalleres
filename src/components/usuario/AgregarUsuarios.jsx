@@ -31,7 +31,6 @@ const AgregarUsuarios = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   
-    const url = ""
     const[data,setData] = useState({
         
         nombreU: "",

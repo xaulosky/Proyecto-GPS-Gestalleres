@@ -1,22 +1,87 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, FormControl, FormLabel, FormGroup, FormHelperText, TextField, Grid, Divider, MenuItem, InputLabel, Select } from '@mui/material'
+import { Table, TableBody, TableCell, 
+    TableContainer, TableHead, 
+    TableRow, Button, IconButton, 
+    Dialog, DialogActions, DialogContent, 
+    DialogContentText, DialogTitle, Slide, 
+    FormControl, FormLabel, FormGroup, 
+    FormHelperText, TextField, Grid, Divider, 
+    MenuItem, InputLabel, Select, Modal, Box, makeStyles } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
-import AgregarUsuarios from './AgregarUsuarios';
-import EliminarUsuario from './EliminarUsuario';
-
-export const str = 'Hola';
 
 
+//Eliminar usuario
+function btnEliminar (row) {
 
+  function prueba()  {
+      eliminar()
+      handleClose()
+  }
+
+  const [open, setOpen]   = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const eliminar = () =>{
+      axios.delete('http://localhost/apigps/api/usuario.php?id='+row.cUsuario)
+      .then(respuesta =>{
+          console.log(respuesta)
+      })
+      window.location.replace('');
+  }
+
+  return (
+    <div>
+        <Button
+                variant = "outlined"
+                color = 'error'
+                size = "small"
+                onClick={handleOpen}
+                startIcon={<DeleteIcon fontSize="small"/>}
+            >
+                eliminar
+        </Button>
+        
+        <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+        > 
+            <DialogTitle id="alert-dialog-title">{
+            "Eliminar usuario "
+            }</DialogTitle>
+
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    ¿Esta seguro de eliminar a {row.nombreU}?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={prueba} autofocus >
+                    Aceptar
+                </Button>
+                <Button onClick={handleClose}>
+                    Cancelar
+                </Button>
+                
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+  
+}
 
 const ListaUsuarios = () => {
 
-    const editarUsuario = (row) => {
-        console.log(row)
-    }
-   
     const columns = [
     
         {
@@ -32,14 +97,14 @@ const ListaUsuarios = () => {
         {
             name: 'Rol',
             selector: row => row.cRolU,
-            grow : 2,
+            grow : 4,
         },
         {	
             cell: (row) => 
             
             <Button  
-                onClick={(e,row)=>{
-                    editarUsuario(row);
+                raised primary onClick={()=> {
+                    console.log(row.cUsuario)
                 }}
             >
               Editar 
@@ -50,10 +115,8 @@ const ListaUsuarios = () => {
             
         },
         {			
-            cell: () => 
-            <EliminarUsuario />,
-
-            
+            cell: (row) => 
+            btnEliminar(row),
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -61,7 +124,6 @@ const ListaUsuarios = () => {
         },
     ];
 
-    
     const [usuarios,setUsuarios] = useState([]);
 
     const obtenerUsuarios = () =>{
@@ -83,8 +145,4 @@ const ListaUsuarios = () => {
     )
 }
 
-
 export default ListaUsuarios
-/*
-
-        */
