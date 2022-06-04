@@ -31,7 +31,7 @@ const SideBar = () => {
                         <ListItemIcon>
                             <i className="material-icons">person</i>
                         </ListItemIcon>
-                        <ListItemText primary="Usuarios" />
+                        <ListItemText primary="Clientes" />
                     </ListItem>
                 </NavLink>
                 <NavLink to="/repuestos" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
@@ -48,6 +48,14 @@ const SideBar = () => {
                             <i className="material-icons">persons</i>
                         </ListItemIcon>
                         <ListItemText primary="Vehiculos" />
+                    </ListItem>
+                </NavLink>
+                <NavLink to="/usuarios" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <i className="material-icons">persons</i>
+                        </ListItemIcon>
+                        <ListItemText primary="Usuarios" />
                     </ListItem>
                 </NavLink>
             </List>

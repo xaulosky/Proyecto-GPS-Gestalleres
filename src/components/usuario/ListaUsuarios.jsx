@@ -11,45 +11,45 @@ const ListaUsuarios = () => {
     const editarUsuario = (row) => {
         console.log(row)
     }
-   
+
     const columns = [
-    
+
         {
             name: 'Nombre',
             selector: row => row.nombreU,
-            grow : 2,
+            grow: 2,
         },
         {
             name: 'Email',
             selector: row => row.email,
-            grow : 2,
+            grow: 2,
         },
         {
             name: 'Rol',
             selector: row => row.cRolU,
-            grow : 2,
+            grow: 2,
         }
     ];
 
-    
-    const [usuarios,setUsuarios] = useState([]);
 
-    const obtenerUsuarios = () =>{
+    const [usuarios, setUsuarios] = useState([]);
+
+    const obtenerUsuarios = () => {
         axios.get('http://localhost/apigps/api/usuario.php')
-        .then(respuesta => {
-            setUsuarios(respuesta.data);
-        })
+            .then(respuesta => {
+                setUsuarios(respuesta.data);
+            })
     }
-    useEffect(()=>{
+    useEffect(() => {
         obtenerUsuarios();
-    },[])
-    
+    }, [])
+
     return (
         <DataTable
-        columns ={columns}
-        data = {usuarios}
-    />
-        
+            columns={columns}
+            data={usuarios}
+        />
+
     )
 }
 
