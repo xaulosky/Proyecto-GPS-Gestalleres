@@ -1,6 +1,8 @@
+import { Button } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component';
+import EditIcon from '@mui/icons-material/Edit';
 
 const columns = [
     {
@@ -37,8 +39,17 @@ const columns = [
         name: 'Tipo Carroceria',
         selector: row => row.cTipoAseguradora,
         sortable: true
+    },
+    {
+        name: "Acciones",
+        cell: (row) => <Button raised primary onClick={() => { console.log(row) }}><EditIcon /></Button>,
+        ignoreRowClick: true,
+        allowOverflow: true,
+        button: true,
     }
 ];
+
+
 
 const ListaVehiculos = () => {
 

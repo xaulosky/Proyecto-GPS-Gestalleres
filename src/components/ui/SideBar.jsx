@@ -1,4 +1,11 @@
 import { Box, Grid, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
+/* iconos */
+import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
+import PersonIcon from '@mui/icons-material/Person';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import CarRepairIcon from '@mui/icons-material/CarRepair';
+import HomeIcon from '@mui/icons-material/Home';
+
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
@@ -20,16 +27,18 @@ const SideBar = () => {
                 </Grid>
             </Grid>
             <List >
-                <ListItem button>
-                    <ListItemIcon>
-                        <i className="material-icons">home</i>
-                    </ListItemIcon>
-                    <ListItemText primary="Home" />
-                </ListItem>
+                <NavLink to="/" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")} >
+                    <ListItem button>
+                        <ListItemIcon>
+                            <HomeIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Inicio" />
+                    </ListItem>
+                </NavLink>
                 <NavLink to="/cliente" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")} >
                     <ListItem button>
                         <ListItemIcon>
-                            <i className="material-icons">person</i>
+                            <PersonOutlineIcon />
                         </ListItemIcon>
                         <ListItemText primary="Clientes" />
                     </ListItem>
@@ -37,7 +46,7 @@ const SideBar = () => {
                 <NavLink to="/repuestos" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
                     <ListItem button>
                         <ListItemIcon>
-                            <i className="material-icons">persons</i>
+                            <CarRepairIcon />
                         </ListItemIcon>
                         <ListItemText primary="Repuestos" />
                     </ListItem>
@@ -45,7 +54,8 @@ const SideBar = () => {
                 <NavLink to="/vehiculo" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
                     <ListItem button>
                         <ListItemIcon>
-                            <i className="material-icons">persons</i>
+                            <DirectionsCarIcon />
+
                         </ListItemIcon>
                         <ListItemText primary="Vehiculos" />
                     </ListItem>
@@ -53,7 +63,7 @@ const SideBar = () => {
                 <NavLink to="/usuarios" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
                     <ListItem button>
                         <ListItemIcon>
-                            <i className="material-icons">persons</i>
+                            <PersonIcon />
                         </ListItemIcon>
                         <ListItemText primary="Usuarios" />
                     </ListItem>

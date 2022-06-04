@@ -9,7 +9,9 @@ const Layout = () => {
 
 
     return (
-        <Grid container>
+        <Grid container style={{
+            backgroundColor: "#f7f7f7"
+        }}>
             <Grid item md={2} >
                 <SideBar />
             </Grid>
