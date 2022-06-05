@@ -1,11 +1,13 @@
 import React from 'react'
+import CrearRepuesto from './CrearRepuesto'
 import ListaRepuesto from './ListaRepuesto'
 
 const RepuestosScreen = () => {
     return (
-        <div className="animate__animated animate__fadeIn">
+        <>
         <ListaRepuesto/>
-        </div>
+        <CrearRepuesto/>
+        </>
     )
 }
 
