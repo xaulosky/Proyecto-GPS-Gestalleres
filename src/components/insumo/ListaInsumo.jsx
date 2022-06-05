@@ -8,7 +8,6 @@ import { Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CrearInsumo from './CrearInsumo';
 
-
 const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
   rangeSeparatorText: 'de',
@@ -81,7 +80,7 @@ const ListaInsumo = () => {
         data={insumos}
         direction="auto"
         fixedHeader
-        fixedHeaderScrollHeight="900px"
+        fixedHeaderScrollHeight="500px"
         highlightOnHover
         noContextMenu
         pagination
