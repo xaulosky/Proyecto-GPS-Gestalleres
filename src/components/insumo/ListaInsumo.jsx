@@ -20,7 +20,7 @@ const columna = [
   {
     name: 'ID',
     selector: row => row.cInsumo,
-    width: '125px',
+    width: '100px',
   },
   {
     name: 'Nombre de insumo',
