@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
-
+import AgregarUsuarios from './AgregarUsuarios'
 
 //Eliminar usuario
 function btnEliminar (row) {
@@ -40,15 +40,24 @@ function btnEliminar (row) {
 
   return (
     <div>
+        <Grid>
         <Button
+                 sx={{
+                    '& > :not(style)': {
+                      m: -0.05,
+                      py: 1.5
+                    },
+                  }}
                 variant = "outlined"
                 color = 'error'
                 size = "small"
                 onClick={handleOpen}
-                startIcon={<DeleteIcon fontSize="small"/>}
+                startIcon={<DeleteIcon />}
             >
                 eliminar
         </Button>
+        </Grid>
+        
         
         <Dialog
             open={open}
@@ -80,6 +89,17 @@ function btnEliminar (row) {
   
 }
 
+function btnEditar(row){
+    return(
+        <div>
+            <Grid >
+                <AgregarUsuarios />
+            </Grid>
+            
+        </div>
+    )
+}
+
 const ListaUsuarios = () => {
 
     const columns = [
@@ -87,31 +107,26 @@ const ListaUsuarios = () => {
         {
             name: 'Nombre',
             selector: row => row.nombreU,
-            grow : 2,
+            grow : 1,
         },
         {
             name: 'Email',
             selector: row => row.email,
-            grow : 2,
+            grow : 1,
         },
         {
             name: 'Rol',
             selector: row => row.cRolU,
-            grow : 4,
+            grow : 2,
         },
         {	
+    
             cell: (row) => 
-            
-            <Button  
-                raised primary onClick={()=> {
-                    console.log(row.cUsuario)
-                }}
-            >
-              Editar 
-            </Button>,
+            btnEditar(row),
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
+            
             
         },
         {			
