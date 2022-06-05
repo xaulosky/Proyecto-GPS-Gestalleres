@@ -1,78 +1,134 @@
-import { Autocomplete, FormControl, FormHelperText, Input, InputLabel, Stack, TextField, Container, InputAdornment  } from '@mui/material'
-import React, { useEffect } from 'react'
+import {
+  Select,
+  FormControl,
+  MenuItem,
+  Input,
+  InputLabel,
+  Stack,
+  TextField,
+  Container,
+  Button,
+  Box
+} from "@mui/material";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-const CrearCliente = () => {
+const CrearCliente = ({getClientes}) => {
+    const [form, setForm] = useState({
+        rutC: "",
+        emailC: "",
+        nombreC: "",
+        apellidoC: "",
+        direccionC: "",
+        estadoC: "",
+        cComuna: "",
+    });
+    const onChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+        });
+    };
+    const onSubmit = (e) => {
+        e.preventDefault();
+        console.log(form);
+        axios
+            .post("http://localhost:8080/apigps/api/cliente.php", form)
+            .then((res) => {
+              setForm({
+                rutC: "",
+                emailC: "",
+                nombreC: "",
+                apellidoC: "",
+                direccionC: "",
+                estadoC: "",
+                cComuna: "",
+            });
+                console.log(res);
+                getClientes();
+                
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
     
-    const options = [
-        "aa",
-        "bb",
-        "cc",
-    ];
-    return (
+    const [comunas, setComunas] = useState([]);
+    const getComunas = async () => {
+        await axios.get("http://localhost:8080/apigps/api/comuna.php")
+            .then((res) => {
+                setComunas(res.data);
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+    useEffect(() => {
+        getComunas();
+    }, []);
+    
+  return (
+    <>
+      <Container maxWidth="lg">
+        <Box component="form" onSubmit={onSubmit}>
+          <Stack spacing={2} direction={"row"}>
+            <FormControl fullWidth>
+              <TextField id="rutC" value={form.rutC} label="Rut" name="rutC" onChange={onChange}/>
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField id="emailc" value={form.emailC} label="Email" name="emailC" onChange={onChange}/>
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField id="nombreC" value={form.nombreC} label="Nombre" name="nombreC" onChange={onChange}/>
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField id="apellidoC" value={form.apellidoC} label="Apellido" name="apellidoC" onChange={onChange}/>
+            </FormControl>
+            <FormControl fullWidth>
+              <TextField id="direccionC" value={form.direccionC} label="Direccion" name="direccionC" onChange={onChange}/>
+            </FormControl>
+            <FormControl fullWidth>
+              {/* select */}
+              <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="estadoC"
+                value={form.estadoC}
+                defaultValue={form.estadoC}
+                onChange={onChange}
+              >
+                <MenuItem value={1}>Activo</MenuItem>
+                <MenuItem value={2}>Inactivo</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              {/* select */}
+              <InputLabel id="demo-simple-select-label">Comuna</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                name="cComuna"
+                value={form.cComuna}
+                defaultValue={form.cComuna}
+                onChange={onChange}
+              >
+                {comunas.map((comunas) => (
+                  <MenuItem key={comunas.cComuna} value={comunas.cComuna}>{comunas.cComuna}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth>
+              <Button variant="contained" color="primary" type="submit">
+                Crear Cliente
+              </Button>
+            </FormControl>
+          </Stack>
+        </Box>
+      </Container>
+    </>
+  );
+};
 
-        <>
-        <Container maxWidth="lg">
-        {/* form row */}
-        <Stack spacing={2} direction={"row"}>
-            <FormControl fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Rut</InputLabel>
-                <Input
-                    id="input-with-icon-adornment"
-                    startAdornment={<InputAdornment position="start">Rut</InputAdornment>}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Nombre</InputLabel>
-                <Input
-                    id="input-with-icon-adornment"
-                    startAdornment={<InputAdornment position="start">Nombre</InputAdornment>}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Apellido</InputLabel>
-                <Input
-                    id="input-with-icon-adornment"
-                    startAdornment={<InputAdornment position="start">Apellido</InputAdornment>}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Email</InputLabel>
-                <Input
-                    id="input-with-icon-adornment"
-                    startAdornment={<InputAdornment position="start">Email</InputAdornment>}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Dirección</InputLabel>
-                <Input
-                    id="input-with-icon-adornment"
-                    startAdornment={<InputAdornment position="start">Dirección</InputAdornment>}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Comuna</InputLabel>
-                <Autocomplete
-                    id="input-with-icon-adornment"
-                    options={options}
-                    getOptionLabel={(option) => option}
-                    renderInput={(params) => <TextField {...params} label="Comuna" variant="outlined" />}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel htmlFor="input-with-icon-adornment">Estado</InputLabel>
-                <Autocomplete
-                    id="input-with-icon-adornment"
-                    options={options}
-                    getOptionLabel={(option) => option}
-                    renderInput={(params) => <TextField {...params} label="Estado" variant="outlined" />}
-                />
-            </FormControl>
-        </Stack>
-        </Container>
-        
-
-        </>
-    )
-}
-
-export default CrearCliente
+export default CrearCliente;

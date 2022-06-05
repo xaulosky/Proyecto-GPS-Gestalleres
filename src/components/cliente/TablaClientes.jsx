@@ -3,6 +3,7 @@ import axios from 'axios';
 import DataTable from 'react-data-table-component'
 import { Filter } from '@mui/icons-material';
 import { TextField } from '@mui/material';
+import CrearCliente from './CrearCliente';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -100,6 +101,7 @@ const TablaClientes = () => {
     }, [])
 
     return (
+        <>
         <DataTable
             title="Lista de clientes"
             columns={columns}
@@ -118,7 +120,8 @@ const TablaClientes = () => {
             paginationResetDefaultPage={resetPaginationToggle}
             subHeaderComponent={subHeaderComponentMemo}
         />
-
+        <CrearCliente getClientes={getClientes}/>
+    </>
     )
 }
 

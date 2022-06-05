@@ -8,7 +8,6 @@ const ClienteScreen = () => {
     return (
       <div>
         <ListaCliente />
-        <CrearCliente />
       </div>
     )
 
