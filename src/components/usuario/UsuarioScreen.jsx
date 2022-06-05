@@ -7,7 +7,7 @@ const UsuarioScreen = () => {
   return (
     <div>
       <Grid container>
-        <Grid item  xs={12}>
+        <Grid item xs={12}>
           <Typography variant="h4">Usuarios</Typography>
         </Grid>
         <Grid item xs={12} align='right'>

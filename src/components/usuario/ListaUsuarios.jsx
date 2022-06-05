@@ -1,16 +1,9 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, FormControl, FormLabel, FormGroup, FormHelperText, TextField, Grid, Divider, MenuItem, InputLabel, Select } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 
-export const str = 'Hola';
-
 const ListaUsuarios = () => {
 
-    const editarUsuario = (row) => {
-        console.log(row)
-    }
 
     const columns = [
 
@@ -39,6 +32,10 @@ const ListaUsuarios = () => {
             .then(respuesta => {
                 setUsuarios(respuesta.data);
             })
+            .catch(error => {
+                console.log(error);
+            }
+            );
     }
     useEffect(() => {
         obtenerUsuarios();
