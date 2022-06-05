@@ -5,6 +5,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import HomeIcon from '@mui/icons-material/Home';
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 
 import React from 'react'
 import { NavLink } from 'react-router-dom'
@@ -66,6 +67,14 @@ const SideBar = () => {
                             <PersonIcon />
                         </ListItemIcon>
                         <ListItemText primary="Usuarios" />
+                    </ListItem>
+                </NavLink>
+                <NavLink to="/insumos" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <PrecisionManufacturingIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Insumos" />
                     </ListItem>
                 </NavLink>
             </List>

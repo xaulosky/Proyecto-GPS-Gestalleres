@@ -35,7 +35,7 @@ const ListaUsuarios = () => {
     const [usuarios, setUsuarios] = useState([]);
 
     const obtenerUsuarios = () => {
-        axios.get('http://localhost/apigps/api/usuario.php')
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'usuario.php')
             .then(respuesta => {
                 setUsuarios(respuesta.data);
             })
