@@ -9,21 +9,16 @@ const Layout = () => {
 
 
     return (
-        <Grid container>
-            <Grid md={3}>
-                <SideBar style={{
-                    position: 'sticky',
-                    top: '0',
-                    zIndex: '1',
-                    backgroundColor: '#010101',
-                    height: '100vh',
-                    color: '#fff'
-                }} />
+        <Grid container style={{
+            backgroundColor: "#f7f7f7"
+        }}>
+            <Grid item md={2} >
+                <SideBar />
             </Grid>
-            <Grid md={9}>
+            <Grid item md={10}>
                 <NavBar />
                 <Box component="main" p={2}>
-                    <Outlet  />
+                    <Outlet />
                 </Box >
             </Grid>
         </Grid>
