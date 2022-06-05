@@ -1,15 +1,18 @@
+import { Card } from '@mui/material'
 import React from 'react'
-import BuscarVehiculo from './BuscarVehiculo'
 import ListaVehiculos from './ListaVehiculos'
 
 const VehiculoScreen = () => {
-  return (
-    <>
-    <h1>VehiculoScreen</h1>
-    <BuscarVehiculo/>
-    <ListaVehiculos/>
-    </>
-  )
+
+    return (
+        <>
+            <h1>Lista Vehiculos</h1>
+            <Card >
+                <ListaVehiculos />
+
+            </Card>
+        </>
+    )
 }
 
 export default VehiculoScreen
