@@ -16,7 +16,7 @@ const style = {
     p: 4,
 };
 
-const CrearInsumo = ({obtenerInsumos}) => {
+const CrearInsumo = ({ obtenerInsumos }) => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -29,7 +29,7 @@ const CrearInsumo = ({obtenerInsumos}) => {
     });
 
     const submit = (e) => {
-        axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php',{
+        axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
             nombreInsumo: data.nombreInsumo,
             cantidad: data.cantidad,
             costo: data.costo
@@ -48,8 +48,7 @@ const CrearInsumo = ({obtenerInsumos}) => {
     }
 
     return (
-        <div>
-
+        <>
             <Button onClick={handleOpen}
                 variant="contained"
                 color="primary"
@@ -119,7 +118,7 @@ const CrearInsumo = ({obtenerInsumos}) => {
                     </Typography>
                 </Box>
             </Modal>
-        </div>
+        </>
     );
 }
 
