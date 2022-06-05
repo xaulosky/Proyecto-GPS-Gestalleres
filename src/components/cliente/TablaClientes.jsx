@@ -69,19 +69,11 @@ const TablaClientes = () => {
             sortable: true
         },
     ];
-<<<<<<< HEAD
-    
-    const [clientes, setClientes] = useState([])
-
-    const getClientes = async() => {
-        await axios.get('http://localhost:8080/apigps/api/cliente.php')
-=======
 
     const [clientes, setClientes] = useState([])
 
     const getClientes = async () => {
         await axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php')
->>>>>>> ddd8ba651db3ac3610733b7198f4cd77dcf370a6
             .then(res => {
                 setClientes(res.data)
             })
@@ -100,11 +92,7 @@ const TablaClientes = () => {
             }
         };
         return (
-<<<<<<< HEAD
-            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText}/>
-=======
             <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
->>>>>>> ddd8ba651db3ac3610733b7198f4cd77dcf370a6
         );
     }, [filterText, resetPaginationToggle]);
 
@@ -114,32 +102,6 @@ const TablaClientes = () => {
 
     return (
         <>
-<<<<<<< HEAD
-        <DataTable
-            title="Lista de clientes"
-            columns={columns}
-            data={filteredItems}
-            direction="auto"
-            fixedHeader
-            fixedHeaderScrollHeight="300px"
-            highlightOnHover
-            noContextMenu
-            pagination
-            persistTableHead
-            pointerOnHover
-            responsive
-            subHeader
-            paginationComponentOptions={paginationComponentOptions}
-            paginationResetDefaultPage={resetPaginationToggle}
-            subHeaderComponent={subHeaderComponentMemo}
-        />
-        <CrearCliente getClientes={getClientes}/>
-    </>
-    )
-}
-
-export default TablaClientes
-=======
             <DataTable
                 title="Lista de clientes"
                 columns={columns}
@@ -164,4 +126,3 @@ export default TablaClientes
 }
 
 export default TablaClientes
->>>>>>> ddd8ba651db3ac3610733b7198f4cd77dcf370a6

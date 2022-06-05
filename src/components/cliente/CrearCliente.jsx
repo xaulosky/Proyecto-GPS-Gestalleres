@@ -33,7 +33,7 @@ import {
           e.preventDefault();
           console.log(form);
           axios
-              .post("http://localhost:8080/apigps/api/cliente.php", form)
+              .post(import.meta.env.VITE_APP_BACKEND_URL+"cliente.php", form)
               .then((res) => {
                 setForm({
                   rutC: "",
@@ -55,7 +55,7 @@ import {
       
       const [comunas, setComunas] = useState([]);
       const getComunas = async () => {
-          await axios.get("http://localhost:8080/apigps/api/comuna.php")
+          await axios.get(import.meta.env.VITE_APP_BACKEND_URL+"comuna.php")
               .then((res) => {
                   setComunas(res.data);
                   console.log(res.data);
