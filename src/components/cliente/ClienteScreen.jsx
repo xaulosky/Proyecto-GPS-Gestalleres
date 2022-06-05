@@ -11,6 +11,10 @@ const ClienteScreen = () => {
       </div>
     )
 
+const ClienteScreen = () => {
+  return (
+    <div>ClienteScreen</div>
+  )
 }
 
 export default ClienteScreen

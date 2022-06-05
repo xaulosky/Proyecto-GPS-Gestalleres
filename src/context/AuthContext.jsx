@@ -2,10 +2,8 @@ import { createContext, useState } from "react";
 
 const AuthContext = createContext();
 
-const initialAuth = { logged: true };
-
 const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useState(initialAuth);
+    const [auth, setAuth] = useState({logged : true});
     const data = {
         auth,
         setAuth
