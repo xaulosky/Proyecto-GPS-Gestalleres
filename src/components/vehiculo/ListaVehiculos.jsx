@@ -39,13 +39,6 @@ const columns = [
         name: 'Tipo Carroceria',
         selector: row => row.cTipoAseguradora,
         sortable: true
-    },
-    {
-        name: "Acciones",
-        cell: (row) => <Button raised primary onClick={() => { console.log(row) }}><EditIcon /></Button>,
-        ignoreRowClick: true,
-        allowOverflow: true,
-        button: true,
     }
 ];
 
