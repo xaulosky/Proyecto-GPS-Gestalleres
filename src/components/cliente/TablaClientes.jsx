@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
+import { Filter } from '@mui/icons-material';
 import { TextField } from '@mui/material';
+import CrearCliente from './CrearCliente';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -9,6 +11,19 @@ const paginationComponentOptions = {
     selectAllRowsItem: true,
     selectAllRowsItemText: 'Todos',
 };
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+    <div>
+        <TextField
+            id="search"
+            type="text"
+            placeholder="Filter by name"
+            aria-label="Search input"
+            value={filterText}
+            onChange={onFilter}
+        />
+        <button onClick={onClear}>Clear</button>
+    </div>
+);
 
 const TablaClientes = () => {
 
@@ -57,46 +72,40 @@ const TablaClientes = () => {
 
     const [clientes, setClientes] = useState([])
 
-    const getClientes = () => {
-        axios.get('http://localhost/apigps/api/cliente.php')
+    const getClientes = async () => {
+        await axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php')
             .then(res => {
                 setClientes(res.data)
             })
     }
 
-    /* filtrar clientes por rut */
-    const [rut, setRut] = useState('')
-    const [filtrarClientes, setFiltrarClientes] = useState([])
-
-    const onChangeRut = (e) => {
-        setRut(e.target.value)
-        const clientesFiltrados = clientes.filter(cliente => cliente.rutC.includes(e.target.value))
-        setFiltrarClientes(clientesFiltrados)
-    }
+    const [filterText, setFilterText] = useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+    const filteredItems = clientes.filter(
+        item => item.nombreC && item.nombreC.toLowerCase().includes(filterText.toLowerCase())
+    );
+    const subHeaderComponentMemo = React.useMemo(() => {
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+        return (
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+        );
+    }, [filterText, resetPaginationToggle]);
 
     useEffect(() => {
         getClientes()
     }, [])
 
-
     return (
         <>
-            <TextField
-                label="Buscar por Rut"
-                margin="normal"
-                variant="outlined"
-                fullWidth
-                name="search"
-                value={rut}
-                onChange={onChangeRut}
-            />
-
             <DataTable
                 title="Lista de clientes"
                 columns={columns}
-                data={
-                    filtrarClientes.length > 0 ? filtrarClientes : clientes
-                }
+                data={filteredItems}
                 direction="auto"
                 fixedHeader
                 fixedHeaderScrollHeight="300px"
@@ -106,13 +115,13 @@ const TablaClientes = () => {
                 persistTableHead
                 pointerOnHover
                 responsive
-                subHeaderAlign="right"
-                subHeaderWrap
+                subHeader
                 paginationComponentOptions={paginationComponentOptions}
+                paginationResetDefaultPage={resetPaginationToggle}
+                subHeaderComponent={subHeaderComponentMemo}
             />
+            <CrearCliente getClientes={getClientes} />
         </>
-
-
     )
 }
 
