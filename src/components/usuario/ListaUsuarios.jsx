@@ -16,8 +16,8 @@ import AgregarUsuarios from './AgregarUsuarios'
 //Eliminar usuario
 function btnEliminar (row) {
 
-  function prueba()  {
-      eliminar()
+  function prueba(row)  {
+      eliminar(row)
       handleClose()
   }
 
@@ -30,8 +30,8 @@ function btnEliminar (row) {
     setOpen(false);
   };
 
-  const eliminar = () =>{
-      axios.delete('http://localhost/apigps/api/usuario.php?id='+row.cUsuario)
+  const eliminar = (row) =>{
+      axios.delete(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php?id='+row.cUsuario)
       .then(respuesta =>{
           console.log(respuesta)
       })
@@ -142,7 +142,7 @@ const ListaUsuarios = () => {
     const [usuarios,setUsuarios] = useState([]);
 
     const obtenerUsuarios = () =>{
-        axios.get('http://localhost/apigps/api/usuario.php')
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php')
         .then(respuesta => {
             setUsuarios(respuesta.data);
         })

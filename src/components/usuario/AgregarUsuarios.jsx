@@ -14,14 +14,12 @@ const style = {
     boxShadow: 24,
     p: 4,
   };
-  const opciones= [
+  const opciones = [
     {
-      
       value: 2,
       label: 'Secretaria',
     },
-    {
-       
+    {  
       value: 3,
       label: 'Mecanico',
     },
@@ -52,7 +50,7 @@ const AgregarUsuarios = () => {
         }
 
     const submit= (e) =>{
-        axios.post('http://localhost/apigps/api/usuario.php',{
+        axios.post(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
             
             email: data.email ,
             clave: data.clave  ,
