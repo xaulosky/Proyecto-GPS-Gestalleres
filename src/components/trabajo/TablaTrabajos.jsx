@@ -73,19 +73,21 @@ const TablaTrabajos = () => {
         }
     ];
 
-    const [trabajos, setTrabajos] = useState([])
+  const [trabajos, setTrabajos] = useState([]);
 
-    const getTrabajos = () => {
-        axios.get('http://localhost/apigps/apigps/api/trabajo.php')
-            .then(res => {
-                setTrabajos(res.data)
+    const obtenerTrabajos = () => {
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL+'trabajo.php')
+            .then(respuesta => {
+                setTrabajos(respuesta.data);
             })
+            .catch(error => {
+                console.log(error);
+            }
+            );
     }
-
     useEffect(() => {
-        getTrabajos()
+        obtenerTrabajos();
     }, [])
-
 
     return (
         <DataTable
