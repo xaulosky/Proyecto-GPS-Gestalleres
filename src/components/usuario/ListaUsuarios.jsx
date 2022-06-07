@@ -31,11 +31,12 @@ function btnEliminar (row) {
   };
 
   const eliminar = (row) =>{
+    
       axios.delete(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php?id='+row.cUsuario)
       .then(respuesta =>{
           console.log(respuesta)
       })
-      window.location.replace('');
+ 
   }
 
   return (
@@ -52,7 +53,7 @@ function btnEliminar (row) {
                 color = 'error'
                 size = "small"
                 onClick={handleOpen}
-                startIcon={<DeleteIcon />}
+                endIcon={<DeleteIcon />}
             >
                 eliminar
         </Button>
@@ -75,7 +76,7 @@ function btnEliminar (row) {
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={prueba} autofocus >
+                <Button onClick={()=>prueba(row)} autoFocus >
                     Aceptar
                 </Button>
                 <Button onClick={handleClose}>
@@ -92,14 +93,53 @@ function btnEliminar (row) {
 function btnEditar(row){
     return(
         <div>
-            <Grid >
-                <AgregarUsuarios />
-            </Grid>
+             <Grid>
+        <Button
+                 sx={{
+                    '& > :not(style)': {
+                      m: -0.63,
+                      py: 2.05
+                    },
+                  }}
+                variant = "outlined"
+                color = 'primary'
+                size = "small"
+               
+                endIcon={<EditIcon />}
+            >
+                modificar
+        </Button>
+        </Grid>
             
         </div>
     )
 }
 
+function rol(row){
+    if(row.cRolU == 1){
+        return(
+            <div>
+                Jefe de taller
+            </div>
+        )
+    }
+    if(row.cRolU == 2){
+        return(
+           <div>
+                Secretaria
+            </div> 
+        )
+    }
+    if(row.cRolU == 3){
+        return(
+            <div>
+                Mecanico
+            </div>
+        )
+    }
+}
+
+//Data Table
 const ListaUsuarios = () => {
 
     const columns = [
@@ -116,17 +156,19 @@ const ListaUsuarios = () => {
         },
         {
             name: 'Rol',
-            selector: row => row.cRolU,
-            grow : 2,
+            cell: (row) =>
+            rol(row),
+
+            
         },
         {	
-    
+           
             cell: (row) => 
             btnEditar(row),
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-            
+           
             
         },
         {			
@@ -135,7 +177,7 @@ const ListaUsuarios = () => {
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-
+            
         },
     ];
 
@@ -152,12 +194,28 @@ const ListaUsuarios = () => {
     },[])
     
     return (
+      
         <DataTable
+        title='Lista de usuarios'
         columns ={columns}
         data = {usuarios}
-    />
-        
+        direction="auto"
+        fixedHeader
+        fixedHeaderScrollHeight="300px"
+        highlightOnHover
+        noContextMenu
+        pagination
+        persistTableHead
+        pointerOnHover
+        responsive
+        subHeader      
+        subHeaderComponent={<AgregarUsuarios/>} 
+    />  
     )
 }
 
 export default ListaUsuarios
+
+/*
+selector: row => row.cRolU,
+            grow : 2,*/
