@@ -115,7 +115,7 @@ import {
                   onChange={onChange}
                 >
                   {comunas.map((comunas) => (
-                    <MenuItem key={comunas.cComuna} value={comunas.cComuna}>{comunas.cComuna}</MenuItem>
+                    <MenuItem key={comunas.cComuna} value={comunas.cComuna}>{comunas.nombreC}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
