@@ -57,6 +57,7 @@ const ListaVehiculos = () => {
 
     return (
         <DataTable
+            title=""
             columns={columns}
             data={vehiculos}
             dense
