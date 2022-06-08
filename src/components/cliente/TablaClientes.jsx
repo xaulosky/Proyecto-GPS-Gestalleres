@@ -3,6 +3,7 @@ import axios from 'axios';
 import DataTable from 'react-data-table-component'
 import { Filter } from '@mui/icons-material';
 import { TextField } from '@mui/material';
+import CrearCliente from './CrearCliente';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -13,12 +14,12 @@ const paginationComponentOptions = {
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
     <div>
         <TextField
-        id="search"
-        type="text"
-        placeholder="Filter by name"
-        aria-label="Search input"
-        value={filterText}
-        onChange={onFilter}
+            id="search"
+            type="text"
+            placeholder="Filter by name"
+            aria-label="Search input"
+            value={filterText}
+            onChange={onFilter}
         />
         <button onClick={onClear}>Clear</button>
     </div>
@@ -68,11 +69,11 @@ const TablaClientes = () => {
             sortable: true
         },
     ];
-    
+
     const [clientes, setClientes] = useState([])
 
-    const getClientes = async() => {
-        await axios.get('http://localhost:8080/apigps/api/cliente.php')
+    const getClientes = async () => {
+        await axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php')
             .then(res => {
                 setClientes(res.data)
             })
@@ -91,7 +92,7 @@ const TablaClientes = () => {
             }
         };
         return (
-            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText}/>
+            <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
         );
     }, [filterText, resetPaginationToggle]);
 
@@ -100,25 +101,27 @@ const TablaClientes = () => {
     }, [])
 
     return (
-        <DataTable
-            title="Lista de clientes"
-            columns={columns}
-            data={filteredItems}
-            direction="auto"
-            fixedHeader
-            fixedHeaderScrollHeight="300px"
-            highlightOnHover
-            noContextMenu
-            pagination
-            persistTableHead
-            pointerOnHover
-            responsive
-            subHeader
-            paginationComponentOptions={paginationComponentOptions}
-            paginationResetDefaultPage={resetPaginationToggle}
-            subHeaderComponent={subHeaderComponentMemo}
-        />
-
+        <>
+            <DataTable
+                title="Lista de clientes"
+                columns={columns}
+                data={filteredItems}
+                direction="auto"
+                fixedHeader
+                fixedHeaderScrollHeight="300px"
+                highlightOnHover
+                noContextMenu
+                pagination
+                persistTableHead
+                pointerOnHover
+                responsive
+                subHeader
+                paginationComponentOptions={paginationComponentOptions}
+                paginationResetDefaultPage={resetPaginationToggle}
+                subHeaderComponent={subHeaderComponentMemo}
+            />
+            <CrearCliente getClientes={getClientes} />
+        </>
     )
 }
 

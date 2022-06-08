@@ -6,10 +6,8 @@ import ListaCliente from './ListaCliente'
 const ClienteScreen = () => {
 
     return (
-      <div >
-        <CrearCliente />
+      <div>
         <ListaCliente />
-        <CrearCliente />
       </div>
     )
 

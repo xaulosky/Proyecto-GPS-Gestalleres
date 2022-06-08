@@ -1,6 +1,8 @@
+import { Button } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component';
+import EditIcon from '@mui/icons-material/Edit';
 
 const columns = [
     {
@@ -40,12 +42,14 @@ const columns = [
     }
 ];
 
+
+
 const ListaVehiculos = () => {
 
     const [vehiculos, setVehiculos] = useState([]);
 
     const obtenerVehiculos = () => {
-        axios.get('http://localhost/APIgps/apigps/api/vehiculo.php')
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo.php')
             .then(respuesta => {
                 setVehiculos(respuesta.data);
             })
