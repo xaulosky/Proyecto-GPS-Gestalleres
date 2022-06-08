@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, IconButton } from '@mui/material';
 
+
 const columns = [
   {
     name: 'Nombre',
@@ -26,10 +27,6 @@ const columns = [
   {
     name: 'Estado Repuesto',
     selector: row => row.estadoRepuesto,
-  },
-  {
-    name: 'Código Taller',
-    selector: row => row.cTaller,
   },
   {
     name: 'Código Taller',
