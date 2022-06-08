@@ -1,5 +1,4 @@
 import { Box, Button, Grid, TextField } from '@mui/material'
-import AddIcon from '@mui/icons-material/Add';
 import React from 'react'
 import { Add } from '@mui/icons-material';
 
@@ -20,17 +19,17 @@ const CrearRepuesto = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={3}>
-                        <TextField fullWidth id='standard-basic' label="Fecha Solicitud" margin='normal' variant='outlined' type={'text'} name={'fechaSolicitud'}
+                        <TextField fullWidth id='standard-basic' label='Fecha Solicitud' margin='normal' variant='outlined' type={'date'} name={'fechaSolicitud'} 
                         />
                     </Grid>
 
                     <Grid item xs={12} sm={3}>
-                        <TextField fullWidth id='standard-basic' label="Fecha Llegada" margin='normal' variant='outlined' type={'text'} name={'fechaLlegada'}
+                        <TextField fullWidth id='standard-basic' label="" margin='normal' variant='outlined' type={'date'} name={'fechaLlegada'}
                         />
                     </Grid>
 
                     <Grid item xs={12} sm={3}>
-                        <TextField fullWidth id='standard-basic' label="Código Taller" margin='normal' variant='outlined' type={'text'} name={'cTaller'}
+                        <TextField fullWidth id='standard-basic' label="Código Taller" margin='normal' variant='outlined' type={'select'} name={'cTaller'}
                         />
                     </Grid>
                     
