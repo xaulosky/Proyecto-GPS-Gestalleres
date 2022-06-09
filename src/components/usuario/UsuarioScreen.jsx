@@ -8,12 +8,6 @@ const UsuarioScreen = () => {
     <div>
       <Grid container>
         <Grid item xs={12}>
-          <Typography variant="h4">Usuarios</Typography>
-        </Grid>
-        <Grid item xs={12} align='right'>
-          <AgregarUsuarios />
-        </Grid>
-        <Grid item xs={12}>
           <ListaUsuarios />
         </ Grid>
       </Grid>

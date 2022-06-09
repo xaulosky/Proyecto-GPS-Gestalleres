@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert ,Autocomplete, Button,Box , MenuItem, Modal,Stack ,Select,TextField, Typography, Grid} from "@mui/material";
+import { Alert ,Autocomplete,InputLabel, Button,Box , MenuItem, Modal,Stack ,Select,TextField, Typography, Grid, FormControl, FormLabel, FormHelperText} from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
 
@@ -30,7 +30,6 @@ const AgregarUsuarios = () => {
   const [open, setOpen]  = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
 
     const[data,setData] = useState({
         
@@ -69,7 +68,8 @@ const AgregarUsuarios = () => {
         <Button
             onClick={ handleOpen}
             variant="outlined" 
-            endIcon={<PersonAddAltIcon />}
+            endIcon={<PersonAddAltIcon fontSize='small'/>}
+            size = 'medium'
         >
             Agregar
         </Button>
@@ -127,13 +127,18 @@ const AgregarUsuarios = () => {
                         variant="outlined" 
                         onChange={(e)=>handle(e)} />
                     </div>
-                    <Grid sx={{mx:2}}>
+                    <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label" sx={{mx:2}}>Rol</InputLabel>
+                    <Grid sx={{mx:2, width: 360}} >
                     <Select
                         id='cRolU'
                         value={data.cRolU}
                         name='cRolU'
+                        fullWidth
                         onChange={handle}
-                    >    
+                        label = 'Rol'
+                    >  
+                     
                         {opciones.map(opcion => (
                         <MenuItem key={opcion.value} value={opcion.value}>
                         {opcion.label}
@@ -141,6 +146,8 @@ const AgregarUsuarios = () => {
                     ))}                
                     </Select>    
                     </Grid>
+                    </FormControl>
+                    
                           
                     <TextField 
                         id="cTaller"
@@ -158,7 +165,6 @@ const AgregarUsuarios = () => {
                         variant ='outlined'
                         type='submit'
                         size = 'medium'
-            
                     >
                         Aceptar
                     </Button>
@@ -184,3 +190,4 @@ const AgregarUsuarios = () => {
 }
 
 export default AgregarUsuarios
+
