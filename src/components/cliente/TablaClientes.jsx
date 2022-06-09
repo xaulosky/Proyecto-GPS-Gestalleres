@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
 import { Filter } from '@mui/icons-material';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import CrearCliente from './CrearCliente';
 
 const paginationComponentOptions = {
@@ -28,15 +28,6 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 const TablaClientes = () => {
 
     const columns = [
-        {
-            name: 'Id',
-            selector: row => row.cCliente,
-            sortable: true,
-            width: '10%',
-            right: true,
-            center: true,
-
-        },
         {
             name: 'Rut',
             selector: row => row.rutC,
@@ -65,9 +56,21 @@ const TablaClientes = () => {
         },
         {
             name: 'Comuna',
-            selector: row => row.cComuna,
+            selector: row => row.nombreCo,
             sortable: true
         },
+        /* columna boton */
+        {
+            name: 'Acciones',
+            cell: row => <Button>Eliminar</Button>,
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+            width: '10%',
+            center: true,
+            right: true,
+            sortable: true,
+        }
     ];
 
     const [clientes, setClientes] = useState([])
