@@ -52,7 +52,7 @@ export default function LoginScreen() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8080/apigps/api/login.php', {
+    axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'login.php', {
       email: values.email,
       clave: values.clave
     })
@@ -70,6 +70,13 @@ export default function LoginScreen() {
             nombreU: res.data.nombreU,
             logged: true
           })
+          /* guardar en localStorage */
+          localStorage.setItem('auth', JSON.stringify({
+            email: res.data.email,
+            cUsuario: res.data.cUsuario,
+            nombreU: res.data.nombreU,
+            logged: true
+          }));
         }
       })
   }
