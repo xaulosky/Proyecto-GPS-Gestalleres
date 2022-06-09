@@ -7,6 +7,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import CrearInsumo from './CrearInsumo';
+import EditarInsumo from './EditarInsumo';
+import EliminarInsumo from './EliminarInsumo';
 
 const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
@@ -14,6 +16,15 @@ const paginationComponentOptions = {
   selectAllRowsItem: true,
   selectAllRowsItemText: 'Todos',
 };
+
+function editarInsumo(row) {
+  EditarInsumo(row);
+}
+
+function eliminarInsumo(row) {
+  console.log(row);
+}
+
 
 const columna = [
   {
@@ -37,16 +48,16 @@ const columna = [
     width: '150px',
   },
   {
-    name: 'EDITAR',
-    cell: (row) => <Button variant="contained" color="primary" endIcon={<EditIcon />} raised primary onClick={() => { console.log(row) }} >Editar</Button>,
+    name: 'Editar',
+    cell: (row) => <Button variant="contained" color="primary" endIcon={<EditIcon />} raised primary onClick={() => { editarInsumo(row)  }} >Editar</Button>,
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
     width: '150px',
   },
   {
-    name: 'ELIMINAR',
-    cell: (row) => <Button variant="contained" endIcon={<DeleteIcon />} color="primary" raised primary onClick={() => { console.log(row) }} >Eliminar</Button>,
+    name: 'Eliminar',
+    cell: (row) => <Button variant="contained" endIcon={<DeleteIcon />} color="primary" raised primary onClick={() => { eliminarInsumo(row) }} >Eliminar</Button>,
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
@@ -71,7 +82,7 @@ const ListaInsumo = () => {
 
   return (
     <>
-      <Grid align='right' xs={12} >
+      <Grid item align='right' xs={12} >
         <CrearInsumo obtenerInsumos={obtenerInsumos} />
       </Grid>
       <DataTable
