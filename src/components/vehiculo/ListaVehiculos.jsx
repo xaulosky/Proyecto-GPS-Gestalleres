@@ -37,7 +37,7 @@ const columns = [
     },
     {
         name: 'Tipo Carroceria',
-        selector: row => row.cTipoAseguradora,
+        selector: row => row.tipoAseguradora,
         sortable: true
     }
 ];
