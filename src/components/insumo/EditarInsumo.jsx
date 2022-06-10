@@ -1,7 +1,8 @@
-import { Box, Button, Grid, Modal, TextField, Typography } from '@mui/material'
 import React from 'react'
-import InventoryIcon from '@mui/icons-material/Inventory';
-import axios from 'axios';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Modal from '@mui/material/Modal';
 
 const style = {
 
@@ -16,49 +17,22 @@ const style = {
     p: 4,
 };
 
-const CrearInsumo = ({ obtenerInsumos }) => {
+const EditarInsumo = (row) => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
-    const [data, setData] = React.useState({
-        nombreInsumo: '',
-        cantidad: '',
-        costo: '',
-        estado: 'activo',
-    });
-
-    const submit = (e) => {
-        axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
-            nombreInsumo: data.nombreInsumo,
-            cantidad: data.cantidad,
-            costo: data.costo,
-            estado: 'activo'
-        })
-            .then(respuesta => {
-                obtenerInsumos()
-                handleClose();
-            })
-    }
-
-    function handle(e) {
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value;
-        setData(newdata);
-        console.log(newdata);
-    }
-
+    
     return (
         <>
             <Button onClick={handleOpen}
                 variant="contained"
                 color="primary"
                 type={'submit'}
-                name={'crear'}
+                name={'actualizar'}
                 endIcon={<InventoryIcon />}
             >
-                Agregar Insumo
+                Actualizar Insumo
             </Button>
             <Modal
                 open={open}
@@ -68,7 +42,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
-                        AGREGAR INSUMO
+                        ACTUALIZAR INSUMO
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                         <TextField fullWidth
@@ -78,7 +52,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            onChange={(e) => handle(e)}
+                            //onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
@@ -87,7 +61,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'cantidad'}
-                            onChange={(e) => handle(e)}
+                            //onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
@@ -96,17 +70,17 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'costo'}
-                            onChange={(e) => handle(e)}
+                            //onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
                             <Button
                                 onClick={submit}
                                 variant="contained"
                                 color="primary"
-                                name={'crear'}
+                                name={'actualizar'}
 
                             >
-                                Aceptar
+                                Actualizar
                             </Button>
                             <Button
                                 onClick={handleClose}
@@ -121,7 +95,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                 </Box>
             </Modal>
         </>
-    );
+    )
 }
 
-export default CrearInsumo
+export default EditarInsumo
