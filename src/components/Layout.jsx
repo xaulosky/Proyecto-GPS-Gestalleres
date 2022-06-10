@@ -17,7 +17,8 @@ const Layout = () => {
             <Grid item md={2} >
                 <Card style={{
                     margin: "10px",
-                    borderRadius: "10px"
+                    borderRadius: "10px",
+                    textAlign: "center"
                 }}>
                     <SideBar />
                 </Card>

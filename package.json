@@ -2,6 +2,7 @@
   "name": "proyectogps",
   "private": true,
   "version": "0.0.0",
+  "homepage": "http://146.83.194.142:1075/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -19,7 +20,8 @@
     "react-data-table-component": "^7.5.2",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.3.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "sweetalert2": "^11.4.17"
   },
   "devDependencies": {
     "@types/react": "^18.0.0",
