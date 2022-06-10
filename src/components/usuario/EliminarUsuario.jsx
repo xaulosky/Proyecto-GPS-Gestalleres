@@ -36,23 +36,21 @@ const EliminarUsuario = ({row}) => {
  
     return (
       <div>
-          <Grid>
+          
           <Button
                    sx={{
                       '& > :not(style)': {
-                        m: -0.05,
-                        py: 1.5
+                        py: 1.5,
+                        
                       },
                     }}
-                  variant = "outlined"
                   color = 'error'
-                  size = "small"
                   onClick={handleOpen}
                   endIcon={<DeleteIcon />}
-              >
-                  eliminar
-          </Button>
-          </Grid>
+                  title = 'Eliminar Usuario'
+              />
+          
+          
                   
           <Dialog
               open={open}

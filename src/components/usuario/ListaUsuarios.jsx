@@ -5,38 +5,13 @@ import { Table, TableBody, TableCell,
     DialogContentText, DialogTitle, Slide, 
     FormControl, FormLabel, FormGroup, 
     FormHelperText, TextField, Grid, Divider, 
-    MenuItem, InputLabel, Select, Modal, Box, makeStyles } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit';
+    MenuItem, InputLabel, Select, Modal, Box, makeStyles, Stack } from '@mui/material'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import AgregarUsuarios from './AgregarUsuarios'
 import EliminarUsuario from './EliminarUsuario';
-
-function btnEditar(row){
-    return(
-        <div>
-             <Grid>
-        <Button
-                 sx={{
-                    '& > :not(style)': {
-                      mx: 0.8,
-                      py: 1.5
-                    },
-                  }}
-                variant = "outlined"
-                color = 'primary'
-                size = "small"
-               
-                endIcon={<EditIcon />}
-            >
-                editar
-        </Button>
-        </Grid>
-            
-        </div>
-    )
-}
+import EditarUsuario from './EditarUsuario'
 
 function rol(row){
     if(row.cRolU == 1){
@@ -70,29 +45,31 @@ const ListaUsuarios = () => {
         {
             name: 'Nombre',
             selector: row => row.nombreU,
-            grow : 1,
+            grow : 1.3,
         },
         {
             name: 'Email',
             selector: row => row.email,
-            grow : 1,
+            grow : 1.3,
         },
         {
             name: 'Rol',
             cell: (row) =>
             rol(row),
+            grow : 0.8,
            
         },
+        
         {	
-            cell: (row) => 
-            btnEditar(row),
-            ignoreRowClick: true,
-            allowOverflow: true,
-            button: true,           
-        },
-        {			
-            cell: (row) => 
-            <EliminarUsuario row={row}/>,
+            name: 'Acciones',		
+            cell: (row) => (
+                <Stack direction="row" sx ={{xs:5}}>
+                    <EditarUsuario row={row}/>
+                    <EliminarUsuario row={row}/>
+                    <p></p>
+                </Stack>
+            ),
+            grow:1,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
@@ -120,7 +97,7 @@ const ListaUsuarios = () => {
         data = {usuarios}
         direction="auto"
         fixedHeader
-        fixedHeaderScrollHeight="300px"
+        fixedHeaderScrollHeight="600px"
         highlightOnHover
         noContextMenu
         pagination
