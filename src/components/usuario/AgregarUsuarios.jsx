@@ -70,7 +70,7 @@ const AgregarUsuarios = () => {
 
         <Button
             onClick={ handleOpen}
-            variant="outlined" 
+            variant="contained" 
             endIcon={<PersonAddAltIcon fontSize='small'/>}
             size = 'medium'
         >
@@ -163,16 +163,16 @@ const AgregarUsuarios = () => {
                     />
                     
                     
-                    <Grid  sx={{mx:-3, my:1}} container justifyContent="flex-end">
+                    <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
                     <Button  
-                        variant ='outlined'
+                        variant ='contained'
                         type='submit'
                         size = 'medium'
                     >
                         Aceptar
                     </Button>
                     <Button 
-                        variant ='outlined' 
+                        variant ='contained' 
                         onClick={handleClose}
                         color = 'error'
                         size = 'medium'
@@ -180,7 +180,7 @@ const AgregarUsuarios = () => {
                     >
                         Cancelar
                     </Button>
-                    </Grid>
+                    </Stack >
                     
                 </Box>
             </Box>

@@ -63,16 +63,16 @@ const ListaUsuarios = () => {
         {	
             name: 'Acciones',		
             cell: (row) => (
-                <Stack direction="row" sx ={{xs:5}}>
+                <Stack direction="row" spacing={1} justifyContent = 'flex-start' >
                     <EditarUsuario row={row}/>
                     <EliminarUsuario row={row}/>
                     <p></p>
                 </Stack>
             ),
-            grow:1,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
+            grow : 2,
             
         },
     ];
