@@ -17,13 +17,15 @@ const SideBar = () => {
     return (
         <Box component="nav" className='bg-gradient-primary sidebar'>
             <Grid container>
-                <Grid item >
+                <Grid item fullWidth>
                     <Box textAlign={'center'} p={2} style={{
                         fontSize: '1.5rem',
                         fontWeight: 'bold',
-                        color: '#fff'
+                        color: '#fff',
+                        textAlign: 'center',
+                        width: '100%',
                     }}>
-                        GES-Talleres
+                        <span text-align="center">GES-Talleres</span>
                     </Box>
                 </Grid>
             </Grid>

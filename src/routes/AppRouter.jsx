@@ -16,16 +16,14 @@ const AppRouter = () => {
         return JSON.parse(localStorage.getItem('user') || { logged: false })
     }
 
-
     return (
-        <BrowserRouter>
+        <BrowserRouter >
             <Routes>
                 <Route path="/login" element={
                     <PublicRoutes>
                         <LoginScreen />
                     </PublicRoutes>
                 } />
-
                 <Route path="/*" element={
                     <PrivateRoutes>
                         <DashboardRoutes />
