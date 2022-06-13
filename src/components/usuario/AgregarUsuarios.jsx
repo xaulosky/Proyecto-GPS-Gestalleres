@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Alert , Button,Box , MenuItem, Modal,Stack ,TextField, Typography} from "@mui/material";
+import { Alert ,Autocomplete,InputLabel, Button,Box , MenuItem, Modal,Stack ,Select,TextField, Typography, Grid, FormControl, FormLabel, FormHelperText} from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
 
@@ -8,19 +8,19 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 800,
+    width: 400,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
     p: 4,
   };
-  const currencies = [
+  const opciones = [
     {
-      value: '2',
+      value: 2,
       label: 'Secretaria',
     },
-    {
-      value: '3',
+    {  
+      value: 3,
       label: 'Mecanico',
     },
   ];
@@ -30,19 +30,26 @@ const AgregarUsuarios = () => {
   const [open, setOpen]  = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  
-    const url = ""
+
     const[data,setData] = useState({
         
         nombreU: "",
         clave: "",
         email: "",
+        cTaller: "",
         cRolU: "",
-        cTaller: ""
     })
+    
+        function handle(e){
+            
+            const newdata={...data}
+            newdata[e.target.name]= e.target.value
+            setData(newdata)
+            console.log(newdata)
+        }
 
     const submit= (e) =>{
-        axios.post('http://localhost/apigps/api/usuario.php',{
+        axios.post(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
             
             email: data.email ,
             clave: data.clave  ,
@@ -55,20 +62,14 @@ const AgregarUsuarios = () => {
         })
     }
 
-    function handle(e){
-        const newdata={...data}
-        newdata[e.target.id]= e.target.value
-        setData(newdata)
-        console.log(newdata)
-    }
-
   return (
     <div>
 
         <Button
             onClick={ handleOpen}
             variant="outlined" 
-            endIcon={<PersonAddAltIcon />}
+            endIcon={<PersonAddAltIcon fontSize='small'/>}
+            size = 'medium'
         >
             Agregar
         </Button>
@@ -87,46 +88,97 @@ const AgregarUsuarios = () => {
                 <Box
                     component="form"
                     sx={{
-                        '& > :not(style)': { m: 2, width: '40ch' },
+                        '& .MuiTextField-root': { m: 2, width: '40ch' },
                     }}
-                    noValidat
+                    noValidate
                     autoComplete="off"
                     onSubmit={(e) => submit(e)}
                 >
-                    
-                    
-                    <TextField id="nombreU" type='text' value={data.nombreU} label="Nombre" variant="outlined" onChange={(e)=>handle(e)} />
-                    <TextField id="clave" type= 'text' value={data.clave} label="Contraseña" variant="outlined" onChange={(e)=>handle(e)} />
-                    <TextField id="email" type = 'email' value={data.email} label="Email" variant="outlined" onChange={(e)=>handle(e)} />
+                    <div>
                     <TextField 
-                        id="cRolU" 
-                        type = 'number' 
-                        value={data.cRolU} 
-                        label="Rol" 
+                        id="nombreU" 
+                        type='text' 
+                        name = 'nombreU'
+                        value={data.nombreU} 
+                        label="Nombre" 
                         variant="outlined" 
-                        onChange={(e)=>handle(e)}
-                        
-                    >
-                        {currencies.map((option) => (
-                        <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                        </MenuItem>
-                        ))}
-                    </TextField>
-                    <TextField id="cTaller" type = 'number' value={data.cTaller} label="Taller" variant="outlined" onChange={(e)=>handle(e)} />
-            
+                        multiline
+                        placeholder = "Nombre"
+                        onChange={(e)=>handle(e)} />
+                    <TextField 
+                        id="clave" 
+                        name = 'clave' 
+                        type= 'text' 
+                        value={data.clave} 
+                        label="Contraseña" 
+                        variant="outlined" 
+                        multiline
+                        placeholder = "Contraseña"
+                        onChange={(e)=>handle(e)} />
+                    </div>
+                    <div>
+                    <TextField 
+                        id="email" 
+                        name = 'email'
+                        type = 'email' 
+                        value={data.email} 
+                        label="Email" 
+                        fullWidth
+                        variant="outlined" 
+                        onChange={(e)=>handle(e)} />
+                    </div>
+                    <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label" sx={{mx:2}}>Rol</InputLabel>
+                    <Grid sx={{mx:2, width: 360}} >
+                    <Select
+                        id='cRolU'
+                        value={data.cRolU}
+                        name='cRolU'
+                        fullWidth
+                        onChange={handle}
+                        label = 'Rol'
+                    >  
+                     
+                        {opciones.map(opcion => (
+                        <MenuItem key={opcion.value} value={opcion.value}>
+                        {opcion.label}
+                    </MenuItem>
+                    ))}                
+                    </Select>    
+                    </Grid>
+                    </FormControl>
+                    
+                          
+                    <TextField 
+                        id="cTaller"
+                        name = 'cTaller'
+                        type = 'number' 
+                        value={data.cTaller} 
+                        label="Taller" 
+                        variant="outlined" 
+                        onChange={(e)=>handle(e)} 
+                    />
+                    
+                    
+                    <Grid  sx={{mx:-3, my:1}} container justifyContent="flex-end">
                     <Button  
-                        variant ='contained'
+                        variant ='outlined'
                         type='submit'
+                        size = 'medium'
                     >
                         Aceptar
                     </Button>
                     <Button 
-                        variant ='contained'
+                        variant ='outlined' 
                         onClick={handleClose}
+                        color = 'error'
+                        size = 'medium'
+                        
                     >
                         Cancelar
                     </Button>
+                    </Grid>
+                    
                 </Box>
             </Box>
             
@@ -139,4 +191,3 @@ const AgregarUsuarios = () => {
 
 export default AgregarUsuarios
 
-//<TextField id="cUsuario" type='number' value={data.cUsuario} label="Id" variant="standard" onChange={(e)=>handle(e)} />
