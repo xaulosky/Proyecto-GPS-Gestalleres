@@ -26,7 +26,6 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         nombreInsumo: '',
         cantidad: '',
         costo: '',
-        estado: 'activo',
     });
 
     const submit = (e) => {
@@ -34,7 +33,6 @@ const CrearInsumo = ({ obtenerInsumos }) => {
             nombreInsumo: data.nombreInsumo,
             cantidad: data.cantidad,
             costo: data.costo,
-            estado: 'activo'
         })
             .then(respuesta => {
                 obtenerInsumos()

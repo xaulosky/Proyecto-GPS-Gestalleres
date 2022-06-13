@@ -18,20 +18,20 @@ const paginationComponentOptions = {
 };
 
 function editarInsumo(row) {
-  EditarInsumo(row);
+  EditarInsumo({ row });
 }
 
 function eliminarInsumo(row) {
-  console.log(row);
+  EliminarInsumo({ row });
 }
 
 
 const columna = [
-  {
+  /* {
     name: 'ID',
     selector: row => row.cInsumo,
     width: '100px',
-  },
+  }, */
   {
     name: 'Nombre de insumo',
     selector: row => row.nombreInsumo,
@@ -40,16 +40,16 @@ const columna = [
   {
     name: 'Cantidad',
     selector: row => row.cantidad,
-    width: '150px',
+    width: '200px',
   },
   {
     name: 'Valor',
     selector: row => row.costo,
-    width: '150px',
+    width: '200px',
   },
   {
     name: 'Editar',
-    cell: (row) => <Button variant="contained" color="primary" endIcon={<EditIcon />} raised primary onClick={() => { editarInsumo(row)  }} >Editar</Button>,
+    cell: (row) => <Button variant="contained" color="primary" endIcon={<EditIcon />} raised primary onClick={() => { editarInsumo(row) }} ></Button>,
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
@@ -57,7 +57,7 @@ const columna = [
   },
   {
     name: 'Eliminar',
-    cell: (row) => <Button variant="contained" endIcon={<DeleteIcon />} color="primary" raised primary onClick={() => { eliminarInsumo(row) }} >Eliminar</Button>,
+    cell: (row) => <Button variant="contained" endIcon={<DeleteIcon />} color="primary" raised primary onClick={() => { eliminarInsumo(row) }} ></Button>,
     ignoreRowClick: true,
     allowOverflow: true,
     button: true,
