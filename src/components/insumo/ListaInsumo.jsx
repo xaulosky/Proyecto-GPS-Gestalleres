@@ -15,7 +15,7 @@ const paginationComponentOptions = {
   rangeSeparatorText: 'de',
   selectAllRowsItem: true,
   selectAllRowsItemText: 'Todos',
-};
+}; 
 
 function editarInsumo(row) {
   EditarInsumo({ row });
@@ -35,7 +35,6 @@ const columna = [
   {
     name: 'Nombre de insumo',
     selector: row => row.nombreInsumo,
-    width: '500px',
   },
   {
     name: 'Cantidad',
@@ -72,6 +71,7 @@ const ListaInsumo = () => {
   const obtenerInsumos = () => {
     axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php')
       .then(respuesta => {
+        console.log(respuesta.data);
         setInsumos(respuesta.data);
       })
   }
@@ -108,3 +108,4 @@ const ListaInsumo = () => {
 }
 
 export default ListaInsumo
+/* "$"+ */
