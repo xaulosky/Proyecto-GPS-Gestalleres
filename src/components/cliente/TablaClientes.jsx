@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
 import { Filter } from '@mui/icons-material';
-import { Button, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import CrearCliente from './CrearCliente';
+import CloseIcon from '@mui/icons-material/Close';
+import EditarCliente from './EditarCliente';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -16,12 +18,20 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
         <TextField
             id="search"
             type="text"
-            placeholder="Filter by name"
+            placeholder="Filtrar por nombre"
             aria-label="Search input"
             value={filterText}
             onChange={onFilter}
+            InputProps={{
+                endAdornment: (
+                    <InputAdornment position="end">
+                        <IconButton onClick={onClear}>
+                            <CloseIcon />
+                        </IconButton>
+                    </InputAdornment>
+                ),
+            }}
         />
-        <button onClick={onClear}>Clear</button>
     </div>
 );
 
@@ -49,11 +59,7 @@ const TablaClientes = () => {
             name: 'Dirección',
             selector: row => row.direccionC,
             sortable: true
-        }, {
-            name: 'Estado',
-            selector: row => row.estadoC,
-            sortable: true
-        },
+        }, 
         {
             name: 'Comuna',
             selector: row => row.nombreCo,
@@ -62,7 +68,7 @@ const TablaClientes = () => {
         /* columna boton */
         {
             name: 'Acciones',
-            cell: row => <Button>Eliminar</Button>,
+            cell: row => <EditarCliente getClientes={getClientes} row={row.cCliente} />,
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,

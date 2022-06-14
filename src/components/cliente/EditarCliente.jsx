@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import EditIcon from '@mui/icons-material/Edit';
 
 const style = {
   position: "absolute",
@@ -27,7 +27,7 @@ const style = {
   p: 4,
 };
 
-const CrearCliente = ({ getClientes }) => {
+const EditarCliente = ({getClientes},{id}) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -38,19 +38,21 @@ const CrearCliente = ({ getClientes }) => {
     nombreC: "",
     apellidoC: "",
     direccionC: "",
+    estadoC: "",
     cComuna: "",
+    cCliente: id,
   });
   const onChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
-  };
+  }
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(form);
     axios
-      .post(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
+      .put(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
       .then((res) => {
         setForm({
           rutC: "",
@@ -58,33 +60,33 @@ const CrearCliente = ({ getClientes }) => {
           nombreC: "",
           apellidoC: "",
           direccionC: "",
+          estadoC: "",
           cComuna: "",
+          cCliente: id,
         });
-        console.log(res);
-        getClientes();
-      })
+      }
+      )
       .catch((err) => {
         console.log(err);
-      });
-      handleClose();
-  };
-
+      }
+      )
+  }
   const [comunas, setComunas] = useState([]);
   const getComunas = async () => {
     await axios
       .get(import.meta.env.VITE_APP_BACKEND_URL + "comuna.php")
       .then((res) => {
-        setComunas(res.data);
-        console.log(res.data);
+        setComunas(res.data)
       })
       .catch((err) => {
         console.log(err);
       });
   };
-  useEffect(() => {
-    getComunas();
-  }, []);
 
+  useEffect(() => {
+    getComunas(); 
+  }
+  , [])
   return (
     <>
       <Button
@@ -93,9 +95,9 @@ const CrearCliente = ({ getClientes }) => {
         color="primary"
         type={"submit"}
         name={"crear"}
-        endIcon={<PersonAddAltIcon />}
+        endIcon={<EditIcon />}	
       >
-        Agregar Cliente
+        Editar
       </Button>
       <Modal
         open={open}
@@ -153,6 +155,20 @@ const CrearCliente = ({ getClientes }) => {
               </FormControl>
               <FormControl fullWidth>
                 {/* select */}
+                <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  name="estadoC"
+                  value={form.estadoC}
+                  defaultValue={form.estadoC}
+                  onChange={onChange}
+                >
+                  <MenuItem value={1}>Activo</MenuItem>
+                  <MenuItem value={2}>Inactivo</MenuItem>
+                </Select>
+              </FormControl>
+              <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Comuna</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
@@ -171,7 +187,7 @@ const CrearCliente = ({ getClientes }) => {
               </FormControl>
               <FormControl fullWidth>
                 <Button variant="contained" color="primary" type="submit">
-                  Crear Cliente
+                  Editar
                 </Button>
               </FormControl>
             </Stack>
@@ -182,4 +198,4 @@ const CrearCliente = ({ getClientes }) => {
   );
 };
 
-export default CrearCliente;
+export default EditarCliente;
