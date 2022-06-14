@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
+import { Button } from '@mui/material';
+import CrearTrabajo from './CrearTrabajo';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -52,26 +54,26 @@ const TablaTrabajos = () => {
             sortable: true
         },
         {
-            name: 'Orden de Trabajo',
-            selector: row => row.cOrdenTrabajo,
-            sortable: true
-        },
-        {
-            name: 'Tipo de Trabajo',
-            selector: row => row.cTipoT,
-            sortable: true
-        },
-        {
-            name: 'Empleado',
-            selector: row => row.cEmpleado,
-            sortable: true
-        },
-        {
-            name: 'Tipo de Estado',
-            selector: row => row.cTipoE,
-            sortable: true
+            name: 'Acciones',
+            cell: row => <div>
+                <Button onClick={() => console.log(row)} >Editar</Button>
+                <Button onClick={() => eliminarTrabajo(row)}>Eliminar</Button>
+            </div>
+
         }
     ];
+    const eliminarTrabajo = (row) => {
+        console.log(row)
+        axios.delete(import.meta.env.VITE_APP_BACKEND_URL+'trabajo.php?cTrabajo='+row.cTrabajo)
+            .then(respuesta => {
+                console.log(respuesta.data)
+                obtenerTrabajos();
+            }
+            )
+
+
+    }
+
 
   const [trabajos, setTrabajos] = useState([]);
 
@@ -86,10 +88,11 @@ const TablaTrabajos = () => {
             );
     }
     useEffect(() => {
-        obtenerTrabajos();
+        obtenerTrabajos();        
     }, [])
 
     return (
+        <>
         <DataTable
             title="Lista de trabajos"
             columns={columns}
@@ -108,6 +111,11 @@ const TablaTrabajos = () => {
             paginationComponentOptions={paginationComponentOptions}
 
         />
+         <CrearTrabajo
+        obtenerTrabajos={obtenerTrabajos}   
+        />
+        </>
+        
         
 
        

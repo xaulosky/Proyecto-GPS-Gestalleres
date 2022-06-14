@@ -3,7 +3,7 @@ import { useState } from 'react'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
 
-const CrearTrabajo = () => {
+const CrearTrabajo = ({obtenerTrabajos}) => {
   const[open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -37,6 +37,7 @@ const submit= (e) =>{
       cTipoE: data.cTipoE
   })
   .then(respuesta=>{
+    obtenerTrabajos()
     setOpen(false)
       console.log(respuesta.data)
   })
@@ -50,7 +51,7 @@ function handle(e){
 
     return (
         <>
-        <button endIcon={<PersonAddAltIcon />} onClick={() => setOpen(true)}>Crear Trabajo </button >
+        <Button variant="contained" endIcon={<PersonAddAltIcon />} onClick={() => setOpen(true)}>Crear Trabajo </Button >
         <Dialog
             open={open}
             onClose={() => setOpen(false)}
