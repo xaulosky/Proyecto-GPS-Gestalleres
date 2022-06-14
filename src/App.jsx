@@ -6,6 +6,7 @@ import Layout from './components/Layout';
 import UsuarioScreen from './components/usuario/UsuarioScreen';
 import { AuthProvider } from './context/AuthContex';
 import TrabajoScreen from './components/trabajo/TrabajoScreen';
+import EmpleadoScreen from './components/empleado/EmpleadoScreen';
 
 function App() {
 
@@ -19,6 +20,9 @@ function App() {
             <Route path="/vehiculo" element={<VehiculoScreen />} />
             <Route path="/usuarios" element={<UsuarioScreen />} />
             <Route path="/trabajo" element={<TrabajoScreen />} />
+            <Route path="/empleado" element={<EmpleadoScreen />} />
+
+            
           </Route>
         </Routes>
       </BrowserRouter>
