@@ -1,7 +1,8 @@
 import { Box, Button, Grid, Modal, TextField, Typography } from '@mui/material'
-import React from 'react'
+import React, { useContext } from 'react'
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
+import AuthContext from '../../context/AuthContext'
 
 const style = {
 
@@ -17,6 +18,10 @@ const style = {
 };
 
 const CrearInsumo = ({ obtenerInsumos }) => {
+
+    const { auth } = useContext(AuthContext)
+
+    console.log(auth)
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
