@@ -7,7 +7,6 @@ import { Grid, Stack } from '@mui/material';
 import CrearInsumo from './CrearInsumo';
 import EditarInsumo from './EditarInsumo';
 import EliminarInsumo from './EliminarInsumo';
-import HistorialInsumo from './HistorialInsumo';
 
 const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
@@ -52,7 +51,6 @@ const ListaInsumo = () => {
               row={row} 
               obtenerInsumos={obtenerInsumos}
             />
-            <HistorialInsumo row= {row}/>
             <EliminarInsumo
               row={row}
               obtenerInsumos={obtenerInsumos}
