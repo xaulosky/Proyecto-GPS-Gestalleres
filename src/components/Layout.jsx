@@ -11,14 +11,17 @@ const Layout = () => {
     return (
         /* contenedor */
         <Grid container style={{
-            backgroundColor: "#f7f7f7"
+            backgroundColor: "#f7f7f7",
+            position: "relative",
         }}>
             {/* sidebar */}
             <Grid item md={2} >
                 <Card style={{
                     margin: "10px",
                     borderRadius: "10px",
-                    textAlign: "center"
+                    textAlign: "center",
+                    position: "sticky",
+                    top: 10,
                 }}>
                     <SideBar />
                 </Card>
@@ -26,15 +29,18 @@ const Layout = () => {
             <Grid item md={10}>
                 <Card style={{
                     margin: "10px",
-                    borderRadius: "10px"
+                    borderRadius: "10px",
+                    position: "sticky",
+                    top: 10,
+                    zIndex: 9,
                 }}>
                     <NavBar />
                 </ Card>
                 {/* contenido */}
-
                 <Card style={{
                     margin: "10px",
-                    borderRadius: "10px"
+                    borderRadius: "10px",
+
                 }}>
                     <Box component="main" p={2}>
                         <Outlet />
