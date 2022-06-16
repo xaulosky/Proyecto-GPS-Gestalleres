@@ -4,21 +4,15 @@ const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
 
-    const [auth, setAuth] = useState({ logged: false });
+    const login = JSON.parse(localStorage.getItem('auth')) || { logged: false };
 
-    /* localStorage login */
-    useEffect(() => {
-        const auth = JSON.parse(localStorage.getItem('auth'));
-        if (auth) {
-            setAuth(auth);
-        }
-    }, []);
-
+    const [auth, setAuth] = useState(login);
 
     const data = {
         auth,
         setAuth
     }
+
     return <AuthContext.Provider value={data}>{children}</AuthContext.Provider>
 }
 

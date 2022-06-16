@@ -6,6 +6,7 @@ import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import HomeIcon from '@mui/icons-material/Home';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
+import PostAddIcon from '@mui/icons-material/PostAdd';
 
 import React from 'react'
 import { NavLink } from 'react-router-dom'
@@ -17,13 +18,15 @@ const SideBar = () => {
     return (
         <Box component="nav" className='bg-gradient-primary sidebar'>
             <Grid container>
-                <Grid item >
+                <Grid item>
                     <Box textAlign={'center'} p={2} style={{
                         fontSize: '1.5rem',
                         fontWeight: 'bold',
-                        color: '#fff'
+                        color: '#fff',
+                        textAlign: 'center',
+                        width: '100%',
                     }}>
-                        GES-Talleres
+                        <span text-align="center">GES-Talleres</span>
                     </Box>
                 </Grid>
             </Grid>
@@ -34,6 +37,14 @@ const SideBar = () => {
                             <HomeIcon />
                         </ListItemIcon>
                         <ListItemText primary="Inicio" />
+                    </ListItem>
+                </NavLink>
+                <NavLink to="/ficha" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")} >
+                    <ListItem button>
+                        <ListItemIcon>
+                            <PostAddIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Ficha" />
                     </ListItem>
                 </NavLink>
                 <NavLink to="/cliente" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")} >

@@ -9,23 +9,14 @@ import AuthContext from '../context/AuthContext'
 
 const AppRouter = () => {
 
-    /* use AuthContext */
-    const { auth, setAuth } = useContext(AuthContext)
-
-    const init = () => {
-        return JSON.parse(localStorage.getItem('user') || { logged: false })
-    }
-
-
     return (
-        <BrowserRouter>
+        <BrowserRouter >
             <Routes>
                 <Route path="/login" element={
                     <PublicRoutes>
                         <LoginScreen />
                     </PublicRoutes>
                 } />
-
                 <Route path="/*" element={
                     <PrivateRoutes>
                         <DashboardRoutes />
