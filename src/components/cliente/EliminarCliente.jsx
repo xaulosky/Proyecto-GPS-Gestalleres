@@ -1,37 +1,83 @@
-import React from 'react'
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+import axios from "axios";
+import React, { useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const EliminarCliente = () => {
+const EliminarCliente = ({ getClientes, row }) => {
   /* delete cliente */
-  const [clientes, setClientes] = useState([])
+  const [open, setOpen] = useState(false);
 
-  const getClientes = async () => {
-    await axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php')
-      .then(res => {
-        setClientes(res.data)
-      }
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const deleteCliente = async (row) => {
+    console.log(row.cCliente);
+    await axios
+      .delete(
+        import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", {
+          data: {
+            cCliente: row.cCliente,
+          },
+        }
       )
-  }
-
-  const deleteCliente = async (id) => {
-    await axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php?id=' + id)
-      .then(res => {
+      .then((res) => {
+        handleClose();
         console.log(res);
         getClientes();
-      }
-      )
-      .catch(err => {
+      })
+      .catch((err) => {
         console.log(err);
-      }
-      )
-  }
-
-  useEffect(() => {
-    getClientes();
-  }, [])
+      });
+  };
 
   return (
-    <div>EliminarCliente</div>
-  )
-}
+    <div>
+      <Button
+        sx={{
+          "& > :not(style)": {
+            m: -0.05,
+            py: 1.5,
+          },
+        }}
+        color="error"
+        size="small"
+        onClick={handleOpen}
+        endIcon={<DeleteIcon />}
+        title="Eliminar Cliente"
+      />
 
-export default EliminarCliente
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Eliminar cliente "}</DialogTitle>
+
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            
+              ¿Esta seguro de eliminar a{" "}
+              <span style={{ color: "black" }}>{row.nombreC} </span> ?
+            
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => deleteCliente(row)} autoFocus>
+            Aceptar
+          </Button>
+          <Button onClick={handleClose}>Cancelar</Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+};
+
+export default EliminarCliente;

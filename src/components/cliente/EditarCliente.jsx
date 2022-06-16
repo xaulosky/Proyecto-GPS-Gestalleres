@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import EditIcon from '@mui/icons-material/Edit';
+import EditIcon from "@mui/icons-material/Edit";
 
 const style = {
   position: "absolute",
@@ -27,27 +27,26 @@ const style = {
   p: 4,
 };
 
-const EditarCliente = ({getClientes},{id}) => {
+const EditarCliente = ({ getClientes, row }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [form, setForm] = useState({
-    rutC: "",
-    emailC: "",
-    nombreC: "",
-    apellidoC: "",
-    direccionC: "",
-    estadoC: "",
-    cComuna: "",
-    cCliente: id,
+    rutC: row.rutC,
+    emailC: row.emailC,
+    nombreC: row.nombreC,
+    apellidoC: row.apellidoC,
+    direccionC: row.direccionC,
+    cComuna: row.cComuna,
+    cCliente: row.cCliente,
   });
   const onChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
-  }
+  };
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(form);
@@ -60,45 +59,47 @@ const EditarCliente = ({getClientes},{id}) => {
           nombreC: "",
           apellidoC: "",
           direccionC: "",
-          estadoC: "",
           cComuna: "",
-          cCliente: id,
+          cCliente: "",
         });
-      }
-      )
-      .catch((err) => {
-        console.log(err);
-      }
-      )
-  }
-  const [comunas, setComunas] = useState([]);
-  const getComunas = async () => {
-    await axios
-      .get(import.meta.env.VITE_APP_BACKEND_URL + "comuna.php")
-      .then((res) => {
-        setComunas(res.data)
+        getClientes();
       })
       .catch((err) => {
         console.log(err);
       });
   };
+  const [comunas, setComunas] = useState([]);
+  const getComunas = async () => {
+    await axios
+      .get(import.meta.env.VITE_APP_BACKEND_URL + "comuna.php")
+      .then((res) => {
+        setComunas(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    handleClose();
+  };
 
   useEffect(() => {
-    getComunas(); 
-  }
-  , [])
+    getComunas();
+  }, []);
   return (
     <>
       <Button
+        sx={{
+          "& > :not(style)": {
+            mx: 0.8,
+            py: 1.5,
+          },
+        }}
         onClick={handleOpen}
-        variant="contained"
         color="primary"
         type={"submit"}
         name={"crear"}
-        endIcon={<EditIcon />}	
-      >
-        Editar
-      </Button>
+        size={"small"}
+        endIcon={<EditIcon />}
+      ></Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -110,7 +111,6 @@ const EditarCliente = ({getClientes},{id}) => {
             <Stack spacing={2}>
               <FormControl fullWidth>
                 <TextField
-                  id="rutC"
                   value={form.rutC}
                   label="Rut"
                   name="rutC"
@@ -119,7 +119,6 @@ const EditarCliente = ({getClientes},{id}) => {
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="emailc"
                   value={form.emailC}
                   label="Email"
                   name="emailC"
@@ -128,7 +127,6 @@ const EditarCliente = ({getClientes},{id}) => {
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="nombreC"
                   value={form.nombreC}
                   label="Nombre"
                   name="nombreC"
@@ -137,7 +135,6 @@ const EditarCliente = ({getClientes},{id}) => {
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="apellidoC"
                   value={form.apellidoC}
                   label="Apellido"
                   name="apellidoC"
@@ -146,7 +143,6 @@ const EditarCliente = ({getClientes},{id}) => {
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="direccionC"
                   value={form.direccionC}
                   label="Direccion"
                   name="direccionC"
@@ -154,27 +150,10 @@ const EditarCliente = ({getClientes},{id}) => {
                 />
               </FormControl>
               <FormControl fullWidth>
-                {/* select */}
-                <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+                <InputLabel>Comuna</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  name="estadoC"
-                  value={form.estadoC}
-                  defaultValue={form.estadoC}
-                  onChange={onChange}
-                >
-                  <MenuItem value={1}>Activo</MenuItem>
-                  <MenuItem value={2}>Inactivo</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Comuna</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
                   name="cComuna"
-                  value={form.cComuna}
+                  value={form.cComuna || ""}
                   defaultValue={form.cComuna}
                   onChange={onChange}
                 >
