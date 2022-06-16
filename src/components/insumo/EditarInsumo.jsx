@@ -21,6 +21,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
     const [open, setOpen] = React.useState(false);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -42,7 +43,6 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
             cTaller: auth.cTaller,
         })
             .then(respuesta => {
-                console.log(respuesta)
                 obtenerInsumos();
                 handleClose();
             })
@@ -78,11 +78,12 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Nombre insumo"
+                            label="Nombre del insumo"
                             margin="normal"
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
+                            inputProps={{ maxLength: 256 }}
                             value={data.nombreInsumo}
                             required
                             onChange={(e) => handle(e)}
@@ -95,6 +96,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             type={'number'}
                             name={'cantidad'}
                             value={data.cantidad}
+                            InputProps={{ inputProps: { min: 0} }}
                             required
                             onChange={(e) => handle(e)}
                         />
@@ -105,6 +107,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
+                            InputProps={{ inputProps: { min: 0} }}
                             value={data.costo}
                             required
                             onChange={(e) => handle(e)}

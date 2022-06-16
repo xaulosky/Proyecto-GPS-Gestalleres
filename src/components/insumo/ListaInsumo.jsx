@@ -8,6 +8,7 @@ import EliminarInsumo from './EliminarInsumo';
 import AuthContext from '../../context/AuthContext'
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+import HistorialInsumo from './HistorialInsumo';
 
 
 const paginationComponentOptions = {
@@ -18,10 +19,9 @@ const paginationComponentOptions = {
 };
 
 function formatoNumeros(numero) {
-
   return new Intl.NumberFormat({
     style: 'numeric',
-    minimumFractionDigits: 0
+    minimumFractionDigits: 0,
   }).format(numero);
 }
 
@@ -52,10 +52,10 @@ const ListaInsumo = () => {
   const obtenerInsumos = () => {
     axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php?cTaller=' + auth.cTaller)
       .then(respuesta => {
-        console.log(respuesta.data);
         setInsumos(respuesta.data);
       })
   }
+
   const columna = [
     {
       name: 'Nombre de insumo',
@@ -81,6 +81,10 @@ const ListaInsumo = () => {
               row={row}
               obtenerInsumos={obtenerInsumos}
             />
+            {/* <HistorialInsumo
+              codigoInsumo = {row.cInsumo}
+              obtenerInsumos={obtenerInsumos}
+            /> */}
             <EliminarInsumo
               row={row}
               obtenerInsumos={obtenerInsumos}
@@ -103,6 +107,12 @@ const ListaInsumo = () => {
     <>
       <Grid item align='right' xs={12} >
         <CrearInsumo obtenerInsumos={obtenerInsumos} />
+        <Button align='right'
+          title='Exportar Excel'
+          sx={{ ml: 3 }}
+          onClick={(e) => exportXLSX(insumos)}
+        >
+          Exportar<i className="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i></Button>
       </Grid>
       <DataTable
         title="Lista Insumos"
@@ -121,12 +131,9 @@ const ListaInsumo = () => {
         subHeaderWrap
         paginationComponentOptions={paginationComponentOptions}
       />
-      <Button title='Exportar Excel' onClick={(e) => exportXLSX(insumos)}> <i className="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i>Exportar</Button>
     </>
 
   )
 }
 
 export default ListaInsumo
-/* "$"+ */
-{/* <CSVLink data={insumos}>Download me</CSVLink>; */ }

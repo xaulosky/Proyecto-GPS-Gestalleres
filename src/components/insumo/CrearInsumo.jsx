@@ -56,7 +56,6 @@ const CrearInsumo = ({ obtenerInsumos }) => {
     return (
         <>
             <Button onClick={handleOpen}
-                variant="contained"
                 color="primary"
                 type={'submit'}
                 name={'crear'}
@@ -78,11 +77,13 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                     <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Nombre insumo"
+                            label="Nombre del insumo"
                             margin="normal"
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
+                            inputProps={{ maxLength: 256 }}
+                            required={true}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -92,7 +93,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
-                            required
+                            InputProps={{ inputProps: { min: 0} }}
+                            required ={true}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -102,7 +104,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            required
+                            required ={true}
+                            InputProps={{ inputProps: { min: 0} }}
                             onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
