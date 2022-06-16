@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Modal, TextField, Typography } from '@mui/material'
+import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material'
 import React, { useContext } from 'react'
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
@@ -21,8 +21,6 @@ const CrearInsumo = ({ obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
 
-    console.log(auth)
-
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -34,15 +32,18 @@ const CrearInsumo = ({ obtenerInsumos }) => {
     });
 
     const submit = (e) => {
+        e.preventDefault();
         axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
             nombreInsumo: data.nombreInsumo,
             cantidad: data.cantidad,
             costo: data.costo,
+            cTaller: auth.cTaller,
         })
             .then(respuesta => {
                 obtenerInsumos()
                 handleClose();
             })
+        
     }
 
     function handle(e) {
@@ -69,7 +70,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
+                <Box component='form' sx={style} onSubmit={submit} >
+
                     <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
                         AGREGAR INSUMO
                     </Typography>
@@ -88,8 +90,9 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             label="Cantidad"
                             margin="normal"
                             variant="outlined"
-                            type={'text'}
+                            type={'number'}
                             name={'cantidad'}
+                            required
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -97,28 +100,30 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             label="Valor"
                             margin="normal"
                             variant="outlined"
-                            type={'text'}
+                            type={'number'}
                             name={'costo'}
+                            required
                             onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
-                            <Button
-                                onClick={submit}
-                                variant="contained"
-                                color="primary"
-                                name={'crear'}
-
-                            >
-                                Aceptar
-                            </Button>
-                            <Button
-                                onClick={handleClose}
-                                variant="contained"
-                                color="error"
-                                name={'cancelar'}
-                            >
-                                Cancelar
-                            </Button>
+                            <DialogActions >
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    name={'crear'}
+                                    type={'submit'}
+                                >
+                                    Aceptar
+                                </Button>
+                                <Button
+                                    onClick={handleClose}
+                                    variant="contained"
+                                    color="error"
+                                    name={'cancelar'}
+                                >
+                                    Cancelar
+                                </Button>
+                            </DialogActions>
                         </Grid>
                     </Typography>
                 </Box>

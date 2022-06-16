@@ -1,8 +1,12 @@
-import { Button, Grid, Modal, Typography } from '@mui/material'
 import React from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
-import { Box } from '@mui/system';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import { DialogTitle } from '@mui/material';
 
 const style = {
     position: 'absolute',
@@ -19,7 +23,7 @@ const style = {
     pb: 3,
 };
 
-const EliminarInsumo = ({row,obtenerInsumos}) => {
+const EliminarInsumo = ({ row, obtenerInsumos }) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -50,39 +54,61 @@ const EliminarInsumo = ({row,obtenerInsumos}) => {
                 endIcon={<DeleteIcon />}
             >
             </Button>
-            <Modal variant="contained"
+            <Dialog
                 open={open}
-                onClose={handleOpen}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
             >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
-                        ¿Desea Eliminar el insumo seleccionado?
-                    </Typography>
-                    <Grid item xs={12} sm={12} style={{ height: '100px' }}>
-                        <Button
-                            onClick={submit}
-                            variant="contained"
-                            color="primary"
-                            name={'eliminar'}
+                <DialogTitle> Eliminar Insumo </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        ¿Está seguro que desea eliminar el insumo?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={submit}
+                        variant="contained"
+                        color="primary"
+                        name={'eliminar'}
 
-                        >
-                            Aceptar
-                        </Button>
-                        <Button
-                            onClick={handleClose}
-                            variant="contained"
-                            color="error"
-                            name={'cancelar'}
-                        >
-                            Cancelar
-                        </Button>
-                    </Grid >
-                </Box>
-            </Modal>
+                    >
+                        Aceptar
+                    </Button>
+                    <Button
+                        onClick={handleClose}
+                        variant="contained"
+                        color="error"
+                        name={'cancelar'}
+                    >
+                        Cancelar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
         </>
     )
 }
 
 export default EliminarInsumo
+
+/*
+    <Button
+        onClick={submit}
+        variant="contained"
+        color="primary"
+        name={'eliminar'}
+
+    >
+        Aceptar
+    </Button>
+    <Button
+        onClick={handleClose}
+        variant="contained"
+        color="error"
+        name={'cancelar'}
+    >
+        Cancelar
+    </Button> 
+*/
