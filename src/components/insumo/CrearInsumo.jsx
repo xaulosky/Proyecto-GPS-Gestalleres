@@ -72,10 +72,10 @@ const CrearInsumo = ({ obtenerInsumos }) => {
             >
                 <Box component='form' sx={style} onSubmit={submit} >
 
-                    <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
+                    <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
                         AGREGAR INSUMO
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
                         <TextField fullWidth
                             id="standard-basic"
                             label="Nombre insumo"

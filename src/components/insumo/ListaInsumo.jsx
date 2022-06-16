@@ -121,7 +121,7 @@ const ListaInsumo = () => {
         subHeaderWrap
         paginationComponentOptions={paginationComponentOptions}
       />
-      <Button title='Exportar Excel' onClick={(e) => exportXLSX(insumos)}> <i class="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i>Exportar</Button>
+      <Button title='Exportar Excel' onClick={(e) => exportXLSX(insumos)}> <i className="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i>Exportar</Button>
     </>
 
   )
