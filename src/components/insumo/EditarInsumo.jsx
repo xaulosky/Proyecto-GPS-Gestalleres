@@ -17,6 +17,7 @@ const style = {
     p: 4,
 };
 
+
 const EditarInsumo = ({ row, obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
@@ -32,7 +33,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         cInsumo: row.cInsumo,
         cTaller: auth.cTaller,
     });
-
+    
     const submit = (e) => {
         e.preventDefault();
         axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
@@ -53,6 +54,11 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         newdata[e.target.name] = e.target.value;
         setData(newdata);
         console.log(newdata);
+    }
+
+    const actualizarDatos = () => {
+        obtenerInsumos();
+
     }
 
     return (
@@ -96,7 +102,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             type={'number'}
                             name={'cantidad'}
                             value={data.cantidad}
-                            InputProps={{ inputProps: { min: 0} }}
+                            InputProps={{ inputProps: { min: 0 } }}
                             required
                             onChange={(e) => handle(e)}
                         />
@@ -107,7 +113,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            InputProps={{ inputProps: { min: 0} }}
+                            InputProps={{ inputProps: { min: 0 } }}
                             value={data.costo}
                             required
                             onChange={(e) => handle(e)}

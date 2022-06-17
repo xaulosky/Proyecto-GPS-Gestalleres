@@ -81,10 +81,10 @@ const ListaInsumo = () => {
               row={row}
               obtenerInsumos={obtenerInsumos}
             />
-            {/* <HistorialInsumo
+            <HistorialInsumo
               codigoInsumo = {row.cInsumo}
               obtenerInsumos={obtenerInsumos}
-            /> */}
+            />
             <EliminarInsumo
               row={row}
               obtenerInsumos={obtenerInsumos}
@@ -112,7 +112,7 @@ const ListaInsumo = () => {
           sx={{ ml: 3 }}
           onClick={(e) => exportXLSX(insumos)}
         >
-          Exportar<i className="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i></Button>
+          Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i> </Button>
       </Grid>
       <DataTable
         title="Lista Insumos"
