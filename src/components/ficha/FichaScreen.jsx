@@ -3,28 +3,34 @@ import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import { clearRUT, validarRUT } from 'validar-rut'
-import AuthContext from '../../context/AuthContext';
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { render } from 'react-dom';
+import { useClientes } from '../../hooks/useClientes';
+import { usePartes } from '../../hooks/usePartes';
+import useAuth from '../../hooks/useAuth';
+import AgregarCliente from './AgregarCliente';
+import AgregarVehiculo from './AgregarVehiculo';
 
 export default function FichaScreen() {
-
   /* trae al usuario loggeado */
-  const { auth } = useContext(AuthContext);
+  const { auth } = useAuth();
+  /* trae clientes */
+  const { clientes } = useClientes();
+  /* partes vehiculos */
+  const { partes } = usePartes();
 
-  const [clientes, setClientes] = useState([]);
+
+  /* guarda clientes y vehiculos */
   const [vehiculos, setVehiculos] = useState([]);
 
-  const [observaciones, setObservaciones] = useState('');
-
-  const [partesVehiculo, setPartesVehiculo] = useState([]);
   const [partesVehiculoSeleccionado, setPartesVehiculoSeleccionado] = useState([]);
 
-
+  /* guarda cliente y vehiculo seleccionado */
   const [clienteSeleccionado, setClienteSeleccionado] = useState(null);
   const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState(null);
 
+  /* guarda datos de ficha */
   const [ficha, setFicha] = useState({
     fechaIngresoFicha: new Date().toISOString().substring(0, 10),
     cTaller: auth.cTaller,
@@ -32,8 +38,10 @@ export default function FichaScreen() {
     cVehiculo: '',
     cEntrega: '',
     kilometraje: '',
+    observaciones: '',
   });
 
+  /* state cliente */
   const [cliente, setCliente] = useState({
     cCliente: '',
     nombreC: "",
@@ -42,6 +50,7 @@ export default function FichaScreen() {
     emailC: '',
   })
 
+  /* state vehiculo */
   const [vehiculo, setVehiculo] = useState({
     cVehiculo: '',
     patenteV: "",
@@ -54,65 +63,74 @@ export default function FichaScreen() {
     cCliente: "",
   })
 
+  /* valida el rut del cliente */
   const validateRUT = (rut) => {
     return validarRUT(rut);
   }
-
+  /* guarda datos del cliente */
   const handleChangeCliente = (event) => {
     setCliente({ ...cliente, [event.target.name]: event.target.value });
   }
-
+  /* guarda datos del vehiculo */
   const handleChangeVehiculo = (event) => {
     setVehiculo({ ...vehiculo, [event.target.name]: event.target.value });
   }
-
+  /* guarda datos en la ficha */
   const handleChangeFicha = (event) => {
     setFicha({ ...ficha, [event.target.name]: event.target.value });
   }
 
-  const handleChangeObservaciones = (event) => {
-    setObservaciones(event.target.value);
-  }
   /* obtener vehiculos del cliente seleccionado */
   const getVehiculos = async () => {
     const response = await axios.get(import.meta.env.VITE_APP_BACKEND_URL + "vehiculo.php?cCliente=" + clienteSeleccionado.cCliente);
     setVehiculos(response.data);
   }
 
-
-  /* incia obteniendo los clientes y partes vehiculos desde la bbdd */
-  useEffect(() => {
-    axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php')
-      .then(res => {
-        setClientes(res.data);
-      })
-      .catch(err => console.log(err));
-
-    axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'partesvehiculo.php')
-      .then(res => {
-        setPartesVehiculo(res.data);
-        console.log(res.data)
-      })
-      .catch(err => console.log(err));
-
-
-  }, [])
   /* setea vehiculos por cliente seleccionado */
   useEffect(() => {
     if (clienteSeleccionado) {
+
       getVehiculos();
+      setFicha({ ...ficha, cCliente: clienteSeleccionado.cCliente });
+      setVehiculo({ ...vehiculo, cCliente: clienteSeleccionado.cCliente });
     } else {
       setVehiculos([]);
-      setVehiculo({ ...vehiculo, cVehiculo: '', patenteV: '', modeloV: '', colorV: '', estadoRegistroTecnicaV: '', montoAseguradora: '', cAseguradora: '', cTipoCarroceria: '', cCliente: '' });
+      setVehiculo({
+        ...vehiculo,
+        cVehiculo: '',
+        patenteV: '',
+        modeloV: '',
+        colorV: '',
+        estadoRegistroTecnicaV: '',
+        montoAseguradora: '',
+        cAseguradora: '',
+        cTipoCarroceria: '',
+        cCliente: ''
+      });
+      setFicha({ ...ficha, cCliente: '' });
     }
   }, [clienteSeleccionado])
+
   /* selecciona vehiculo */
   useEffect(() => {
     if (vehiculoSeleccionado) {
       setVehiculo({ ...vehiculo, cVehiculo: vehiculoSeleccionado.cVehiculo });
+      setFicha({ ...ficha, cVehiculo: vehiculoSeleccionado.cVehiculo });
     } else {
       setVehiculos([]);
-      setVehiculo({ ...vehiculo, cVehiculo: '', patenteV: '', modeloV: '', colorV: '', estadoRegistroTecnicaV: '', montoAseguradora: '', cAseguradora: '', cTipoCarroceria: '', cCliente: '' });
+      setVehiculo({
+        ...vehiculo,
+        cVehiculo: '',
+        patenteV: '',
+        modeloV: '',
+        colorV: '',
+        estadoRegistroTecnicaV: '',
+        montoAseguradora: '',
+        cAseguradora: '',
+        cTipoCarroceria: '',
+        cCliente: ''
+      });
+      setFicha({ ...ficha, cVehiculo: '' });
       setVehiculoSeleccionado(null);
     }
   }, [vehiculoSeleccionado])
@@ -159,65 +177,7 @@ export default function FichaScreen() {
               />
 
             </Grid>
-            <Grid item md={6}>
-              <TextField
-                label="Nombre"
-                value={cliente.nombreC}
-                onChange={handleChangeCliente}
-                fullWidth
-                name='nombreC'
-                data
-                disabled={clienteSeleccionado ? true : false}
-              />
-            </Grid>
-            <Grid item md={6}>
-              <TextField
-                label="Apellido"
-                value={cliente.apellidoC}
-                fullWidth
-                onChange={handleChangeCliente}
-                name='apellidoC'
-                disabled={clienteSeleccionado ? true : false}
-
-              />
-            </Grid>
-            <Grid item md={6}>
-              <TextField
-                label="Rut"
-                value={cliente.rutC}
-                fullWidth
-                onChange={handleChangeCliente}
-                error={cliente.rutC == '' ? false : !validateRUT(cliente.rutC)}
-                name='rutC'
-                required
-                disabled={clienteSeleccionado ? true : false}
-
-              />
-            </Grid>
-            <Grid item md={6}>
-              <TextField
-                label="Email"
-                value={cliente.emailC}
-                fullWidth
-                onChange={handleChangeCliente}
-                type='email'
-                name='emailC'
-                required
-                disabled={clienteSeleccionado ? true : false}
-              />
-            </Grid>
-            <Grid item md={12}>
-              <Button
-                fullWidth
-                type='submit'
-                disabled={clienteSeleccionado ? true : false}
-                value="Guardar"
-                variant="contained"
-                color="primary"
-              >
-                Agregar Cliente
-              </Button>
-            </Grid>
+            <AgregarCliente clienteSeleccionado={clienteSeleccionado} />
           </Grid>
         </Box>
       </Grid>
@@ -244,70 +204,7 @@ export default function FichaScreen() {
               />
 
             </Grid>
-            <Grid item md={6} >
-              <TextField
-                label="Patente"
-                value={vehiculo.patenteV}
-                fullWidth
-                onChange={handleChangeVehiculo}
-                type='email'
-                name='rutC'
-                required
-                disabled={vehiculoSeleccionado ? true : false}
-
-              />
-            </Grid>
-            <Grid item md={6} >
-              <TextField
-                type={'text'}
-                label="Modelo"
-                name="modeloV"
-                variant="outlined"
-                fullWidth
-                onChange={handleChangeVehiculo}
-                value={vehiculo.modeloV}
-                disabled={vehiculoSeleccionado ? true : false}
-
-              />
-            </Grid>
-            <Grid item md={6} >
-              <TextField
-                type={'text'}
-                label="Color"
-                name="colorV"
-                variant="outlined"
-                fullWidth
-                onChange={handleChangeVehiculo}
-                value={vehiculo.colorV}
-                disabled={vehiculoSeleccionado ? true : false}
-
-              />
-            </Grid>
-            <Grid item md={6} >
-              <TextField
-                type={'text'}
-                label="Aseguradora"
-                name="cAseguradora"
-                variant="outlined"
-                fullWidth
-                onChange={handleChangeVehiculo}
-                value={vehiculo.cAseguradora}
-                disabled={vehiculoSeleccionado ? true : false}
-
-              />
-            </Grid>
-            <Grid item md={12}>
-              <Button
-                fullWidth
-                type='submit'
-                disabled={vehiculoSeleccionado ? true : false}
-                value="Guardar"
-                variant="contained"
-                color="primary"
-              >
-                Agregar Vehículo
-              </Button>
-            </Grid>
+            <AgregarVehiculo vehiculoSeleccionado={vehiculoSeleccionado} vehiculo={vehiculo} />
           </Grid>
         </Box>
       </Grid>
@@ -360,7 +257,7 @@ export default function FichaScreen() {
               <Autocomplete
                 multiple={true}
                 value={partesVehiculoSeleccionado}
-                options={partesVehiculo}
+                options={partes}
                 getOptionLabel={option => option.nombrePV}
                 onChange={(event, value) => {
                   if (value) {
@@ -384,9 +281,9 @@ export default function FichaScreen() {
           <Grid item md={12}>
             <TextField
               label="Observaciones"
-              value={observaciones}
+              value={ficha.observaciones}
               fullWidth
-              onChange={handleChangeObservaciones}
+              onChange={handleChangeFicha}
               type='text'
               name='observaciones'
               rows={4}
