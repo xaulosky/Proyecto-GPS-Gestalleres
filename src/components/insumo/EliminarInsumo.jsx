@@ -56,9 +56,25 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
     useEffect(() => {
         obtenerInsumos();
     }, [])
+
+    function abrir() {
+        obtenerInsumos();
+        setData({
+            cInsumo: row.cInsumo,
+        });
+        handleOpen();
+    }
+
+    function cerrar() {
+        obtenerInsumos();
+        setData({
+            cInsumo: row.cInsumo,
+        });
+        handleClose();
+    }
     return (
         <>
-            <Button onClick={handleOpen}
+            <Button onClick={abrir}
                 color="error"
                 type={'submit'}
                 name={'eliminar'}
@@ -68,7 +84,7 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
             </Button>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={cerrar}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -89,7 +105,7 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
                         Aceptar
                     </Button>
                     <Button
-                        onClick={handleClose}
+                        onClick={cerrar}
                         variant="contained"
                         color="error"
                         name={'cancelar'}

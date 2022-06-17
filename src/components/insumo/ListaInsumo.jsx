@@ -57,6 +57,7 @@ const ListaInsumo = () => {
       name: 'Nombre de insumo',
       selector: row => row.nombreInsumo,
       width: '600px',
+      sortable: true,
     },
     {
       name: 'Cantidad',
