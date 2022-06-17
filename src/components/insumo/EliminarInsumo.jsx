@@ -72,6 +72,7 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
         });
         handleClose();
     }
+
     return (
         <>
             <Button onClick={abrir}
