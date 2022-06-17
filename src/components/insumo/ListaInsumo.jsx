@@ -9,6 +9,7 @@ import AuthContext from '../../context/AuthContext'
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import HistorialInsumo from './HistorialInsumo';
+import { render } from 'react-dom';
 
 
 const paginationComponentOptions = {
@@ -82,7 +83,7 @@ const ListaInsumo = () => {
               obtenerInsumos={obtenerInsumos}
             />
             <HistorialInsumo
-              codigoInsumo = {row.cInsumo}
+              codigoInsumo={row.cInsumo}
               obtenerInsumos={obtenerInsumos}
             />
             <EliminarInsumo
@@ -102,17 +103,19 @@ const ListaInsumo = () => {
   useEffect(() => {
     obtenerInsumos();
   }, [])
-
+  
   return (
     <>
       <Grid item align='right' xs={12} >
         <CrearInsumo obtenerInsumos={obtenerInsumos} />
         <Button align='right'
+          size='small'
+          variant="contained"
           title='Exportar Excel'
-          sx={{ ml: 3 }}
+          sx={{ ml: 3, p: '5px 15px' }}
           onClick={(e) => exportXLSX(insumos)}
         >
-          Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i> </Button>
+          Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
       </Grid>
       <DataTable
         title="Lista Insumos"
@@ -132,8 +135,8 @@ const ListaInsumo = () => {
         paginationComponentOptions={paginationComponentOptions}
       />
     </>
-
-  )
+  );
 }
+
 
 export default ListaInsumo

@@ -55,12 +55,6 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         setData(newdata);
         console.log(newdata);
     }
-
-    const actualizarDatos = () => {
-        obtenerInsumos();
-
-    }
-
     return (
         <>
             <Button onClick={handleOpen}
@@ -77,7 +71,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box component='form' sx={style} onSubmit={submit} >
+                <Box component='form' sx={style} onSubmit={submit}>
                     <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
                         EDITAR INSUMO
                     </Typography>
