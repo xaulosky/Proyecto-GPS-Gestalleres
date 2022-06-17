@@ -3,6 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
+import swal from 'sweetalert';
 
 const style = {
 
@@ -17,10 +18,12 @@ const style = {
     p: 4,
 };
 
+
 const EditarInsumo = ({ row, obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
     const [open, setOpen] = React.useState(false);
+
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
@@ -30,6 +33,10 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         costo: row.costo,
         cInsumo: row.cInsumo,
         cTaller: auth.cTaller,
+    });
+
+    const [res, setRes] = React.useState({
+        msg: '',
     });
 
     const submit = (e) => {
@@ -42,9 +49,14 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
             cTaller: auth.cTaller,
         })
             .then(respuesta => {
-                console.log(respuesta)
                 obtenerInsumos();
                 handleClose();
+                setRes(respuesta.data);
+                if (respuesta.data.msg === 'ok') {
+                    swal("ACTUALIZADO", "Insumo actualizado correctamente", "success");
+                } else {
+                    swal("ERROR", "Error al editar insumo", "error");
+                }
             })
     }
 
@@ -54,7 +66,6 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         setData(newdata);
         console.log(newdata);
     }
-
     return (
         <>
             <Button onClick={handleOpen}
@@ -71,18 +82,19 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box component='form' sx={style} onSubmit={submit} >
+                <Box component='form' sx={style} onSubmit={submit}>
                     <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
                         EDITAR INSUMO
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Nombre insumo"
+                            label="Nombre del insumo"
                             margin="normal"
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
+                            inputProps={{ maxLength: 256 }}
                             value={data.nombreInsumo}
                             required
                             onChange={(e) => handle(e)}
@@ -95,6 +107,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             type={'number'}
                             name={'cantidad'}
                             value={data.cantidad}
+                            InputProps={{ inputProps: { min: 0 } }}
                             required
                             onChange={(e) => handle(e)}
                         />
@@ -105,6 +118,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
+                            InputProps={{ inputProps: { min: 0 } }}
                             value={data.costo}
                             required
                             onChange={(e) => handle(e)}
