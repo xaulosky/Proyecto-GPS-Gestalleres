@@ -52,20 +52,29 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
         })
             .then(respuesta => {
                 obtenerVehiculos();
-                handleClose();
+                handleClose(e);
             })
 
     }
-
+    
     function handle(e) {
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value;
-        setData(newdata);
+        obtenerVehiculos();
+        handleOpen(e);
+        setData({
+            patenteV: row.patenteV,
+            modeloV: row.modeloV,
+            colorV: row.colorV,
+            estadoV: row.estadoV,
+            estadoRevisionTecnicaV: row.estadoRevisionTecnicaV,
+            montoAseguradora: row.montoAseguradora,
+            tipoAseguradora: row.tipoAseguradora,
+            cVehiculo: row.cVehiculo,
+        });
     }
 
-    return (
+    return (    
         <> 
-            <Button onClick={handleOpen}
+            <Button onClick={handle}
                 type={'submit'}
                 name={'editar'}
                 color="primary"
@@ -82,7 +91,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                 <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
                         Editar Vehiculo
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
+                    <Typography id="modal-modal-description" sx={{ mt: 1 }} component={'div'}>
                         <TextField fullWidth
                             name={'patenteV'}
                             label="Patente"
@@ -143,7 +152,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                             required
                             onChange={(e) => handle(e)}
                         />
-                        <Grid item xs={12} sm={12} style={{ height: '100px' ,Textalign: 'left'}}>
+                        <Grid item xs={12} sm={12} style={{ height: '100px' ,Textalign: 'center'}}>
                             <DialogActions>
                                 <Button
                                     variant="contained"

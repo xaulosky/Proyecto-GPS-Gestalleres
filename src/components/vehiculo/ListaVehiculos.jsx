@@ -12,7 +12,7 @@ const ListaVehiculos = () => {
         {
             name: '#Vehiculo',
             selector: row => row.cVehiculo,
-            sortable: true,
+            sortable: true
         },
         {
             name: 'Patente',
@@ -58,6 +58,7 @@ const ListaVehiculos = () => {
             allowOverflow: true,
             button: true,
             width: '150px',
+            align: 'center',
         }
     ];
     

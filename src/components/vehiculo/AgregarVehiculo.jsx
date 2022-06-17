@@ -1,9 +1,10 @@
-import React from 'react'
-import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material'
+import * as React from 'react'
+import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, createTheme, ThemeProvider, CssBaseline } from '@mui/material'
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
+import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 
 const style = {
 
@@ -13,13 +14,13 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '1px solid #000',
     boxShadow: 24,
     p: 4,
 };
 
 
-const AgregarVehiculo = ({obtenerVehiculos}) => {
+const AgregarVehiculo = ({ obtenerVehiculos }) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -54,7 +55,7 @@ const AgregarVehiculo = ({obtenerVehiculos}) => {
                 obtenerVehiculos()
                 handleClose();
             })
-        
+
     }
 
     function handle(e) {
@@ -64,145 +65,168 @@ const AgregarVehiculo = ({obtenerVehiculos}) => {
         console.log(newdata);
     }
 
+    
 
-return (
-    <>
-        <Button onClick={handleOpen}
+    const theme = createTheme({
+        overrides: {
+            MuiCssBaseline: {
+                "@global": {
+                    "*::-webkit-scrollbar": {
+                        width: "10px"
+                    },
+                    "*::-webkit-scrollbar-track": {
+                        background: "#E4EFEF"
+                    },
+                    "*::-webkit-scrollbar-thumb": {
+                        background: "#1D388F61",
+                        borderRadius: "2px"
+                    }
+                }
+            }
+        }
+    });
+
+    return (
+        <>
+            <Button onClick={handleOpen}
                 variant="contained"
                 color="primary"
                 type={'submit'}
                 name={'crear'}
-                endIcon={<CarRepairIcon/>}
+                endIcon={<CarRepairIcon />}
             >
                 Añadir Vehiculo
             </Button>
+
+
             <Modal
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-            <Box component='form' sx={style} onSubmit={submit} >
-
-            <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
-                Añadir Vehiculo
-            </Typography>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'text'}
-                name={'patenteV'}
-                label="Patente"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'text'}
-                name={'modeloV'}
-                label="Modelo"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'text'}
-                name={'colorV'}
-                label="Color"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'text'}
-                name={'estadoV'}
-                label="Estado"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'text'}
-                name={'estadoRevisionTecnicaV'}
-                label="Estado Revision Tecnica"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'number'}
-                name={'montoAseguradora'}
-                label="Monto Aseguradora"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'number'}
-                name={'cAseguradora'}
-                label="C Aseguradora"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'number'}
-                name={'cTipoCarroceria'}
-                label="C Tipo Carroceria"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <TextField fullWidth
-                id="standard-basic"
-                margin="normal"
-                variant="outlined"
-                type={'number'}
-                name={'cCliente'}
-                label="C Cliente"
-                required
-                onChange={(e) => handle(e)}
-            />
-            <Grid item xs={12} sm={12} style={{ height: '100px' }}>
-                <DialogActions >
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        name={'crear'}
-                        type={'submit'}
-                    >
-                    Aceptar
-                    </Button>
-                    <Button
-                        onClick={handleClose}
-                        variant="contained"
-                        color="error"
-                        name={'cancelar'}
-                    >
-                        Cancelar
-                    </Button>
-                </DialogActions>
-            </Grid>
-            </Typography>
-        </Box>
-    </Modal>
-
-    </>
+                
+                    <Box component='form' sx={style} onSubmit={submit} >
+                    <ScopedCssBaseline>
+                        <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
+                            Añadir Vehiculo
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 1 }} component={'div'}>
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'text'}
+                                name={'patenteV'}
+                                label="Patente"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'text'}
+                                name={'modeloV'}
+                                label="Modelo"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'text'}
+                                name={'colorV'}
+                                label="Color"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'text'}
+                                name={'estadoV'}
+                                label="Estado"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'text'}
+                                name={'estadoRevisionTecnicaV'}
+                                label="Estado Revision Tecnica"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'number'}
+                                name={'montoAseguradora'}
+                                label="Monto Aseguradora"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'number'}
+                                name={'cAseguradora'}
+                                label="Código Aseguradora"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'number'}
+                                name={'cTipoCarroceria'}
+                                label="Código Tipo Carroceria"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <TextField fullWidth
+                                id="standard-basic"
+                                margin="normal"
+                                variant="outlined"
+                                type={'number'}
+                                name={'cCliente'}
+                                label="Código Cliente"
+                                required
+                                onChange={(e) => handle(e)}
+                            />
+                            <Grid item align ='center' xs={12} sm={12} style={{ height: '100px' }}>
+                                <DialogActions >
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        name={'crear'}
+                                        type={'submit'}
+                                    >
+                                        Aceptar
+                                    </Button>
+                                    <Button
+                                        onClick={handleClose}
+                                        variant="contained"
+                                        color="error"
+                                        name={'cancelar'}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </DialogActions>
+                            </Grid>
+                        </Typography>
+                        </ScopedCssBaseline>
+                    </Box>
+            </Modal>
+        </>
     );
 }
 
