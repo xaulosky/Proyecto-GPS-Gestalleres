@@ -9,8 +9,6 @@ import AuthContext from '../../context/AuthContext'
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import HistorialInsumo from './HistorialInsumo';
-import { render } from 'react-dom';
-
 
 const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
@@ -20,10 +18,7 @@ const paginationComponentOptions = {
 };
 
 function formatoNumeros(numero) {
-  return new Intl.NumberFormat({
-    style: 'numeric',
-    minimumFractionDigits: 0,
-  }).format(numero);
+  return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 const ListaInsumo = () => {
@@ -137,6 +132,4 @@ const ListaInsumo = () => {
     </>
   );
 }
-
-
 export default ListaInsumo

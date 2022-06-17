@@ -21,12 +21,9 @@ const style = {
     backgroundColor: '#FFFFFF',
 };
 function formatoNumeros(numero) {
-
-    return new Intl.NumberFormat({
-        style: 'numeric',
-        minimumFractionDigits: 0
-    }).format(numero);
-}
+    return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+  
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
     rangeSeparatorText: 'de',
