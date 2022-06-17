@@ -3,6 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
+import swal from 'sweetalert';
 
 const style = {
 
@@ -33,7 +34,11 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         cInsumo: row.cInsumo,
         cTaller: auth.cTaller,
     });
-    
+
+    const [res, setRes] = React.useState({
+        msg: '',
+    });
+
     const submit = (e) => {
         e.preventDefault();
         axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
@@ -46,6 +51,12 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
             .then(respuesta => {
                 obtenerInsumos();
                 handleClose();
+                setRes(respuesta.data);
+                if (respuesta.data.msg === 'ok') {
+                    swal("ACTUALIZADO", "Insumo actualizado correctamente", "success");
+                } else {
+                    swal("ERROR", "Error al editar insumo", "error");
+                }
             })
     }
 

@@ -59,6 +59,7 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
                     <RestaurarHistorial
                         row ={row }
                         obtenerInsumos = {obtenerInsumos}
+                        obtenerHistorial = {obtenerHistorial}
                     />
                 )
             },

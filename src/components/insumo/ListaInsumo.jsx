@@ -98,7 +98,7 @@ const ListaInsumo = () => {
   useEffect(() => {
     obtenerInsumos();
   }, [])
-  
+
   return (
     <>
       <Grid item align='right' xs={12} >

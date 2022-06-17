@@ -3,6 +3,7 @@ import React, { useContext } from 'react'
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext'
+import swal from 'sweetalert';
 
 const style = {
 
@@ -31,6 +32,10 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         costo: '',
     });
 
+    const [res, setRes] = React.useState({
+        msg: '',
+    });
+
     const submit = (e) => {
         e.preventDefault();
         axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
@@ -42,8 +47,14 @@ const CrearInsumo = ({ obtenerInsumos }) => {
             .then(respuesta => {
                 obtenerInsumos()
                 handleClose();
+                setRes(respuesta.data);
+                if (respuesta.data.msg === 'ok') {
+                    swal("CREADO", "Insumo creado correctamente", "success");
+                } else {
+                    swal("ERROR", "Error al crear el insumo", "error");
+                }
             })
-        
+
     }
 
     function handle(e) {
@@ -93,8 +104,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
-                            InputProps={{ inputProps: { min: 0} }}
-                            required ={true}
+                            InputProps={{ inputProps: { min: 0 } }}
+                            required={true}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -104,8 +115,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            required ={true}
-                            InputProps={{ inputProps: { min: 0} }}
+                            required={true}
+                            InputProps={{ inputProps: { min: 0 } }}
                             onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>

@@ -18,7 +18,7 @@ const style = {
     pb: 3,
 };
 
-const RestaurarHistorial = ({ row, obtenerInsumos }) => {
+const RestaurarHistorial = ({ row, obtenerInsumo, obtenerHistorial }) => {
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);

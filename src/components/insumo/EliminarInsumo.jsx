@@ -32,6 +32,9 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
         cInsumo: row.cInsumo,
     });
 
+    const [res, setRes] = React.useState({
+        msg: '',
+    });
     const submit = (e) => {
         e.preventDefault();
         axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
@@ -42,9 +45,14 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
         ).then(respuesta => {
             obtenerInsumos();
             handleClose();
+            setRes(respuesta.data);
+            if (respuesta.data.msg === 'ok') {
+                swal("ELIMINADO", "Insumo eliminado correctamente", "success");
+            } else {
+                swal("ERROR", "Error al eliminar el insumo", "error");
+            }
         })
     }
-
     return (
         <>
             <Button onClick={handleOpen}
