@@ -32,11 +32,6 @@ const CrearRepuesto = () => {
                     </Grid>
 
                     <Grid item xs={12} sm={3}>
-                        <TextField required fullWidth id='standard-basic' label="Código Taller" margin='normal' variant='outlined' select name={'cTaller'}
-                        />
-                    </Grid>
-
-                    <Grid item xs={12} sm={3}>
                         <Button variant="contained" color="primary" type={'submit'} name={'addRepuesto'} startIcon={<Add />} style={{ height: '55px' }}>
                             Añadir Repuesto
                         </Button>

@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, IconButton } from '@mui/material';
+import CrearRepuestoModal from './CrearRepuestoModal';
 
 
 const columns = [
@@ -72,8 +73,8 @@ const ListaRepuesto = () => {
         persistTableHead
         pointerOnHover
         responsive
-        subHeaderAlign="right"
-        subHeaderWrap
+        subHeader
+        subHeaderComponent={<CrearRepuestoModal />}
       />
     </>
   )
