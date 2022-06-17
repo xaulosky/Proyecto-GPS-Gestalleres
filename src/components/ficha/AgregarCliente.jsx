@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { clearRUT, validarRUT } from 'validar-rut'
 
-
 const AgregarCliente = ({ clienteSeleccionado }) => {
 
     /* state cliente */
@@ -31,7 +30,6 @@ const AgregarCliente = ({ clienteSeleccionado }) => {
         }
     }, [clienteSeleccionado])
 
-
     return (
         <>
             <Grid item md={6}>
@@ -53,7 +51,6 @@ const AgregarCliente = ({ clienteSeleccionado }) => {
                     onChange={handleChangeCliente}
                     name='apellidoC'
                     disabled={clienteSeleccionado ? true : false}
-
                 />
             </Grid>
             <Grid item md={6}>
