@@ -67,6 +67,9 @@ const CrearInsumo = ({ obtenerInsumos }) => {
     return (
         <>
             <Button onClick={handleOpen}
+                variant="contained"
+                sx={{ ml: 3, p: '10px 15px' }}
+                title="Agregar Insumo"
                 color="primary"
                 type={'submit'}
                 name={'crear'}

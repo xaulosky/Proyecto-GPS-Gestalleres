@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import Button from '@mui/material/Button';
@@ -53,6 +53,9 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
             }
         })
     }
+    useEffect(() => {
+        obtenerInsumos();
+    }, [])
     return (
         <>
             <Button onClick={handleOpen}

@@ -1,9 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, resetState } from 'react'
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
+
 
 const style = {
 
@@ -12,8 +13,9 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
+    height: 350,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '1px solid #000',
     boxShadow: 24,
     p: 4,
 };
@@ -64,11 +66,35 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         const newdata = { ...data }
         newdata[e.target.name] = e.target.value;
         setData(newdata);
-        console.log(newdata);
     }
+
+    function abrir() {
+        obtenerInsumos();
+        setData({
+            nombreInsumo: row.nombreInsumo,
+            cantidad: row.cantidad,
+            costo: row.costo,
+            cInsumo: row.cInsumo,
+            cTaller: auth.cTaller,
+        });
+        handleOpen();
+    }
+
+    function cerrar() {
+        obtenerInsumos();
+        setData({
+            nombreInsumo: row.nombreInsumo,
+            cantidad: row.cantidad,
+            costo: row.costo,
+            cInsumo: row.cInsumo,
+            cTaller: auth.cTaller,
+        });
+        handleClose();
+    }
+
     return (
         <>
-            <Button onClick={handleOpen}
+            <Button onClick={abrir}
                 color="primary"
                 type={'submit'}
                 name={'editar'}
@@ -78,7 +104,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
             </Button>
             <Modal
                 open={open}
-                onClose={handleClose}
+                onClose={cerrar}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -98,6 +124,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             value={data.nombreInsumo}
                             required
                             onChange={(e) => handle(e)}
+                            
                         />
                         <TextField fullWidth
                             id="standard-basic"
@@ -134,7 +161,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                                     Aceptar
                                 </Button>
                                 <Button
-                                    onClick={handleClose}
+                                    onClick={cerrar}
                                     variant="contained"
                                     color="error"
                                     name={'cancelar'}
