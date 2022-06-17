@@ -16,7 +16,7 @@ const ListaFichas = () => {
 
 
     useEffect(() => {
-       axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'ficha.php')
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'ficha.php')
             .then(res => {
                 setFichas(res.data)
             })
