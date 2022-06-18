@@ -57,7 +57,6 @@ const ListaInsumo = () => {
       name: 'Nombre de insumo',
       selector: row => row.nombreInsumo,
       width: '600px',
-      sortable: true,
     },
     {
       name: 'Cantidad',
@@ -78,7 +77,7 @@ const ListaInsumo = () => {
               row={row}
               obtenerInsumos={obtenerInsumos}
             />
-{/*             <HistorialInsumo
+            {/*<HistorialInsumo
               codigoInsumo={row.cInsumo}
               obtenerInsumos={obtenerInsumos}
             /> */}
@@ -129,8 +128,8 @@ const ListaInsumo = () => {
         subHeaderAlign="right"
         subHeaderWrap
         paginationComponentOptions={paginationComponentOptions}
-      />
+        />
     </>
-  );
+  )
 }
 export default ListaInsumo
