@@ -52,6 +52,7 @@ const AgregarUsuarios = () => {
         }
 
     const submit= (e) =>{
+        e.preventDefault()
         axios.post(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
             
             email: data.email ,
