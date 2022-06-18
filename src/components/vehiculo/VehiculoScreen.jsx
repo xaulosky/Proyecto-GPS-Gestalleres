@@ -6,7 +6,7 @@ const VehiculoScreen = () => {
 
     return (
         <>
-            <h1>Lista Vehiculos</h1>
+            <h1>Lista Vehículos </h1>
             <ListaVehiculos />
         </>
     )

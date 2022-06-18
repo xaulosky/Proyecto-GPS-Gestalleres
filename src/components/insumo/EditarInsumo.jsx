@@ -1,8 +1,8 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import React, { useContext } from 'react'
+import EditIcon from '@mui/icons-material/Edit';
+import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material';
+import axios from 'axios';
+import AuthContext from '../../context/AuthContext';
 
 const style = {
 
@@ -17,22 +17,53 @@ const style = {
     p: 4,
 };
 
-const EditarInsumo = (row) => {
+const EditarInsumo = ({ row, obtenerInsumos }) => {
 
+    const { auth } = useContext(AuthContext)
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    
+
+    const [data, setData] = React.useState({
+        nombreInsumo: row.nombreInsumo,
+        cantidad: row.cantidad,
+        costo: row.costo,
+        cInsumo: row.cInsumo,
+        cTaller: auth.cTaller,
+    });
+
+    const submit = (e) => {
+        e.preventDefault();
+        axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
+            nombreInsumo: data.nombreInsumo,
+            cantidad: data.cantidad,
+            costo: data.costo,
+            cInsumo: data.cInsumo,
+            cTaller: auth.cTaller,
+        })
+            .then(respuesta => {
+                console.log(respuesta)
+                obtenerInsumos();
+                handleClose();
+            })
+    }
+
+    function handle(e) {
+        const newdata = { ...data }
+        newdata[e.target.name] = e.target.value;
+        setData(newdata);
+        console.log(newdata);
+    }
+
     return (
         <>
             <Button onClick={handleOpen}
-                variant="contained"
                 color="primary"
                 type={'submit'}
-                name={'actualizar'}
-                endIcon={<InventoryIcon />}
+                name={'editar'}
+                title={'Editar'}
+                endIcon={<EditIcon />}
             >
-                Actualizar Insumo
             </Button>
             <Modal
                 open={open}
@@ -40,11 +71,11 @@ const EditarInsumo = (row) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
-                        ACTUALIZAR INSUMO
+                <Box component='form' sx={style} onSubmit={submit} >
+                    <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
+                        EDITAR INSUMO
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
                         <TextField fullWidth
                             id="standard-basic"
                             label="Nombre insumo"
@@ -52,44 +83,51 @@ const EditarInsumo = (row) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            //onChange={(e) => handle(e)}
+                            value={data.nombreInsumo}
+                            required
+                            onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
                             label="Cantidad"
                             margin="normal"
                             variant="outlined"
-                            type={'text'}
+                            type={'number'}
                             name={'cantidad'}
-                            //onChange={(e) => handle(e)}
+                            value={data.cantidad}
+                            required
+                            onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
                             label="Valor"
                             margin="normal"
                             variant="outlined"
-                            type={'text'}
+                            type={'number'}
                             name={'costo'}
-                            //onChange={(e) => handle(e)}
+                            value={data.costo}
+                            required
+                            onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
-                            <Button
-                                onClick={submit}
-                                variant="contained"
-                                color="primary"
-                                name={'actualizar'}
-
-                            >
-                                Actualizar
-                            </Button>
-                            <Button
-                                onClick={handleClose}
-                                variant="contained"
-                                color="error"
-                                name={'cancelar'}
-                            >
-                                Cancelar
-                            </Button>
+                            <DialogActions>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    name={'crear'}
+                                    type={'submit'}
+                                >
+                                    Aceptar
+                                </Button>
+                                <Button
+                                    onClick={handleClose}
+                                    variant="contained"
+                                    color="error"
+                                    name={'cancelar'}
+                                >
+                                    Cancelar
+                                </Button>
+                            </DialogActions>
                         </Grid>
                     </Typography>
                 </Box>
