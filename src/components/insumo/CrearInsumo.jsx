@@ -1,7 +1,8 @@
-import { Box, Button, Grid, Modal, TextField, Typography } from '@mui/material'
-import React from 'react'
+import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material'
+import React, { useContext } from 'react'
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
+import AuthContext from '../../context/AuthContext'
 
 const style = {
 
@@ -18,6 +19,8 @@ const style = {
 
 const CrearInsumo = ({ obtenerInsumos }) => {
 
+    const { auth } = useContext(AuthContext)
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -26,20 +29,21 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         nombreInsumo: '',
         cantidad: '',
         costo: '',
-        estado: 'activo',
     });
 
     const submit = (e) => {
+        e.preventDefault();
         axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
             nombreInsumo: data.nombreInsumo,
             cantidad: data.cantidad,
             costo: data.costo,
-            estado: 'activo'
+            cTaller: auth.cTaller,
         })
             .then(respuesta => {
                 obtenerInsumos()
                 handleClose();
             })
+        
     }
 
     function handle(e) {
@@ -66,11 +70,12 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" align='center'>
+                <Box component='form' sx={style} onSubmit={submit} >
+
+                    <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
                         AGREGAR INSUMO
                     </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
                         <TextField fullWidth
                             id="standard-basic"
                             label="Nombre insumo"
@@ -85,8 +90,9 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             label="Cantidad"
                             margin="normal"
                             variant="outlined"
-                            type={'text'}
+                            type={'number'}
                             name={'cantidad'}
+                            required
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -94,28 +100,30 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             label="Valor"
                             margin="normal"
                             variant="outlined"
-                            type={'text'}
+                            type={'number'}
                             name={'costo'}
+                            required
                             onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
-                            <Button
-                                onClick={submit}
-                                variant="contained"
-                                color="primary"
-                                name={'crear'}
-
-                            >
-                                Aceptar
-                            </Button>
-                            <Button
-                                onClick={handleClose}
-                                variant="contained"
-                                color="error"
-                                name={'cancelar'}
-                            >
-                                Cancelar
-                            </Button>
+                            <DialogActions >
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    name={'crear'}
+                                    type={'submit'}
+                                >
+                                    Aceptar
+                                </Button>
+                                <Button
+                                    onClick={handleClose}
+                                    variant="contained"
+                                    color="error"
+                                    name={'cancelar'}
+                                >
+                                    Cancelar
+                                </Button>
+                            </DialogActions>
                         </Grid>
                     </Typography>
                 </Box>

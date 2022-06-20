@@ -1,78 +1,99 @@
-//RAFCE
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component';
-import Button from '@mui/material/Button'
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Grid } from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit';
+import { Button, Grid, Stack } from '@mui/material';
 import CrearInsumo from './CrearInsumo';
 import EditarInsumo from './EditarInsumo';
 import EliminarInsumo from './EliminarInsumo';
+import AuthContext from '../../context/AuthContext'
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+
 
 const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
   rangeSeparatorText: 'de',
   selectAllRowsItem: true,
   selectAllRowsItemText: 'Todos',
-}; 
+};
 
-function editarInsumo(row) {
-  EditarInsumo(row);
+function formatoNumeros(numero) {
+
+  return new Intl.NumberFormat({
+    style: 'numeric',
+    minimumFractionDigits: 0
+  }).format(numero);
 }
-
-function eliminarInsumo(row) {
-  console.log(row);
-}
-
-
-const columna = [
-  {
-    name: 'Codigo insumo',
-    selector: row => row.cInsumo,
-  },
-  {
-    name: 'Nombre de insumo',
-    selector: row => row.nombreInsumo,
-  },
-  {
-    name: 'Cantidad',
-    selector: row => row.cantidad,
-  },
-  {
-    name: 'Valor',
-    selector: row => row.costo,
-    width: '150px',
-  },
-  {
-    name: 'Editar',
-    cell: (row) => <Button variant="contained" color="primary" endIcon={<EditIcon />} raised primary onClick={() => { editarInsumo(row)  }} >Editar</Button>,
-    ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
-    width: '150px',
-  },
-  {
-    name: 'Eliminar',
-    cell: (row) => <Button variant="contained" endIcon={<DeleteIcon />} color="primary" raised primary onClick={() => { eliminarInsumo(row) }} >Eliminar</Button>,
-    ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
-    width: '150px',
-  }
-];
 
 const ListaInsumo = () => {
 
+  function exportXLSX(insumos) {
+
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+    const fileName = 'Lista de insumos';
+    const ws = XLSX.utils.json_to_sheet(insumos
+      .map(insumo => ({
+        cInsumo: insumo.cInsumo,
+        nombreInsumo: insumo.nombreInsumo,
+        cantidad: insumo.cantidad,
+        costo: insumo.costo,
+      })));
+    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
+  }
+
   const [insumos, setInsumos] = useState([]);
 
+  const { auth } = useContext(AuthContext)
+
   const obtenerInsumos = () => {
-    axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php')
+    axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php?cTaller=' + auth.cTaller)
       .then(respuesta => {
         console.log(respuesta.data);
         setInsumos(respuesta.data);
       })
   }
+  const columna = [
+    {
+      name: 'Nombre de insumo',
+      selector: row => row.nombreInsumo,
+      width: '600px',
+    },
+    {
+      name: 'Cantidad',
+      selector: row => formatoNumeros(row.cantidad),
+      width: '200px',
+    },
+    {
+      name: 'Valor',
+      selector: row => formatoNumeros(row.costo),
+      width: '200px',
+    },
+    {
+      name: 'Acciones',
+      cell: (row) => {
+        return (
+          <Stack direction={row} textAlign="center" >
+            <EditarInsumo
+              row={row}
+              obtenerInsumos={obtenerInsumos}
+            />
+            <EliminarInsumo
+              row={row}
+              obtenerInsumos={obtenerInsumos}
+            />
+          </Stack>
+        )
+      },
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+      width: '150px',
+    }
+  ];
 
   useEffect(() => {
     obtenerInsumos();
@@ -100,6 +121,7 @@ const ListaInsumo = () => {
         subHeaderWrap
         paginationComponentOptions={paginationComponentOptions}
       />
+      <Button title='Exportar Excel' onClick={(e) => exportXLSX(insumos)}> <i className="mdi mdi-table-arrow-down" style={{ fontSize: '25px' }} aria-hidden="true"></i>Exportar</Button>
     </>
 
   )
@@ -107,3 +129,4 @@ const ListaInsumo = () => {
 
 export default ListaInsumo
 /* "$"+ */
+{/* <CSVLink data={insumos}>Download me</CSVLink>; */ }
