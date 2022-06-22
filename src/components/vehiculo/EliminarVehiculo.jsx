@@ -3,6 +3,7 @@ import { Button, Grid, Stack, Dialog, DialogActions, DialogContent, DialogConten
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect, useState } from 'react';
 
 const style = {
     position: 'absolute',
@@ -21,11 +22,11 @@ const style = {
 
 const EliminarVehiculo = ({row, obtenerVehiculos}) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         cVehiculo: row.cVehiculo
     });
 

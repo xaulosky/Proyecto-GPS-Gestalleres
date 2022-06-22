@@ -22,12 +22,12 @@ const style = {
 
 const EditarVehiculo = ({row, obtenerVehiculos}) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         patenteV: row.patenteV,
         modeloV: row.modeloV,
         colorV: row.colorV,
@@ -38,8 +38,16 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
         cVehiculo: row.cVehiculo,
     });
 
+    function handle(e) {
+        const newdata = { ...data }
+        newdata[e.target.name] = e.target.value;
+        setData(newdata);
+        console.log(newdata);
+    }
+
+
     const submit = (e) => {
-        e.preventDefault(e);
+        e.preventDefault();
         axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo.php', {
             
             patenteV: data.patenteV,
@@ -51,19 +59,14 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
             cVehiculo: data.cVehiculo,
         })
             .then(respuesta => {
+                handleClose(e);
                 obtenerVehiculos();
-                handleClose();
+                console.log(respuesta.data);
             })
 
     }
 
-    function handle(e) {
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value;
-        setData(newdata);
-        console.log(newdata);
-    }
-
+    
 
     return (    
         <> 
@@ -86,6 +89,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 1 }} component={'div'}>
                         <TextField fullWidth
+                            id='patenteV'
                             name={'patenteV'}
                             label="Patente"
                             margin="normal"
@@ -96,6 +100,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
+                            id='modeloV'
                             name={'modeloV'}
                             label="Modelo"
                             margin="normal"
@@ -106,6 +111,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
+                            id='colorV'
                             name={'colorV'}
                             label="Color"
                             margin="normal"
@@ -116,6 +122,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
+                            id='estadoV'
                             name={'estadoV'}
                             label="Estado"
                             margin="normal"
@@ -126,6 +133,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
+                            id='estadoRevisionTecnicaV'
                             name={'estadoRevisionTecnicaV'}
                             label="Estado Revision Tecnica"
                             margin="normal"
@@ -136,12 +144,14 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
+                            id='montoAseguradora'
                             name={'montoAseguradora'}
                             label="Monto Aseguradora"
                             margin="normal"
                             variant="outlined"
                             type={'number'}
                             value={data.montoAseguradora}
+                            InputProps={{ inputProps: { min: 0 } }}
                             required
                             onChange={(e) => handle(e)}
                         />

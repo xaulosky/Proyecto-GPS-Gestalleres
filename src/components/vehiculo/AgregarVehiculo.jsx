@@ -21,11 +21,11 @@ const style = {
 
 
 const AgregarVehiculo = ({ obtenerVehiculos }) => {
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         patenteV: '',
         modeloV: '',
         colorV: '',
@@ -202,7 +202,7 @@ const AgregarVehiculo = ({ obtenerVehiculos }) => {
                                 required
                                 onChange={(e) => handle(e)}
                             />
-                            <Grid item align='center' xs={12} sm={12} style={{ height: '100px' }}>
+                            <Grid item xs={12} sm={12} style={{ height: '100px', textalign: 'center' }}>
                                 <DialogActions >
                                     <Button
                                         variant="contained"
