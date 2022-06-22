@@ -52,29 +52,22 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
         })
             .then(respuesta => {
                 obtenerVehiculos();
-                handleClose(e);
+                handleClose();
             })
 
     }
-    
+
     function handle(e) {
-        obtenerVehiculos();
-        handleOpen(e);
-        setData({
-            patenteV: row.patenteV,
-            modeloV: row.modeloV,
-            colorV: row.colorV,
-            estadoV: row.estadoV,
-            estadoRevisionTecnicaV: row.estadoRevisionTecnicaV,
-            montoAseguradora: row.montoAseguradora,
-            tipoAseguradora: row.tipoAseguradora,
-            cVehiculo: row.cVehiculo,
-        });
+        const newdata = { ...data }
+        newdata[e.target.name] = e.target.value;
+        setData(newdata);
+        console.log(newdata);
     }
+
 
     return (    
         <> 
-            <Button onClick={handle}
+            <Button onClick={handleOpen}
                 type={'submit'}
                 name={'editar'}
                 color="primary"

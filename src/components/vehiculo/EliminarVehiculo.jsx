@@ -37,24 +37,9 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
         })
     }
 
-    function handle(e) {
-        obtenerVehiculos();
-        handleOpen(e);
-        setData({
-            patenteV: row.patenteV,
-            modeloV: row.modeloV,
-            colorV: row.colorV,
-            estadoV: row.estadoV,
-            estadoRevisionTecnicaV: row.estadoRevisionTecnicaV,
-            montoAseguradora: row.montoAseguradora,
-            tipoAseguradora: row.tipoAseguradora,
-            cVehiculo: row.cVehiculo,
-        });
-    }
-
   return (
     <>
-            <Button onClick={handle}
+            <Button onClick={handleOpen}
                 color="error"
                 type={'submit'}
                 name={'eliminar'}
