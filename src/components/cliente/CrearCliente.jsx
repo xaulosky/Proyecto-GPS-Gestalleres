@@ -66,7 +66,7 @@ const CrearCliente = ({ getClientes }) => {
       .catch((err) => {
         console.log(err);
       });
-      handleClose();
+    handleClose();
   };
 
   const [comunas, setComunas] = useState([]);
