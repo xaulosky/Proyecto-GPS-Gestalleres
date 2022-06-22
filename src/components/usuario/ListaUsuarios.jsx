@@ -95,7 +95,6 @@ const ListaUsuarios = () => {
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-
         },
     ];
 

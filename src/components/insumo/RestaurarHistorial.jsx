@@ -1,12 +1,7 @@
+import { Button, Dialog, DialogActions, DialogContentText, DialogTitle, DialogContent } from '@mui/material'
 import React from 'react'
-import DeleteIcon from '@mui/icons-material/Delete';
+import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import axios from 'axios';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import { DialogTitle } from '@mui/material';
 
 const style = {
     position: 'absolute',
@@ -23,56 +18,54 @@ const style = {
     pb: 3,
 };
 
-const EliminarInsumo = ({ row, obtenerInsumos }) => {
+const RestaurarHistorial = ({ row, obtenerInsumo, obtenerHistorial }) => {
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const [data, setData] = React.useState({
+        nombreInsumo: row.nombreInsumo,
+        cantidad: row.cantidad,
+        costo: row.costo,
         cInsumo: row.cInsumo,
-    });
-
-    const [res, setRes] = React.useState({
-        msg: '',
     });
     const submit = (e) => {
         e.preventDefault();
-        axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
+        axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumoHistorial.php', {
             data: {
-                cInsumo: data.cInsumo,
-            }
-        }
-        ).then(respuesta => {
-            obtenerInsumos();
-            handleClose();
-            setRes(respuesta.data);
-            if (respuesta.data.msg === 'ok') {
-                swal("ELIMINADO", "Insumo eliminado correctamente", "success");
-            } else {
-                swal("ERROR", "Error al eliminar el insumo", "error");
+
+                nombreInsumo: row.nombreInsumo,
+                cantidad: row.cantidad,
+                costo: row.costo,
+                cInsumo: row.cInsumo
             }
         })
+            .then(respuesta => {
+                obtenerInsumos();
+                handleClose();
+            })
     }
+
     return (
-        <>
-            <Button onClick={handleOpen}
-                color="error"
-                type={'submit'}
-                name={'eliminar'}
-                title={'Eliminar'}
-                endIcon={<DeleteIcon />}
-            >
-            </Button>
+        <><Button onClick={handleOpen}
+            color="primary"
+            type={'submit'}
+            name={'restaurar'}
+            title={'Restaurar'}
+        >
+            <SettingsBackupRestoreIcon />
+        </Button>
             <Dialog
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle> Eliminar Insumo </DialogTitle>
+                <DialogTitle  > Restaurar Insumo </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        ¿Está seguro que desea eliminar el insumo?
+                        ¿Está seguro que desea restaurar los datos del insumo?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -80,8 +73,7 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
                         onClick={submit}
                         variant="contained"
                         color="primary"
-                        name={'eliminar'}
-
+                        name={'restaurar'}
                     >
                         Aceptar
                     </Button>
@@ -95,9 +87,8 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
         </>
     )
 }
 
-export default EliminarInsumo
+export default RestaurarHistorial

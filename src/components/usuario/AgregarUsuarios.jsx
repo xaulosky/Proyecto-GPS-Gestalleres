@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
-import { Alert ,Autocomplete,InputLabel, Button,Box , MenuItem, Modal,Stack ,Select,TextField, Typography, Grid, FormControl, FormLabel, FormHelperText} from "@mui/material";
+import { Alert ,Autocomplete,InputLabel, 
+        Button,Box , MenuItem, Modal,Stack ,
+        Select,TextField, Typography, Grid, FormControl, 
+        FormLabel, FormHelperText} from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
 
@@ -67,7 +70,7 @@ const AgregarUsuarios = () => {
 
         <Button
             onClick={ handleOpen}
-            variant="outlined" 
+            variant="contained" 
             endIcon={<PersonAddAltIcon fontSize='small'/>}
             size = 'medium'
         >
@@ -94,7 +97,7 @@ const AgregarUsuarios = () => {
                     autoComplete="off"
                     onSubmit={(e) => submit(e)}
                 >
-                    <div>
+                    
                     <TextField 
                         id="nombreU" 
                         type='text' 
@@ -115,8 +118,8 @@ const AgregarUsuarios = () => {
                         multiline
                         placeholder = "Contraseña"
                         onChange={(e)=>handle(e)} />
-                    </div>
-                    <div>
+                    
+                    
                     <TextField 
                         id="email" 
                         name = 'email'
@@ -126,8 +129,8 @@ const AgregarUsuarios = () => {
                         fullWidth
                         variant="outlined" 
                         onChange={(e)=>handle(e)} />
-                    </div>
-                    <FormControl fullWidth>
+                    
+                    <FormControl>
                     <InputLabel id="demo-simple-select-label" sx={{mx:2}}>Rol</InputLabel>
                     <Grid sx={{mx:2, width: 360}} >
                     <Select
@@ -160,16 +163,16 @@ const AgregarUsuarios = () => {
                     />
                     
                     
-                    <Grid  sx={{mx:-3, my:1}} container justifyContent="flex-end">
+                    <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
                     <Button  
-                        variant ='outlined'
+                        variant ='contained'
                         type='submit'
                         size = 'medium'
                     >
                         Aceptar
                     </Button>
                     <Button 
-                        variant ='outlined' 
+                        variant ='contained' 
                         onClick={handleClose}
                         color = 'error'
                         size = 'medium'
@@ -177,7 +180,7 @@ const AgregarUsuarios = () => {
                     >
                         Cancelar
                     </Button>
-                    </Grid>
+                    </Stack >
                     
                 </Box>
             </Box>

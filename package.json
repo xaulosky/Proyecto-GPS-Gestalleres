@@ -12,6 +12,8 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mdi/font": "^6.7.96",
+    "@mdi/js": "^6.7.96",
+    "@mdi/react": "^1.6.0",
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.8.1",
     "@mui/styled-engine-sc": "^5.8.0",
