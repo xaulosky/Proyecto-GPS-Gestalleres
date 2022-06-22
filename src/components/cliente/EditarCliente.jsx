@@ -28,9 +28,36 @@ const style = {
 };
 
 const EditarCliente = ({ getClientes, row }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const confirmModal = () => {
+    getClientes();
+    setForm({
+      cCliente: row.cCliente,
+      rutC: row.rutC,
+      emailC: row.emailC,
+      nombreC: row.nombreC,
+      apellidoC: row.apellidoC,
+      direccionC: row.direccionC,
+      cComuna: row.cComuna,
+    });
+    handleOpen();
+  };
+
+  const closeModal = () => {
+    getClientes();
+    setForm({
+      rutC: "",
+      emailC: "",
+      nombreC: "",
+      apellidoC: "",
+      direccionC: "",
+      cComuna: "",
+    });
+    handleClose();
+  };
 
   const [form, setForm] = useState({
     rutC: row.rutC,
@@ -63,10 +90,16 @@ const EditarCliente = ({ getClientes, row }) => {
           cCliente: "",
         });
         getClientes();
+        if (res.data.msg === "Cliente actualizado") {
+          swal("ACTUALIZADO", "Cliente actualizado correctamente", "success");
+        } else {
+          swal("ERROR", "No fue posible actualizar al cliente, asegúrese de completar todos los campos", "error");
+        }
       })
       .catch((err) => {
         console.log(err);
       });
+    handleClose();
   };
   const [comunas, setComunas] = useState([]);
   const getComunas = async () => {
@@ -78,7 +111,6 @@ const EditarCliente = ({ getClientes, row }) => {
       .catch((err) => {
         console.log(err);
       });
-    handleClose();
   };
 
   useEffect(() => {
@@ -93,7 +125,7 @@ const EditarCliente = ({ getClientes, row }) => {
             py: 1.5,
           },
         }}
-        onClick={handleOpen}
+        onClick={confirmModal}
         color="primary"
         type={"submit"}
         name={"crear"}

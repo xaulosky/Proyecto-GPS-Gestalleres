@@ -47,32 +47,27 @@ const TablaClientes = () => {
     {
       name: "Rut",
       selector: (row) => row.rutC,
-      sortable: true,
     },
     {
       name: "Email",
       selector: (row) => row.emailC,
-      sortable: true,
     },
     {
       name: "Nombre",
       selector: (row) => row.nombreC,
-      sortable: true,
     },
     {
       name: "Apellido",
       selector: (row) => row.apellidoC,
-      sortable: true,
     },
     {
       name: "Dirección",
       selector: (row) => row.direccionC,
-      sortable: true,
     },
     {
       name: "Comuna",
       selector: (row) => row.nombreCo,
-      sortable: true,
+      sortable: false,
     },
     /* columna boton */
     {
@@ -89,7 +84,6 @@ const TablaClientes = () => {
       width: "10%",
       center: true,
       right: true,
-      sortable: true,
     },
   ];
 
@@ -115,6 +109,7 @@ const TablaClientes = () => {
       if (filterText) {
         setResetPaginationToggle(!resetPaginationToggle);
         setFilterText("");
+        getClientes();
       }
     };
     return (
