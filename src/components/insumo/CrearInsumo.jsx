@@ -67,6 +67,9 @@ const CrearInsumo = ({ obtenerInsumos }) => {
     return (
         <>
             <Button onClick={handleOpen}
+                variant="contained"
+                sx={{ ml: 3, p: '10px 15px' }}
+                title="Agregar Insumo"
                 color="primary"
                 type={'submit'}
                 name={'crear'}
@@ -119,9 +122,10 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             InputProps={{ inputProps: { min: 0 } }}
                             onChange={(e) => handle(e)}
                         />
-                        <Grid item xs={12} sm={12} style={{ height: '100px' }}>
-                            <DialogActions >
+                        <Grid item xs={12} sm={12} style={{ height: '90px' }}>
+                            <Grid >
                                 <Button
+                                    sx={{ ml: 5, p: '4px 15px' }}
                                     variant="contained"
                                     color="primary"
                                     name={'crear'}
@@ -137,7 +141,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                                 >
                                     Cancelar
                                 </Button>
-                            </DialogActions>
+                            </Grid>
                         </Grid>
                     </Typography>
                 </Box>

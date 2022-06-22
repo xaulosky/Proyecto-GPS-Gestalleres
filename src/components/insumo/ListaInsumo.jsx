@@ -77,10 +77,10 @@ const ListaInsumo = () => {
               row={row}
               obtenerInsumos={obtenerInsumos}
             />
-            <HistorialInsumo
+            {/*<HistorialInsumo
               codigoInsumo={row.cInsumo}
               obtenerInsumos={obtenerInsumos}
-            />
+            /> */}
             <EliminarInsumo
               row={row}
               obtenerInsumos={obtenerInsumos}
@@ -106,8 +106,8 @@ const ListaInsumo = () => {
         <Button align='right'
           size='small'
           variant="contained"
+          sx={{ ml: 3, p: '4px 15px' }}
           title='Exportar Excel'
-          sx={{ ml: 3, p: '5px 15px' }}
           onClick={(e) => exportXLSX(insumos)}
         >
           Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
@@ -128,8 +128,8 @@ const ListaInsumo = () => {
         subHeaderAlign="right"
         subHeaderWrap
         paginationComponentOptions={paginationComponentOptions}
-      />
+        />
     </>
-  );
+  )
 }
 export default ListaInsumo
