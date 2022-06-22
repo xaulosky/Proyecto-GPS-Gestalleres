@@ -65,7 +65,7 @@ const AgregarVehiculo = ({ obtenerVehiculos }) => {
         console.log(newdata);
     }
 
-    
+
 
     const theme = createTheme({
         overrides: {
@@ -105,8 +105,8 @@ const AgregarVehiculo = ({ obtenerVehiculos }) => {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                
-                    <Box component='form' sx={style} onSubmit={submit} >
+
+                <Box component='form' sx={style} onSubmit={submit} >
                     <ScopedCssBaseline>
                         <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
                             Añadir Vehiculo
@@ -202,7 +202,7 @@ const AgregarVehiculo = ({ obtenerVehiculos }) => {
                                 required
                                 onChange={(e) => handle(e)}
                             />
-                            <Grid item align ='center' xs={12} sm={12} style={{ height: '100px' }}>
+                            <Grid item align='center' xs={12} sm={12} style={{ height: '100px' }}>
                                 <DialogActions >
                                     <Button
                                         variant="contained"
@@ -223,8 +223,8 @@ const AgregarVehiculo = ({ obtenerVehiculos }) => {
                                 </DialogActions>
                             </Grid>
                         </Typography>
-                        </ScopedCssBaseline>
-                    </Box>
+                    </ScopedCssBaseline>
+                </Box>
             </Modal>
         </>
     );
