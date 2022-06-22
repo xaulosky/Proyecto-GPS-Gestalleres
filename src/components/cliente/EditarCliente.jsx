@@ -35,7 +35,7 @@ const EditarCliente = ({ getClientes, row }) => {
   const confirmModal = () => {
     getClientes();
     setForm({
-      ...form,
+      cCliente: row.cCliente,
       rutC: row.rutC,
       emailC: row.emailC,
       nombreC: row.nombreC,
@@ -44,7 +44,7 @@ const EditarCliente = ({ getClientes, row }) => {
       cComuna: row.cComuna,
     });
     handleOpen();
-  }
+  };
 
   const closeModal = () => {
     getClientes();
@@ -57,8 +57,8 @@ const EditarCliente = ({ getClientes, row }) => {
       cComuna: "",
     });
     handleClose();
-  }
-  
+  };
+
   const [form, setForm] = useState({
     rutC: row.rutC,
     emailC: row.emailC,
@@ -90,11 +90,16 @@ const EditarCliente = ({ getClientes, row }) => {
           cCliente: "",
         });
         getClientes();
+        if (res.data.msg === "Cliente actualizado") {
+          swal("ACTUALIZADO", "Cliente actualizado correctamente", "success");
+        } else {
+          swal("ERROR", "No fue posible actualizar al cliente, asegúrese de completar todos los campos", "error");
+        }
       })
       .catch((err) => {
         console.log(err);
       });
-      handleClose();
+    handleClose();
   };
   const [comunas, setComunas] = useState([]);
   const getComunas = async () => {

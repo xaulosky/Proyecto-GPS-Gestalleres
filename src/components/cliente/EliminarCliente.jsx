@@ -20,17 +20,20 @@ const EliminarCliente = ({ getClientes, row }) => {
   const deleteCliente = async (row) => {
     console.log(row.cCliente);
     await axios
-      .delete(
-        import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", {
-          data: {
-            cCliente: row.cCliente,
-          },
-        }
-      )
+      .delete(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", {
+        data: {
+          cCliente: row.cCliente,
+        },
+      })
       .then((res) => {
         handleClose();
         console.log(res);
         getClientes();
+        if (res.data.msg === "Cliente eliminado") {
+          swal("ELIMINADO", "Cliente eliminado correctamente", "success");
+        } else {
+          swal("ERROR", "No fue posible eliminar al cliente", "error");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -63,10 +66,8 @@ const EliminarCliente = ({ getClientes, row }) => {
 
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            
-              ¿Esta seguro de eliminar a{" "}
-              <span style={{ color: "black" }}>{row.nombreC} </span> ?
-            
+            ¿Esta seguro de eliminar a{" "}
+            <span style={{ color: "black" }}>{row.nombreC} </span> ?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
