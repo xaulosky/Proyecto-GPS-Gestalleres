@@ -1,53 +1,53 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-export const usePartes = ({ action, data = null }) => {
+export const useFichas = ({ action, data = null }) => {
     const [result, setResult] = useState();
     switch (action) {
         case "get":
             useEffect(() => {
-                const getPartes = async () => {
+                const getFichas = async () => {
                     const response = await axios.get(
-                        import.meta.env.VITE_APP_BACKEND_URL + "partesvehiculo.php"
+                        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php"
                     );
                     setResult(response.data);
                 }
-                getPartes();
+                getFichas();
             }, [])
             break;
         case "post":
             useEffect(() => {
-                const postParte = async () => {
+                const postFicha = async () => {
                     const response = await axios.post(
-                        import.meta.env.BACKEND_URL + "partesvehiculo.php",
+                        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php",
                         data
                     );
                     setResult(response.data);
                 }
-                postParte();
+                postFicha();
             }, [])
             break;
         case "put":
             useEffect(() => {
-                const putParte = async () => {
+                const putFicha = async () => {
                     const response = await axios.put(
-                        import.meta.env.BACKEND_URL + "partesvehiculo.php",
+                        import.meta.env.BACKEND_URL + "ficha.php",
                         data
                     );
                     setResult(response.data);
                 }
-                putParte();
+                putFicha();
             }, [])
             break;
         case "delete":
             useEffect(() => {
-                const deleteParte = async () => {
+                const deleteFicha = async () => {
                     const response = await axios.delete(
-                        import.meta.env.BACKEND_URL + "partesvehiculo.php" + data
+                        import.meta.env.BACKEND_URL + "ficha.php" + data
                     );
                     setResult(response.data);
                 }
-                deleteParte();
+                deleteFicha();
             }, [])
             break;
         default:
@@ -57,5 +57,3 @@ export const usePartes = ({ action, data = null }) => {
     return { result };
 
 }
-
-

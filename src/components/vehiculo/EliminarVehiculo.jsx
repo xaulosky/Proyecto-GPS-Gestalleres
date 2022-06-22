@@ -1,12 +1,8 @@
 import React from 'react'
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Grid, Stack, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import DataTable from 'react-data-table-component';
 import axios from 'axios';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import { DialogTitle } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const style = {
     position: 'absolute',
@@ -23,39 +19,42 @@ const style = {
     pb: 3,
 };
 
-const EliminarInsumo = ({ row, obtenerInsumos }) => {
+const EliminarVehiculo = ({row, obtenerVehiculos}) => {
+
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     const [data, setData] = React.useState({
-        cInsumo: row.cInsumo,
+        cVehiculo: row.cVehiculo
     });
 
-    const [res, setRes] = React.useState({
-        msg: '',
-    });
     const submit = (e) => {
-        e.preventDefault();
-        axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
-            data: {
-                cInsumo: data.cInsumo,
-            }
-        }
-        ).then(respuesta => {
-            obtenerInsumos();
-            handleClose();
-            setRes(respuesta.data);
-            if (respuesta.data.msg === 'ok') {
-                swal("ELIMINADO", "Insumo eliminado correctamente", "success");
-            } else {
-                swal("ERROR", "Error al eliminar el insumo", "error");
-            }
+        axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo.php?cVehiculo=' + data.cVehiculo
+        ).then(respuesta => {   
+            obtenerVehiculos();
+            handleClose(e);
         })
     }
-    return (
-        <>
-            <Button onClick={handleOpen}
+
+    function handle(e) {
+        obtenerVehiculos();
+        handleOpen(e);
+        setData({
+            patenteV: row.patenteV,
+            modeloV: row.modeloV,
+            colorV: row.colorV,
+            estadoV: row.estadoV,
+            estadoRevisionTecnicaV: row.estadoRevisionTecnicaV,
+            montoAseguradora: row.montoAseguradora,
+            tipoAseguradora: row.tipoAseguradora,
+            cVehiculo: row.cVehiculo,
+        });
+    }
+
+  return (
+    <>
+            <Button onClick={handle}
                 color="error"
                 type={'submit'}
                 name={'eliminar'}
@@ -69,10 +68,10 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle> Eliminar Insumo </DialogTitle>
+                <DialogTitle> Eliminar Vehiculo </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        ¿Está seguro que desea eliminar el insumo?
+                        ¿Está seguro que desea eliminar el vehiculo?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -95,9 +94,8 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
         </>
-    )
+  )
 }
 
-export default EliminarInsumo
+export default EliminarVehiculo
