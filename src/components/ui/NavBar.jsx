@@ -6,9 +6,19 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-
+import { Navigate } from 'react-router-dom';
+import { useContext } from 'react';
+import AuthContext from '../../context/AuthContext';
 
 const NavBar = () => {
+
+  const { setAuth } = useContext(AuthContext);
+
+  const cerrarSesion = () => {
+    setAuth({ logged: false });
+    localStorage.removeItem('auth');
+  }
+
   return (
     <Box sx={{ flexGrow: 1 }} style={{
       backgroundColor: '#f5f5f5',
@@ -29,7 +39,7 @@ const NavBar = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={cerrarSesion}>Cerrar Sesión</Button>
         </Toolbar>
       </AppBar>
     </Box>

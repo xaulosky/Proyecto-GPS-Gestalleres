@@ -1,6 +1,8 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import ClienteScreen from '../components/cliente/ClienteScreen'
+import FichaScreen from '../components/ficha/FichaScreen'
+import ListaFichas from '../components/ficha/ListaFichas'
 import DashboardHome from '../components/homedashboard/DashboardHome'
 import InsumoScreen from '../components/insumo/InsumoScreen'
 import Layout from '../components/Layout'
@@ -18,7 +20,9 @@ const DashboardRoutes = () => {
                 <Route path="repuestos" element={<RepuestosScreen />} />
                 <Route path="vehiculo" element={<VehiculoScreen />} />
                 <Route path="insumos" element={<InsumoScreen />} />
+                <Route path="ficha" element={<FichaScreen />} />
                 <Route path="/" element={<DashboardHome />} />
+                <Route path="/fichas" element={<ListaFichas />} />
                 <Route path="*" element={<> <h1>Página no encontrada</h1></>} />
             </Route>
         </Routes>

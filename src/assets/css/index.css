@@ -4,6 +4,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Roboto", sans-serif;
+    position: relative;
 }
 
 a {
@@ -11,7 +12,12 @@ a {
 }
 
 .sidebar {
-    height: 100vh;
+    height: calc(100vh - 30px);
+    position: sticky;
+    width: 100%;
+    top: 0;
+    left: 0;
+
 }
 
 .sidebar * {

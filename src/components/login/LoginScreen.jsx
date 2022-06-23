@@ -37,7 +37,14 @@ const theme = createTheme();
 export default function LoginScreen() {
 
 
+
+  /* localStorage login */
+
+
+
+
   const { setAuth } = useContext(AuthContext);
+
 
   const [values, setValues] = useState({
     email: '',
@@ -52,7 +59,7 @@ export default function LoginScreen() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:8080/apigps/api/login.php', {
+    axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'login.php', {
       email: values.email,
       clave: values.clave
     })
@@ -65,11 +72,26 @@ export default function LoginScreen() {
           }, 3000);
         } else {
           setAuth({
-            email: res.data.email,
             cUsuario: res.data.cUsuario,
+            email: res.data.email,
+            cRolU: res.data.cRolU,
+            cTaller: res.data.cTaller,
             nombreU: res.data.nombreU,
+            nombreRolU: res.data.nombreRolU,
+            nombreTaller: res.data.nombreTaller,
             logged: true
           })
+          /* guardar en localStorage */
+          localStorage.setItem('auth', JSON.stringify({
+            cUsuario: res.data.cUsuario,
+            email: res.data.email,
+            cRolU: res.data.cRolU,
+            cTaller: res.data.cTaller,
+            nombreU: res.data.nombreU,
+            nombreRolU: res.data.nombreRolU,
+            nombreTaller: res.data.nombreTaller,
+            logged: true
+          }));
         }
       })
   }
