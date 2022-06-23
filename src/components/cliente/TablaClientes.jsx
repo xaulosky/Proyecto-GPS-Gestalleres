@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
 import { Filter } from "@mui/icons-material";
@@ -13,6 +13,7 @@ import CrearCliente from "./CrearCliente";
 import CloseIcon from "@mui/icons-material/Close";
 import EditarCliente from "./EditarCliente";
 import EliminarCliente from "./EliminarCliente";
+import AuthContext from "../../context/AuthContext";
 
 const paginationComponentOptions = {
   rowsPerPageText: "Filas por página",
@@ -88,10 +89,11 @@ const TablaClientes = () => {
   ];
 
   const [clientes, setClientes] = useState([]);
+  const { auth } = useContext(AuthContext);
 
   const getClientes = async () => {
     await axios
-      .get(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php")
+      .get(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php?cTaller=" + auth.cTaller)
       .then((res) => {
         setClientes(res.data);
       });

@@ -12,8 +12,9 @@ import {
   Modal,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import AuthContext from "../../context/AuthContext";
 
 const style = {
   position: "absolute",
@@ -31,6 +32,7 @@ const CrearCliente = ({ getClientes }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { auth } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     rutC: "",
@@ -39,11 +41,13 @@ const CrearCliente = ({ getClientes }) => {
     apellidoC: "",
     direccionC: "",
     cComuna: "",
+    
   });
   const onChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+      cTaller: auth.cTaller,
     });
   };
   const onSubmit = (e) => {
@@ -80,7 +84,7 @@ const CrearCliente = ({ getClientes }) => {
       .get(import.meta.env.VITE_APP_BACKEND_URL + "comuna.php")
       .then((res) => {
         setComunas(res.data);
-        console.log(res.data);
+        /* console.log(res.data); */
       })
       .catch((err) => {
         console.log(err);
@@ -119,12 +123,6 @@ const CrearCliente = ({ getClientes }) => {
                   name="rutC"
                   onChange={onChange}
                   required={true}
-                  inputProps={{
-                    patern: "^[0-9]+-[0-9kK]{1}$",
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                 />
               </FormControl>
               <FormControl fullWidth>
