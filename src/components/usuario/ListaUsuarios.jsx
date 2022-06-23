@@ -7,11 +7,12 @@ import { Table, TableBody, TableCell,
     FormHelperText, TextField, Grid, Divider, 
     MenuItem, InputLabel, Select, Modal, Box, makeStyles, Stack } from '@mui/material'
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import DataTable from 'react-data-table-component'
 import AgregarUsuarios from './AgregarUsuarios'
-import EliminarUsuario from './EliminarUsuario';
+import EliminarUsuario from './EliminarUsuario'
 import EditarUsuario from './EditarUsuario'
+import AuthContext from '../../context/AuthContext';
 
 function rol(row){
     if(row.cRolU == 1){
@@ -45,46 +46,48 @@ const ListaUsuarios = () => {
         {
             name: 'Nombre',
             selector: row => row.nombreU,
-            grow : 1.3,
+            grow : 1,
         },
         {
             name: 'Email',
             selector: row => row.email,
-            grow : 1.3,
+            grow : 1,
         },
         {
             name: 'Rol',
             cell: (row) =>
             rol(row),
-            grow : 0.8,
+            grow : 0.6,
            
         },
         
         {	
             name: 'Acciones',		
             cell: (row) => (
-                <Stack direction="row" spacing={1} justifyContent = 'flex-start' >
-                    <EditarUsuario row={row}/>
-                    <EliminarUsuario row={row}/>
-                    <p></p>
+                <Stack direction="row" textAlign="center">
+            
+                        <EditarUsuario row={row} obtenerUsuarios = {obtenerUsuarios}/>                
+                        <EliminarUsuario row={row} obtenerUsuarios = {obtenerUsuarios}/>
+    
                 </Stack>
             ),
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-            grow : 2,
-            
+            width: '150px',
         },
     ];
 
     const [usuarios,setUsuarios] = useState([]);
+    const { auth } = useContext(AuthContext)
 
     const obtenerUsuarios = () =>{
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php')
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php?cTaller='+auth.cTaller)
         .then(respuesta => {
             setUsuarios(respuesta.data);
         })
     }
+    
     useEffect(()=>{
         obtenerUsuarios();
     },[])
@@ -97,15 +100,14 @@ const ListaUsuarios = () => {
         data = {usuarios}
         direction="auto"
         fixedHeader
-        fixedHeaderScrollHeight="600px"
+        fixedHeaderScrollHeight="500px"
         highlightOnHover
         noContextMenu
         pagination
         persistTableHead
         pointerOnHover
         responsive
-        subHeader      
-        subHeaderComponent={<AgregarUsuarios/>} 
+        actions={<AgregarUsuarios obtenerUsuarios = {obtenerUsuarios}/>}
     />  
     )
 }
