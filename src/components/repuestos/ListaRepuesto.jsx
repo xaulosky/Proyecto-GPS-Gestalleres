@@ -1,10 +1,11 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, IconButton } from '@mui/material';
-import CrearRepuestoModal from './CrearRepuestoModal';
+import AuthContext from '../../context/AuthContext'
+import AgregarRepuesto from './AgregarRepuesto';
 
 
 const columns = [
@@ -30,10 +31,6 @@ const columns = [
     selector: row => row.estadoRepuesto,
   },
   {
-    name: 'Código Taller',
-    selector: row => row.cTaller,
-  },
-  {
     name: 'Acciones',
     cell: (row) => (<div>
       <Button color="primary" raised primary onClick={() => { console.log(row) }} title='Editar'><EditIcon /></Button>
@@ -47,10 +44,12 @@ const columns = [
   }
 ]
 const ListaRepuesto = () => {
+  const { auth } = useContext(AuthContext)
+
   const [repuestos, setRepuestos] = useState([])
 
   const obtenerRepuestos = () => {
-    axios.get('http://localhost:8080/apigps/api/repuesto.php')
+    axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'Repuesto.php?cTaller=' + auth.cTaller)
       .then(respuesta => {
         setRepuestos(respuesta.data)
       })
@@ -74,7 +73,7 @@ const ListaRepuesto = () => {
         pointerOnHover
         responsive
         subHeader
-        subHeaderComponent={<CrearRepuestoModal />}
+        subHeaderComponent={<AgregarRepuesto/>}
       />
     </>
   )

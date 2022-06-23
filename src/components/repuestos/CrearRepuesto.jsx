@@ -36,8 +36,6 @@ const CrearRepuesto = () => {
                             Añadir Repuesto
                         </Button>
                     </Grid>
-
-                    Hay que arreglar XDDDD
                 </Grid>
             </Box>
         </>

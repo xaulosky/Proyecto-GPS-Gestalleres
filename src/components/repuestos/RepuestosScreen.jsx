@@ -7,7 +7,6 @@ const RepuestosScreen = () => {
     return (
         <>
         <ListaRepuesto/>
-        <CrearRepuesto/>
         </>
     )
 }
