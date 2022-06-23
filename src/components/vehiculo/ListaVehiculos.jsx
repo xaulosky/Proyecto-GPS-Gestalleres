@@ -6,6 +6,13 @@ import EditarVehiculo from './EditarVehiculo';
 import EliminarVehiculo from './EliminarVehiculo';
 import AgregarVehiculo from './AgregarVehiculo';
 
+
+
+function formatoNumeros(numero) {
+    return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+
 const ListaVehiculos = () => {
 
     const columns = [
@@ -36,7 +43,7 @@ const ListaVehiculos = () => {
         },
         {
             name: 'Aseguradora Monto',
-            selector: row => row.montoAseguradora,
+            selector: row => formatoNumeros(row.montoAseguradora),
         },
         {
             name: 'Acciones',

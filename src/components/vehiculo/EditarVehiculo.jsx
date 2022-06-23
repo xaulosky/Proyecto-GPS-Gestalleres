@@ -1,10 +1,11 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
-import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material';
+import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
+import swal from 'sweetalert';
 
 
 const style = {
@@ -19,6 +20,10 @@ const style = {
     boxShadow: 24,
     p: 4,
 };
+
+function formatoNumeros(numero) {
+    return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 
 const EditarVehiculo = ({row, obtenerVehiculos}) => {
 
@@ -62,15 +67,52 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                 handleClose(e);
                 obtenerVehiculos();
                 console.log(respuesta.data);
+            }).then(() => {
+                swal(
+                    'Cambios efectuados', {
+                    icon: 'success',
+                    buttons: false,
+                });
+                setTimeout(() => {
+                    swal.close()
+                }, 2000);
             })
 
     }
 
-    
+    const abrirModal = () => {
+        obtenerVehiculos();
+        setData({
+            patenteV: row.patenteV,
+            modeloV: row.modeloV,
+            colorV: row.colorV,
+            estadoV: row.estadoV,
+            estadoRevisionTecnicaV: row.estadoRevisionTecnicaV,
+            montoAseguradora: row.montoAseguradora,
+            tipoAseguradora: row.tipoAseguradora,
+            cVehiculo: row.cVehiculo,
+        });
+        handleOpen();
+    }
+
+    const cerrarModal = () => {
+        obtenerVehiculos();
+        setData({
+            patenteV: '',
+            modeloV: '',
+            colorV: '',
+            estadoV: '',
+            estadoRevisionTecnicaV: '',
+            montoAseguradora: '',
+            tipoAseguradora: '',
+            cVehiculo: '',
+        });
+        handleClose();
+    }
 
     return (    
         <> 
-            <Button onClick={handleOpen}
+            <Button onClick={abrirModal}
                 type={'submit'}
                 name={'editar'}
                 color="primary"
@@ -79,7 +121,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
             </Button>
             <Modal
                 open={open}
-                onClose={handleClose}
+                onClose={cerrarModal}
                 aria-labelledby="simple-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -166,7 +208,7 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
                                     Aceptar
                                 </Button>
                                 <Button
-                                    onClick={handleClose}
+                                    onClick={cerrarModal}
                                     variant="contained"
                                     color="error"
                                     name={'Cancelar'}

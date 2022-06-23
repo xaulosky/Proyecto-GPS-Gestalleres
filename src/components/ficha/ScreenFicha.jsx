@@ -94,10 +94,10 @@ const ScreenFicha = () => {
 
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} fullWidth />
+                        <TextField label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField label="Fecha Entrega Estimada" type="date" name="fechaEntregaEstimada" onChange={handleChange} value={dataFicha.fechaEntregaEstimada} fullWidth />
+                        <TextField label="Fecha Entrega Estimada" type="date" name="fechaEntregaEstimada" onChange={handleChange} value={dataFicha.fechaEntregaEstimada} />
                     </Grid>
                     <Grid item xs={12}>
                         <Autocomplete

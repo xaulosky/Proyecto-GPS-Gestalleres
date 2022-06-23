@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useEffect, useState } from 'react';
+import swal from 'sweetalert';
 
 const style = {
     position: 'absolute',
@@ -35,12 +36,51 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
         ).then(respuesta => {   
             obtenerVehiculos();
             handleClose(e);
+        }).then(() => {
+            swal(
+                'Vehiculo eliminado', {
+                icon: 'success',
+                buttons: false,
+            });
+            setTimeout(() => {
+                swal.close()
+            }, 2000);
         })
     }
 
+    const abrirModal = () => {
+        obtenerVehiculos();
+        setData({
+            patenteV: row.patenteV,
+            modeloV: row.modeloV,
+            colorV: row.colorV,
+            estadoV: row.estadoV,
+            estadoRevisionTecnicaV: row.estadoRevisionTecnicaV,
+            montoAseguradora: row.montoAseguradora,
+            tipoAseguradora: row.tipoAseguradora,
+            cVehiculo: row.cVehiculo,
+        });
+        handleOpen();
+    }
+
+    const cerrarModal = () => {
+        obtenerVehiculos();
+        setData({
+            patenteV: '',
+            modeloV: '',
+            colorV: '',
+            estadoV: '',
+            estadoRevisionTecnicaV: '',
+            montoAseguradora: '',
+            tipoAseguradora: '',
+            cVehiculo: '',
+        });
+        handleClose();
+    };
+
   return (
     <>
-            <Button onClick={handleOpen}
+            <Button onClick={abrirModal}
                 color="error"
                 type={'submit'}
                 name={'eliminar'}
@@ -50,7 +90,7 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
             </Button>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={cerrarModal}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -71,7 +111,7 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
                         Aceptar
                     </Button>
                     <Button
-                        onClick={handleClose}
+                        onClick={cerrarModal}
                         variant="contained"
                         color="error"
                         name={'cancelar'}
