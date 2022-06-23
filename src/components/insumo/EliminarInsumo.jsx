@@ -2,11 +2,8 @@ import React, { useEffect } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import { DialogTitle } from '@mui/material';
+import swal from 'sweetalert';
+
 
 const style = {
     position: 'absolute',
@@ -24,100 +21,64 @@ const style = {
 };
 
 const EliminarInsumo = ({ row, obtenerInsumos }) => {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const [data, setData] = React.useState({
-        cInsumo: row.cInsumo,
-    });
-
     const [res, setRes] = React.useState({
         msg: '',
     });
-    const submit = (e) => {
-        e.preventDefault();
-        axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
-            data: {
-                cInsumo: data.cInsumo,
-            }
-        }
-        ).then(respuesta => {
-            obtenerInsumos();
-            handleClose();
-            setRes(respuesta.data);
-            if (respuesta.data.msg === 'ok') {
-                swal("ELIMINADO", "Insumo eliminado correctamente", "success");
-            } else {
-                swal("ERROR", "Error al eliminar el insumo", "error");
-            }
+
+    function eliminar(row) {
+        swal({
+            title: "¿Estas seguro de eliminar el insumo?",
+            text: "Una vez eliminado no podras recuperarlo",
+            icon: "warning",
+            buttons: true,
+            buttons: ["Cancelar", "Eliminar"],
+            dangerMode: true,   
         })
+            .then((willDelete) => {
+                if (willDelete) {
+                    axios.delete(import.meta.env.VITE_APP_BACKEND_URL + '/insumo.php?cInsumo='+row.cInsumo
+                    ).then(respuesta => {
+                        console.log('cInsumo: ', row.cInsumo);
+                        obtenerInsumos();
+                        setRes(respuesta.data);
+                        if (respuesta.data.msg === 'ok') {
+                            swal("Insumo eliminado correctamente", {
+                                icon: "success",
+                            });
+                        } else {
+                            swal({
+                                title: "ERROR",
+                                text: "Error al eliminar insumo",
+                                icon: "error",
+                                button: "Cerrar",
+                            });
+                        }
+                    })
+                }
+            });
     }
+
     useEffect(() => {
         obtenerInsumos();
     }, [])
 
-    function abrir() {
+    function eliminarInsumo(row) {
         obtenerInsumos();
-        setData({
-            cInsumo: row.cInsumo,
-        });
-        handleOpen();
-    }
-
-    function cerrar() {
-        obtenerInsumos();
-        setData({
-            cInsumo: row.cInsumo,
-        });
-        handleClose();
+        eliminar(row);
     }
 
     return (
         <>
-            <Button onClick={abrir}
+            <Button
+                onClick={() => eliminarInsumo(row)}
                 color="error"
-                type={'submit'}
                 name={'eliminar'}
                 title={'Eliminar'}
                 endIcon={<DeleteIcon />}
             >
             </Button>
-            <Dialog
-                open={open}
-                onClose={cerrar}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle> Eliminar Insumo </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        ¿Está seguro que desea eliminar el insumo?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={submit}
-                        variant="contained"
-                        color="primary"
-                        name={'eliminar'}
-
-                    >
-                        Aceptar
-                    </Button>
-                    <Button
-                        onClick={cerrar}
-                        variant="contained"
-                        color="error"
-                        name={'cancelar'}
-                    >
-                        Cancelar
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
         </>
     )
 }
 
-export default EliminarInsumo
+export default EliminarInsumo;

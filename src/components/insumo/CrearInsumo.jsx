@@ -5,6 +5,7 @@ import axios from 'axios';
 import AuthContext from '../../context/AuthContext'
 import swal from 'sweetalert';
 
+
 const style = {
 
     position: 'absolute',
@@ -21,6 +22,9 @@ const style = {
 const CrearInsumo = ({ obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
+    const validaNombre = '[0-9a-zA-Zá-úÁ-Ú- ]*';
+    const validaCantidad = '[0-9]*';
+    const contador = 0;
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -35,6 +39,23 @@ const CrearInsumo = ({ obtenerInsumos }) => {
     const [res, setRes] = React.useState({
         msg: '',
     });
+
+    const [error, setError] = React.useState({
+        msg1: '',
+        msg2: '',
+        msg3: '',
+        msg4: '',
+        msg5: '',
+        msg6: '',
+        msg7: '',
+        msg8: '',
+        msg9: '',
+        msg10: '',
+        msg11: '',
+        msg12: '',
+        msg13: '',
+    });
+
 
     const submit = (e) => {
         e.preventDefault();
@@ -54,7 +75,6 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                     swal("ERROR", "Error al crear el insumo", "error");
                 }
             })
-
     }
 
     function handle(e) {
@@ -63,6 +83,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         setData(newdata);
         console.log(newdata);
     }
+
+
 
     return (
         <>
@@ -96,8 +118,9 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            inputProps={{ maxLength: 256 }}
-                            required={true}
+                            inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }}
+                            InputLabelProps={{ shrink: true }}
+
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -107,25 +130,28 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
-                            InputProps={{ inputProps: { min: 0 } }}
+                            inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }}
+                            InputLabelProps={{ shrink: true }}
                             required={true}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Valor"
+                            label="Precio"
                             margin="normal"
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
                             required={true}
-                            InputProps={{ inputProps: { min: 0 } }}
+                            inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }}
+
+                            InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
-                        <Grid item xs={12} sm={12} style={{ height: '90px' }}>
-                            <Grid >
+                        <Grid item xs={12} sm={12} style={{ height: '70px' }}>
+                            <DialogActions >
                                 <Button
-                                    sx={{ ml: 5, p: '4px 15px' }}
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                     variant="contained"
                                     color="primary"
                                     name={'crear'}
@@ -135,13 +161,14 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                                 </Button>
                                 <Button
                                     onClick={handleClose}
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                     variant="contained"
                                     color="error"
                                     name={'cancelar'}
                                 >
                                     Cancelar
                                 </Button>
-                            </Grid>
+                            </DialogActions>
                         </Grid>
                     </Typography>
                 </Box>

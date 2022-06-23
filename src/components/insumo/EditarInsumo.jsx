@@ -5,7 +5,6 @@ import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
 
-
 const style = {
 
     position: 'absolute',
@@ -55,9 +54,19 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                 handleClose();
                 setRes(respuesta.data);
                 if (respuesta.data.msg === 'ok') {
-                    swal("ACTUALIZADO", "Insumo actualizado correctamente", "success");
+                    swal({
+                        title: "ACTUALIZADO",
+                        text: "Insumo actualizado correctamente",
+                        icon: "success",
+                        button: "OK",
+                    });
                 } else {
-                    swal("ERROR", "Error al editar insumo", "error");
+                    swal({
+                        title: "ERROR",
+                        text: "Error al editar insumo",
+                        icon: "error",
+                        button: "Cerrar",
+                    });
                 }
             })
     }
@@ -120,11 +129,12 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            inputProps={{ maxLength: 256 }}
+                            inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }}
+                            InputLabelProps={{ shrink: true }}
                             value={data.nombreInsumo}
                             required
                             onChange={(e) => handle(e)}
-                            
+
                         />
                         <TextField fullWidth
                             id="standard-basic"
@@ -133,19 +143,23 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
+                            Shrink ={true}
                             value={data.cantidad}
-                            InputProps={{ inputProps: { min: 0 } }}
+                            inputProps={{ pattern: '[0-9]*', min: 0 , max: 999999999 }}
+                            title= 'Solo números entre 0 y 999999999'
+                            InputLabelProps={{ shrink: true }}
                             required
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Valor"
+                            label="Precio"
                             margin="normal"
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            InputProps={{ inputProps: { min: 0 } }}
+                            inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }}
+                            InputLabelProps={{ shrink: true }}
                             value={data.costo}
                             required
                             onChange={(e) => handle(e)}
@@ -153,6 +167,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
                             <DialogActions>
                                 <Button
+                                    sx={{ ml: 10, p: '5px 20px' , mt: '20px'}}
                                     variant="contained"
                                     color="primary"
                                     name={'crear'}
@@ -161,6 +176,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                                     Aceptar
                                 </Button>
                                 <Button
+                                    sx={{ ml: 10, p: '5px 20px' , mt: '20px'}}
                                     onClick={cerrar}
                                     variant="contained"
                                     color="error"

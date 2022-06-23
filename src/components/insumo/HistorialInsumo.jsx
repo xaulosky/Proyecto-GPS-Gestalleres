@@ -45,6 +45,10 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
             selector: row => row.fechaCambio,
         },
         {
+            name: 'Nombre del insumo',
+            selector: row => row.nombreInsumo,
+        },
+        {
             name: 'Cantidad',
             selector: row => formatoNumeros(row.cantidad),
         },
