@@ -19,7 +19,6 @@ const ListaVehiculos = () => {
         {
             name: '#Vehiculo',
             selector: row => row.cVehiculo,
-            sortable: true
         },
         {
             name: 'Patente',

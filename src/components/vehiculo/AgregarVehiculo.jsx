@@ -49,12 +49,13 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
             estadoV: data.estadoV,
             estadoRevisionTecnicaV: data.estadoRevisionTecnicaV,
             montoAseguradora: data.montoAseguradora,
+            cCliente: data.cCliente,
             cAseguradora: data.cAseguradora,
             cTipoCarroceria: data.cTipoCarroceria,
-            cCliente: data.cCliente,
 
         }).then(respuesta => {
             obtenerVehiculos()
+            console.log(respuesta.data);
             handleClose();
             if (respuesta.data.msg === 'Agregado correctamente') {
                 
