@@ -36,15 +36,16 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
         ).then(respuesta => {   
             obtenerVehiculos();
             handleClose(e);
-        }).then(() => {
-            swal(
-                'Vehiculo eliminado', {
-                icon: 'success',
-                buttons: false,
-            });
+            if (respuesta.data.msg === 'Vehiculo eliminado') {
+                
+                swal("EXITO!", "Vehiculo eliminado correctamente", "success");
+            } else {
+                swal("ERROR", "Error al eliminar el vehiculo", "error");
+                console.log(respuesta.data.msg);
+            }
             setTimeout(() => {
                 swal.close()
-            }, 2000);
+            }, 3000);
         })
     }
 

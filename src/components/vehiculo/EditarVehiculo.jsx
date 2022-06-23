@@ -21,10 +21,6 @@ const style = {
     p: 4,
 };
 
-function formatoNumeros(numero) {
-    return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-}
-
 const EditarVehiculo = ({row, obtenerVehiculos}) => {
 
     const [open, setOpen] = useState(false);
@@ -66,18 +62,17 @@ const EditarVehiculo = ({row, obtenerVehiculos}) => {
             .then(respuesta => {
                 handleClose(e);
                 obtenerVehiculos();
-                console.log(respuesta.data);
-            }).then(() => {
-                swal(
-                    'Cambios efectuados', {
-                    icon: 'success',
-                    buttons: false,
-                });
+                if (respuesta.data.msg === 'Actualizado correctamente') {
+                
+                    swal("EXITO!", "Cambios efectuados correctamente", "success");
+                } else {
+                    swal("ERROR", "Error al editar el vehiculo", "error");
+                    console.log(respuesta.data.msg);
+                }
                 setTimeout(() => {
                     swal.close()
-                }, 2000);
+                }, 3000);
             })
-
     }
 
     const abrirModal = () => {

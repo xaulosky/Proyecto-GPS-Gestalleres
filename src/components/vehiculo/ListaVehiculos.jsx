@@ -48,18 +48,18 @@ const ListaVehiculos = () => {
         {
             name: 'Acciones',
             cell: (row) => {
-              return (
-                <Stack direction={row} textAlign="center" >
-                  <EditarVehiculo   
-                    row={row}
-                    obtenerVehiculos={obtenerVehiculos}
-                />
-                <EliminarVehiculo
-                  row={row}
-                  obtenerVehiculos={obtenerVehiculos}
-                />
-                </Stack>
-              )
+                return (
+                    <Stack direction={row} textAlign="center" >
+                        <EditarVehiculo
+                            row={row}
+                            obtenerVehiculos={obtenerVehiculos}
+                        />
+                        <EliminarVehiculo
+                            row={row}
+                            obtenerVehiculos={obtenerVehiculos}
+                        />
+                    </Stack>
+                )
             },
             ignoreRowClick: true,
             allowOverflow: true,
@@ -68,7 +68,7 @@ const ListaVehiculos = () => {
             align: 'center',
         }
     ];
-    
+
 
     const [vehiculos, setVehiculos] = useState([]);
 
@@ -81,26 +81,27 @@ const ListaVehiculos = () => {
 
     useEffect(() => {
         obtenerVehiculos();
+
     }, []);
 
     return (
         <>
-        <Grid item align='right' xs={12} >
-            <AgregarVehiculo obtenerVehiculos={obtenerVehiculos}/>
-        </Grid>
+            <Grid item align='right' xs={12} >
+                <AgregarVehiculo obtenerVehiculos={obtenerVehiculos} />
+            </Grid>
 
-        <DataTable
-            title=""
-            columns={columns}
-            data={vehiculos}
-            dense
-            direction="auto"
-            fixedHeaderScrollHeight="300px"
-            pagination
-            responsive
-            subHeaderAlign="center"
-            subHeaderWrap
-        />
+            <DataTable
+                title=""
+                columns={columns}
+                data={vehiculos}
+                dense
+                direction="auto"
+                fixedHeaderScrollHeight="300px"
+                pagination
+                responsive
+                subHeaderAlign="center"
+                subHeaderWrap
+            />
         </>
     )
 }

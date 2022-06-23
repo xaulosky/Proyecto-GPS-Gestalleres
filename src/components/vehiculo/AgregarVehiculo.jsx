@@ -56,55 +56,19 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
         }).then(respuesta => {
             obtenerVehiculos()
             handleClose();
-        }).then(() => {
-            swal(
-                'Vehiculo agregado exitosamente!', {
-                icon: 'success',
-                buttons: false,
-            });
+            if (respuesta.data.msg === 'Agregado correctamente') {
+                
+                swal("CREADO!", "Vehiculo creado correctamente", "success");
+            } else {
+                swal("ERROR", "Error al crear el vehiculo", "error");
+                console.log(respuesta.data.msg);
+            }
             setTimeout(() => {
                 swal.close()
-            }, 2000);
+            }, 3000);
         })
 
     };
-
-    function handle(e) {
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value;
-        setData(newdata);
-        console.log(newdata);
-    };
-
-    const onChange = (e) => {
-        setData({
-            ...data,
-            [e.target.name]: e.target.value,
-        });
-    };
-
-
-
-    const [aseguradoras, setAseguradoras] = useState();
-    const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState();
-
-    const [clientes, setClientes] = useState();
-    const [clienteSeleccionado, setClienteSeleccionado] = useState();
-
-    const [tipoCarrocerias, setTipoCarrocerias] = useState();
-    const [tipoCarroceriaSeleccionada, setTipoCarroceriaSeleccionada] = useState();
-
-    useEffect(() => {
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'aseguradora.php').then(respuesta => {
-            setAseguradoras(respuesta.data);
-        })
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php').then(respuesta => {
-            setClientes(respuesta.data);
-        })
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php').then(respuesta => {
-            setTipoCarrocerias(respuesta.data);
-        })
-    }, [], [], []);
 
     const cerrarModal = () => {
         obtenerVehiculos();
@@ -115,11 +79,44 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
             estadoV: '',
             estadoRevisionTecnicaV: '',
             montoAseguradora: '',
-            tipoAseguradora: '',
-            cVehiculo: '',
+            cAseguradora: '',
+            cTipoCarroceria: '',
+            cCliente: '',
         });
         handleClose();
     };
+
+    function handle(e) {
+        const newdata = { ...data }
+        newdata[e.target.name] = e.target.value;
+        setData(newdata);
+        console.log(newdata);
+    };
+
+
+    const [aseguradoras, setAseguradoras] = useState();
+    const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState();
+
+    const [tipoCarrocerias, setTipoCarrocerias] = useState();
+    const [tipoCarroceriaSeleccionada, setTipoCarroceriaSeleccionada] = useState();
+
+    const [clientes, setClientes] = useState();
+    const [clienteSeleccionado, setClienteSeleccionado] = useState();
+
+
+    useEffect(() => {
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'aseguradora.php').then(respuesta => {
+            setAseguradoras(respuesta.data);
+        })
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php').then(respuesta => {
+            setTipoCarrocerias(respuesta.data);
+
+        })
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php').then(respuesta => {
+            setClientes(respuesta.data);
+
+        })
+    }, []);
 
     return (
         <>
@@ -136,7 +133,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
 
             <Modal
                 open={open}
-                onClose={cerrarModal}
+                onClose={handleClose}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -168,7 +165,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                             <Grid item xs={12}>
                                 <Autocomplete
                                     id="aseguradora"
-                                    options={aseguradoras || []}
+                                    options={aseguradoras }
                                     value={aseguradoraSeleccionada}
                                     getOptionLabel={(option) => option.nombreAseguradora}
                                     onChange={(event, value) => {
@@ -195,7 +192,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                             <Grid item xs={6}>
                                 <Autocomplete
                                     id="TipoCarroceria"
-                                    options={tipoCarrocerias || []}
+                                    options={tipoCarrocerias}
                                     value={tipoCarroceriaSeleccionada}
                                     getOptionLabel={(option) => option.tipoCarroceria}
                                     onChange={(event, value) => {
@@ -222,14 +219,15 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                             <Grid item xs={6} fullWidth align='center'>
                                 <Autocomplete
                                     id="Cliente"
-                                    options={clientes || []}
+                                    options={clientes}
                                     value={clienteSeleccionado}
                                     getOptionLabel={(option) => option.nombreC}
                                     onChange={(event, value) => {
                                         if (value) {
                                             setData({
                                                 ...data,
-                                                cCliente: value.cCliente
+                                                cCliente: value.cCliente,
+
                                             })
                                             setClienteSeleccionado(value)
                                         } else {
@@ -242,8 +240,8 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                         }
                                     }
                                     }
-                                    renderInput={(params) => <TextField {...params} label="Cliente" variant="outlined" fullWidth required />}
                                     isOptionEqualToValue={(option, value) => option.cCliente === value.cCliente}
+                                    renderInput={(params) => (<TextField {...params} label="Cliente" variant="outlined" fullWidth required />)}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={12} style={{ height: '100px', Textalign: 'center' }}>
@@ -257,7 +255,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                         Aceptar
                                     </Button>
                                     <Button
-                                        onClick={cerrarModal}
+                                        onClick={handleClose}
                                         variant="contained"
                                         color="error"
                                         name={'Cancelar'}
