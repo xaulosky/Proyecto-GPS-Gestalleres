@@ -12,6 +12,10 @@ function formatoNumeros(numero) {
     return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
+/*const formatoDinero = (numero) => {
+    return ' $ ' + formatoNumeros(numero);
+}*/
+
 
 const ListaVehiculos = () => {
 
@@ -42,7 +46,7 @@ const ListaVehiculos = () => {
         },
         {
             name: 'Aseguradora Monto',
-            selector: row => formatoNumeros(row.montoAseguradora),
+            selector: row => (formatoNumeros(row.montoAseguradora)),
         },
         {
             name: 'Acciones',
