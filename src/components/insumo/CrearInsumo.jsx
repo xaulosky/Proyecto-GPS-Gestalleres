@@ -2,9 +2,9 @@ import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '
 import React, { useContext } from 'react'
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
-import AuthContext from '../../context/AuthContext'
+import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
-
+import ValidarInsumo from './ValidarInsumo';
 
 const style = {
 
@@ -22,10 +22,6 @@ const style = {
 const CrearInsumo = ({ obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
-    const validaNombre = '[0-9a-zA-Zá-úÁ-Ú- ]*';
-    const validaCantidad = '[0-9]*';
-    const contador = 0;
-
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -40,55 +36,50 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         msg: '',
     });
 
-    const [error, setError] = React.useState({
-        msg1: '',
-        msg2: '',
-        msg3: '',
-        msg4: '',
-        msg5: '',
-        msg6: '',
-        msg7: '',
-        msg8: '',
-        msg9: '',
-        msg10: '',
-        msg11: '',
-        msg12: '',
-        msg13: '',
-    });
-
-
     const submit = (e) => {
         e.preventDefault();
-        axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
-            nombreInsumo: data.nombreInsumo,
-            cantidad: data.cantidad,
-            costo: data.costo,
-            cTaller: auth.cTaller,
-        })
-            .then(respuesta => {
-                obtenerInsumos()
-                handleClose();
-                setRes(respuesta.data);
-                if (respuesta.data.msg === 'ok') {
-                    swal("CREADO", "Insumo creado correctamente", "success");
-                } else {
-                    swal("ERROR", "Error al crear el insumo", "error");
-                }
+
+        let tof = ValidarInsumo(data);
+
+        if (tof) {
+            axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
+                nombreInsumo: data.nombreInsumo,
+                cantidad: data.cantidad,
+                costo: data.costo,
+                cTaller: auth.cTaller,
             })
+                .then(respuesta => {
+                    obtenerInsumos()
+                    handleClose();
+                    setRes(respuesta.data);
+                    if (respuesta.data.msg === 'ok') {
+                        swal("CREADO", "Insumo creado correctamente", "success");
+                    } else {
+                        swal("ERROR", "Error al crear el insumo", "error");
+                    }
+                })
+        }
     }
 
     function handle(e) {
         const newdata = { ...data }
         newdata[e.target.name] = e.target.value;
         setData(newdata);
-        console.log(newdata);
     }
 
-
+    function abrir() {
+        obtenerInsumos();
+        setData({
+            nombreInsumo: '',
+            cantidad: '',
+            costo: '',
+        });
+        handleOpen();
+    }
 
     return (
         <>
-            <Button onClick={handleOpen}
+            <Button onClick={abrir}
                 variant="contained"
                 sx={{ ml: 3, p: '10px 15px' }}
                 title="Agregar Insumo"
@@ -118,7 +109,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }}
+                            /* inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }}
+                            required={true} */
                             InputLabelProps={{ shrink: true }}
 
                             onChange={(e) => handle(e)}
@@ -130,9 +122,9 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
-                            inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }}
+                            /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }}
+                            required={true} */
                             InputLabelProps={{ shrink: true }}
-                            required={true}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -142,9 +134,8 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            required={true}
-                            inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }}
-
+                            /*required={true}
+                            inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
                             InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
@@ -178,3 +169,11 @@ const CrearInsumo = ({ obtenerInsumos }) => {
 }
 
 export default CrearInsumo
+
+
+/* 
+
+
+
+
+*/
