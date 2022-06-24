@@ -14,7 +14,7 @@ const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
   rangeSeparatorText: 'de',
   selectAllRowsItem: true,
-  selectAllRowsItemText: 'Todos',
+  selectAllRowsItemText: 'Todos',  
 };
 
 function formatoNumeros(numero) {
@@ -110,8 +110,8 @@ const ListaInsumo = () => {
           title='Exportar Excel'
           onClick={(e) => exportXLSX(insumos)}
         >
-          Exportar <i 
-          className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
+          Exportar <i
+            className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
       </Grid>
       <DataTable
         title="Lista Insumos"
@@ -128,8 +128,9 @@ const ListaInsumo = () => {
         responsive
         subHeaderAlign="right"
         subHeaderWrap
+        noDataComponent = "No hay insumos registrados"
         paginationComponentOptions={paginationComponentOptions}
-        />
+      />
     </>
   )
 }

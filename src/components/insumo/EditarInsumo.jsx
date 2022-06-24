@@ -4,7 +4,7 @@ import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
-import ValidarInsumo from './ValidarInsumo';
+import validar from '../funciones/insumos/validarDatosInsumo';
 
 
 const style = {
@@ -45,7 +45,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
     const submit = (e) => {
         e.preventDefault();
 
-        let tof = ValidarInsumo(data);
+        let tof = validar(data);
         if (tof) {
             axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
                 nombreInsumo: data.nombreInsumo,

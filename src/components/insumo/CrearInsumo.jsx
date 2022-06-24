@@ -4,7 +4,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
-import ValidarInsumo from './ValidarInsumo';
+import validar from '../funciones/insumos/validarDatosInsumo';
 
 const style = {
 
@@ -39,7 +39,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
     const submit = (e) => {
         e.preventDefault();
 
-        let tof = ValidarInsumo(data);
+        let tof = validar(data);
 
         if (tof) {
             axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
@@ -112,7 +112,6 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             /* inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }}
                             required={true} */
                             InputLabelProps={{ shrink: true }}
-
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth

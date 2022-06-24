@@ -27,7 +27,7 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
 
     function eliminar(row) {
         swal({
-            title: "¿Estas seguro de eliminar el insumo?",
+            title: "¿Estas seguro de eliminar el insumo "+ row.nombreInsumo+"?",
             text: "Una vez eliminado no podras recuperarlo",
             icon: "warning",
             buttons: true,
