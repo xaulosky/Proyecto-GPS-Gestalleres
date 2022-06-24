@@ -20,7 +20,32 @@ const style = {
     p: 4,
 };
 
-
+const opciones = [
+    {
+        value: 1,
+        label: 'En revisión',
+    },
+    {
+        value: 2,
+        label: 'En reparación',
+    },
+    {
+        value: 3,
+        label: 'Reparado',
+    },
+    {
+        value: 4,
+        label: 'Entregado',
+    },
+    {
+        value: 5,
+        label: 'Cancelado',
+    },
+    {
+        value: 6,
+        label: 'En espera',
+    },
+];
 
 const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
     const [open, setOpen] = useState(false);
@@ -58,7 +83,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
             console.log(respuesta.data);
             handleClose();
             if (respuesta.data.msg === 'Agregado correctamente') {
-                
+
                 swal("CREADO!", "Vehiculo creado correctamente", "success");
             } else {
                 swal("ERROR", "Error al crear el vehiculo", "error");
@@ -69,22 +94,6 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
             }, 3000);
         })
 
-    };
-
-    const cerrarModal = () => {
-        obtenerVehiculos();
-        setData({
-            patenteV: '',
-            modeloV: '',
-            colorV: '',
-            estadoV: '',
-            estadoRevisionTecnicaV: '',
-            montoAseguradora: '',
-            cAseguradora: '',
-            cTipoCarroceria: '',
-            cCliente: '',
-        });
-        handleClose();
     };
 
     function handle(e) {
@@ -158,7 +167,19 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                 <TextField id="estadoV" name="estadoV" label="Estado" type={'text'} required onChange={(e) => handle(e)} />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField id="estadoRevisionTecnicaV" name="estadoRevisionTecnicaV" label="Estado Revision Tecnica" required type={'text'} onChange={(e) => handle(e)} />
+                                {/*Autocomplete de estado de revision tecnica*/}
+                                <Autocomplete
+                                    id="estadoRevisionTecnicaV"
+                                    options={opciones}
+                                    getOptionLabel={(option) => option.label}
+                                    
+                                    onChange={(e, value) => {
+                                        setData({ ...data, estadoRevisionTecnicaV: value.label})
+                                    }
+                                    }
+                                    renderInput={(params) => <TextField {...params} label="Estado de revision tecnica" required />}
+                                />
+
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField id="montoAseguradora" name="montoAseguradora" label="Monto Aseguradora" type={'number'} required InputProps={{ inputProps: { min: 0 } }} onChange={(e) => handle(e)} />
@@ -166,7 +187,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                             <Grid item xs={12}>
                                 <Autocomplete
                                     id="aseguradora"
-                                    options={aseguradoras }
+                                    options={aseguradoras}
                                     value={aseguradoraSeleccionada}
                                     getOptionLabel={(option) => option.nombreAseguradora}
                                     onChange={(event, value) => {
@@ -245,9 +266,12 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                     renderInput={(params) => (<TextField {...params} label="Cliente" variant="outlined" fullWidth required />)}
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={12} style={{ height: '100px', Textalign: 'center' }}>
+                            <Grid item xs={12} fullWidth>
                                 <DialogActions>
                                     <Button
+                                        xs={6}
+                                        align='center'
+                                        fullWidth
                                         variant="contained"
                                         color="primary"
                                         name={'Aceptar'}
@@ -256,6 +280,9 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                         Aceptar
                                     </Button>
                                     <Button
+                                        xs={6}
+                                        align='center'
+                                        fullWidth
                                         onClick={handleClose}
                                         variant="contained"
                                         color="error"
