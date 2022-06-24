@@ -17,17 +17,17 @@ const style = {
     p: 4,
 };
 
-const AgregarRepuesto = () => {
+const AgregarRepuesto = ({obtenerRepuestos}) => {
     const { auth } = useContext(AuthContext)
 
     //Comportamiento Modal
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(false)
 
     const handleOpen = () => setOpen(true)
     const handleClose = () => setOpen(false)
 
     //Datos Ingreso
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         nombreRepuesto: '',
         cantidad: '',
         fechaSolicitud: '',
@@ -46,6 +46,7 @@ const AgregarRepuesto = () => {
     }
 
     const submit = (e) => {
+        e.preventDefault()
         axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'repuesto.php', {
             nombreRepuesto: data.nombreRepuesto,
             cantidad: data.cantidad,
@@ -56,13 +57,8 @@ const AgregarRepuesto = () => {
             .then(respuesta => {
                 obtenerRepuestos();
                 handleClose();
+                console.log(respuesta)
             })
-    }
-
-    function handle(e){
-        const newData = {...data}
-        newData[e.target.name] = e.target.value
-        setData(newData)
     }
 
     return (
@@ -105,6 +101,7 @@ const AgregarRepuesto = () => {
                             margin='normal'
                             variant='outlined'
                             type={'text'}
+                            InputLabelProps={{ shrink: true }}
                             name={'nombreRepuesto'}
                             inputProps={{ maxlenght: 256 }}
                             required onChange={(e) => handle(e)}
@@ -116,6 +113,7 @@ const AgregarRepuesto = () => {
                             margin='normal'
                             variant='outlined'
                             type={'number'}
+                            InputLabelProps={{ shrink: true }}
                             name={'cantidad'}
                             inputProps={{ maxlenght: 256 }}
                             required
@@ -128,6 +126,7 @@ const AgregarRepuesto = () => {
                             margin='normal'
                             variant='outlined'
                             type={'date'}
+                            InputLabelProps={{ shrink: true }}
                             name={'fechaSolicitud'}
                             inputProps={{ maxlenght: 256 }}
                             required
@@ -140,6 +139,7 @@ const AgregarRepuesto = () => {
                             margin='normal'
                             variant='outlined'
                             type={'text'}
+                            InputLabelProps={{ shrink: true }}
                             name={'estadoRepuesto'}
                             inputProps={{ maxlenght: 256 }}
                             required
@@ -162,7 +162,6 @@ const AgregarRepuesto = () => {
                         variant='contained'
                         color='error'
                         name={'salir'}
-                        type={'submit'}
                     >
 
                         Cancelar

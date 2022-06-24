@@ -49,7 +49,7 @@ const ListaRepuesto = () => {
   const [repuestos, setRepuestos] = useState([])
 
   const obtenerRepuestos = () => {
-    axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'Repuesto.php?cTaller=' + auth.cTaller)
+    axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'repuesto.php?cTaller=' + auth.cTaller)
       .then(respuesta => {
         setRepuestos(respuesta.data)
       })
@@ -73,7 +73,7 @@ const ListaRepuesto = () => {
         pointerOnHover
         responsive
         subHeader
-        subHeaderComponent={<AgregarRepuesto/>}
+        subHeaderComponent={<AgregarRepuesto obtenerRepuestos = {obtenerRepuestos}/>}
       />
     </>
   )
