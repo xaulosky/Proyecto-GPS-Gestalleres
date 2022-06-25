@@ -1,7 +1,6 @@
 import { Button } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react'
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import { DeleteIcon } from '@mui/icons-material/Delete';
 import swal from 'sweetalert';
 
@@ -20,11 +19,10 @@ const style = {
   pb: 3
 };
 
-const EliminarRepuesto = ({codRepuesto, obtenerRepuestos}) => {
-  console.log(codRepuesto);
+const EliminarRepuesto = ({row, obtenerRepuestos}) => {
+  console.log(row);
 
   const [res, setRes] = useState({
-
     msg: ''
   });
 
@@ -46,7 +44,6 @@ const EliminarRepuesto = ({codRepuesto, obtenerRepuestos}) => {
           axios.delete(import.meta.env.VITE_APP_BACKEND_URL + '/repuesto.php?cRepuesto=' + row.cRepuesto)
             .then(respuesta => {
 
-              console.log('cRepuesto: ', row.cRepuesto)
               obtenerRepuestos();
               setRes(respuesta.data)
               if (respuesta.data.msg === 'ok') {
