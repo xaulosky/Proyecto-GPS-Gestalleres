@@ -14,7 +14,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    height: 350,
+    height: 500,
     bgcolor: 'background.paper',
     border: '1px solid #000',
     boxShadow: 24,
@@ -58,9 +58,11 @@ const EditarRepuesto = ({ row, obtenerRepuestos }) => {
             cantidad: data.cantidad,
             fechaSolicitud: data.fechaSolicitud,
             fechaLlegada: data.fechaLlegada,
-            estadoRepuesto: data.estadoRepuesto
+            estadoRepuesto: data.estadoRepuesto,
+            cRepuesto: data.cRepuesto
         })
             .then(respuesta => {
+                console.log(data)
                 obtenerRepuestos();
                 handleClose();
                 setRes(respuesta.data)
@@ -232,7 +234,7 @@ const EditarRepuesto = ({ row, obtenerRepuestos }) => {
                                 </Button>
                                 <Button
                                     sx={{ m1: 10, p: '5px 20px' }}
-                                    onclick={() => cerrarEdit()}
+                                    onClick={() => cerrarEdit()}
                                     variant='contained'
                                     color='error'
                                     name={'cancelar'}
