@@ -1,60 +1,80 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, IconButton } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import AuthContext from '../../context/AuthContext'
 import AgregarRepuesto from './AgregarRepuesto';
+import EliminarRepuesto from './EliminarRepuesto';
+import EditarRepuesto from './EditarRepuesto';
 
 
-const columns = [
-  {
-    name: 'Nombre',
-    selector: row => row.nombreRepuesto,
-    sortable: true,
-  },
-  {
-    name: 'Cantidad',
-    selector: row => row.cantidad
-  },
-  {
-    name: 'Fecha Solicitud',
-    selector: row => row.fechaSolicitud,
-  },
-  {
-    name: 'Fecha Llegada',
-    selector: row => row.fechaLlegada,
-  },
-  {
-    name: 'Estado Repuesto',
-    selector: row => row.estadoRepuesto,
-  },
-  {
-    name: 'Acciones',
-    cell: (row) => (<div>
-      <Button color="primary" raised primary onClick={() => { console.log(row) }} title='Editar'><EditIcon /></Button>
-      <Button color="error" raised primary onClick={() => { console.log(row) }} title='Eliminar'><DeleteIcon /></Button>
-    </div>
-    ),
-    ignoreRowClick: true,
-    allowOverflow: true,
-    button: true,
-    width: '150px',
-  }
-]
 const ListaRepuesto = () => {
+
   const { auth } = useContext(AuthContext)
 
   const [repuestos, setRepuestos] = useState([])
 
   const obtenerRepuestos = () => {
+
     axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'repuesto.php?cTaller=' + auth.cTaller)
       .then(respuesta => {
+
         setRepuestos(respuesta.data)
       })
   }
+
+  const columns = [
+    {
+      name: 'Nombre',
+      selector: row => row.nombreRepuesto,
+      sortable: true,
+    },
+    {
+      name: 'Cantidad',
+      selector: row => row.cantidad
+    },
+    {
+      name: 'Fecha Solicitud',
+      selector: row => row.fechaSolicitud,
+    },
+    {
+      name: 'Fecha Llegada',
+      selector: row => row.fechaLlegada,
+    },
+    {
+      name: 'Estado Repuesto',
+      selector: row => row.estadoRepuesto,
+    },
+    {
+      name: 'Acciones',
+      cell: (row) => {
+
+        return (
+          <Stack
+            direction={row}
+            textAlign='center'
+          >
+            <EditarRepuesto
+              row={row}
+              obtenerRepuestos={obtenerRepuestos}
+            />
+            {/* <EliminarRepuesto
+              row={row}
+              obtenerRepuestos={obtenerRepuestos}
+            /> */}
+          </Stack>
+
+        )
+      },
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+      width: '150px',
+    }
+  ]
+
   useEffect(() => {
+
     obtenerRepuestos()
   }, [])
   return (
@@ -73,7 +93,7 @@ const ListaRepuesto = () => {
         pointerOnHover
         responsive
         subHeader
-        subHeaderComponent={<AgregarRepuesto obtenerRepuestos = {obtenerRepuestos}/>}
+        subHeaderComponent={<AgregarRepuesto obtenerRepuestos={obtenerRepuestos} />}
       />
     </>
   )
