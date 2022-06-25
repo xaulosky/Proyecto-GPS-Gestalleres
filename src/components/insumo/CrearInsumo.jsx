@@ -1,10 +1,11 @@
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
 import validar from '../funciones/insumos/validarDatosInsumo';
+/* import Validar from './ValidarInsumo'; */
 
 const style = {
 
@@ -22,17 +23,17 @@ const style = {
 const CrearInsumo = ({ obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         nombreInsumo: '',
         cantidad: '',
         costo: '',
     });
 
-    const [res, setRes] = React.useState({
+    const [res, setRes] = useState({
         msg: '',
     });
 
@@ -40,7 +41,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         e.preventDefault();
 
         let tof = validar(data);
-
+        
         if (tof) {
             axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
                 nombreInsumo: data.nombreInsumo,
@@ -77,6 +78,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         handleOpen();
     }
 
+
     return (
         <>
             <Button onClick={abrir}
@@ -109,8 +111,11 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            /* inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }}
-                            required={true} */
+/*                             value={Nombre.campo}
+                            onChange={onChangeNombre}
+                            onKeyUp={validarNombre}
+                            onBlur={validarNombre}
+                            error={Nombre.valido} */
                             InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />

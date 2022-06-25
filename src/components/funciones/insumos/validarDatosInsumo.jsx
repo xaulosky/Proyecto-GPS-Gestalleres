@@ -1,4 +1,4 @@
-const nombreInsumoER = /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]*$/;
+const nombreInsumoER = /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]{1,100}$/;
 const numeroER = /^[0-9]{1,11}$/;
 
 const validar = (data) => {
