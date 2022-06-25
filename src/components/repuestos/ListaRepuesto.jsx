@@ -58,10 +58,10 @@ const ListaRepuesto = () => {
               row={row}
               obtenerRepuestos={obtenerRepuestos}
             />
-            {/* <EliminarRepuesto
-              row={row}
+            <EliminarRepuesto
+              codRepuesto={row.cRepuesto}
               obtenerRepuestos={obtenerRepuestos}
-            /> */}
+            />
           </Stack>
 
         )

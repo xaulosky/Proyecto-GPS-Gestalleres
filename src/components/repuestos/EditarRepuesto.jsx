@@ -39,8 +39,7 @@ const EditarRepuesto = ({ row, obtenerRepuestos }) => {
         cantidad: row.cantidad,
         fechaSolicitud: row.fechaSolicitud,
         fechaLlegada: row.fechaLlegada,
-        estadoRepuesto: row.estadoRepuesto,
-        cRepuesto: row.cRepuesto
+        estadoRepuesto: row.estadoRepuesto
     });
 
     const [res, setRes] = useState({
@@ -59,14 +58,14 @@ const EditarRepuesto = ({ row, obtenerRepuestos }) => {
             fechaSolicitud: data.fechaSolicitud,
             fechaLlegada: data.fechaLlegada,
             estadoRepuesto: data.estadoRepuesto,
-            cRepuesto: data.cRepuesto
+            cRepuesto: row.cRepuesto
         })
             .then(respuesta => {
                 console.log(data)
                 obtenerRepuestos();
                 handleClose();
                 setRes(respuesta.data)
-                if (respuesta.data.msg === 'ok') {
+                if (respuesta.data.msg === 'Repuesto Editado') {
                     swal({
                         title: 'Repuesto Editado',
                         text: 'El repuesto se ha editado correctamente',

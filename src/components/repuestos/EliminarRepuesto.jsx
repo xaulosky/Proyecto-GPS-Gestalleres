@@ -20,8 +20,8 @@ const style = {
   pb: 3
 };
 
-const EliminarRepuesto = ({row, obtenerRepuestos}) => {
-  console.log(row);
+const EliminarRepuesto = ({codRepuesto, obtenerRepuestos}) => {
+  console.log(codRepuesto);
 
   const [res, setRes] = useState({
 
@@ -30,18 +30,18 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
 
   function eliminarFila(row) {
 
-    swal({
+    /* swal({
 
-      title: "¿Está seguro de eliminar el repuesto" + row.nombre + "?",
+      title: "¿Está seguro de eliminar el repuesto" + row.nombreRepuesto + "?",
       text: "Esta acción no puede deshacerse",
       icon: "warning",
-      /* buttons: true, */
+      buttons: true,
       buttons: ["Eliminar", "Cancelar"],
       dangerMode: true
     })
       .then((willDelete) => {
 
-        if (willDelete) {
+        if (willDelete) {*/
 
           axios.delete(import.meta.env.VITE_APP_BACKEND_URL + '/repuesto.php?cRepuesto=' + row.cRepuesto)
             .then(respuesta => {
@@ -66,8 +66,8 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
                 });
               }
             })
-        }
-      });
+          /*}
+      }); */
   }
 
   useEffect(() => {
@@ -75,16 +75,16 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
     obtenerRepuestos()
   }, [])
 
-  function eliminarRepuesto(row) {
+  function eliminar(row) {
 
-    obtenerRepuestos()
-    eliminarFila(row)
+    obtenerRepuestos();
+    eliminarFila(row);
   }
 
   return (
     <>
       <Button
-        onClick={() => eliminarRepuesto(row)}
+        onClick={() => eliminar(row)}
         color='error'
         name={'eliminar'}
         title={'Eliminar'}
