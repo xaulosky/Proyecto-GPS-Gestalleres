@@ -199,13 +199,13 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                         <Autocomplete
                         options={opciones}
                         getOptionLabel={(option) => option.label}
-                        value={data.estadoRevisionTecnicaV}
+                        
                         onChange={(e, value) => {
                             setData({ 
                                 ...data, 
                                 estadoRevisionTecnicaV: value.label})
                         }}
-                        renderInput={(params) => <TextField {...params} label="Estado de revision tecnica" id="estadoRevisionTecnicaV"
+                        renderInput={(params) => <TextField {...params} value={data.estadoRevisionTecnicaV} label="Estado de revision tecnica" id="estadoRevisionTecnicaV"
                         name={'estadoRevisionTecnicaV'}
                         required />}
                         />
