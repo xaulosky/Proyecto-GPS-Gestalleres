@@ -49,6 +49,10 @@ const ListaVehiculos = () => {
             selector: row => (formatoNumeros(row.montoAseguradora)),
         },
         {
+            name: 'Tipo Carroceria',
+            selector: row => row.cTipoCarroceria,
+        },
+        {
             name: 'Acciones',
             cell: (row) => {
                 return (
@@ -72,6 +76,9 @@ const ListaVehiculos = () => {
         }
     ];
 
+    const [tipoCarrocerias, setTipoCarrocerias] = useState();
+    const [tipoCarroceriaSeleccionada, setTipoCarroceriaSeleccionada] = useState();
+
 
     const [vehiculos, setVehiculos] = useState([]);
 
@@ -82,10 +89,17 @@ const ListaVehiculos = () => {
             })
     }
 
+    const obtenerTipoCarrocerias = () => {
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'tipoCarroceria.php')
+            .then(respuesta => {
+                setTipoCarrocerias(respuesta.data);
+            })
+    }
+
     useEffect(() => {
         obtenerVehiculos();
-
-    }, []);
+        obtenerTipoCarrocerias();
+    }, [])
 
     return (
         <>
