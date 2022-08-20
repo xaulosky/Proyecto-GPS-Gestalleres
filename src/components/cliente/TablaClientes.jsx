@@ -26,7 +26,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
     <TextField
       id="search"
       type="text"
-      placeholder="Filtrar por nombre"
+      placeholder="Filtrar por rut"
       aria-label="Search input"
       value={filterText}
       onChange={onFilter}
@@ -103,8 +103,8 @@ const TablaClientes = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const filteredItems = clientes.filter(
     (item) =>
-      item.nombreC &&
-      item.nombreC.toLowerCase().includes(filterText.toLowerCase())
+      item.rutC &&
+      item.rutC.toLowerCase().includes(filterText.toLowerCase())
   );
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
