@@ -4,6 +4,7 @@ import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
+import validar from '../funciones/insumos/validarDatosInsumo';
 
 
 const style = {
@@ -43,23 +44,37 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
 
     const submit = (e) => {
         e.preventDefault();
-        axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
-            nombreInsumo: data.nombreInsumo,
-            cantidad: data.cantidad,
-            costo: data.costo,
-            cInsumo: data.cInsumo,
-            cTaller: auth.cTaller,
-        })
-            .then(respuesta => {
-                obtenerInsumos();
-                handleClose();
-                setRes(respuesta.data);
-                if (respuesta.data.msg === 'ok') {
-                    swal("ACTUALIZADO", "Insumo actualizado correctamente", "success");
-                } else {
-                    swal("ERROR", "Error al editar insumo", "error");
-                }
+
+        let tof = validar(data);
+        if (tof) {
+            axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
+                nombreInsumo: data.nombreInsumo,
+                cantidad: data.cantidad,
+                costo: data.costo,
+                cInsumo: data.cInsumo,
+                cTaller: auth.cTaller,
             })
+                .then(respuesta => {
+                    obtenerInsumos();
+                    handleClose();
+                    setRes(respuesta.data);
+                    if (respuesta.data.msg === 'ok') {
+                        swal({
+                            title: "ACTUALIZADO",
+                            text: "Insumo actualizado correctamente",
+                            icon: "success",
+                            button: "OK",
+                        });
+                    } else {
+                        swal({
+                            title: "ERROR",
+                            text: "Error al editar insumo",
+                            icon: "error",
+                            button: "Cerrar",
+                        });
+                    }
+                })
+        }
     }
 
     function handle(e) {
@@ -120,11 +135,12 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            inputProps={{ maxLength: 256 }}
+                            /* inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }} */
+                            InputLabelProps={{ shrink: true }}
                             value={data.nombreInsumo}
-                            required
+                            /* required */
                             onChange={(e) => handle(e)}
-                            
+
                         />
                         <TextField fullWidth
                             id="standard-basic"
@@ -133,26 +149,31 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
+                            Shrink={true}
                             value={data.cantidad}
-                            InputProps={{ inputProps: { min: 0 } }}
-                            required
+                            /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
+                            title='Solo números entre 0 y 999999999'
+                            InputLabelProps={{ shrink: true }}
+                            /* required */
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Valor"
+                            label="Precio"
                             margin="normal"
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            InputProps={{ inputProps: { min: 0 } }}
+                            /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
+                            InputLabelProps={{ shrink: true }}
                             value={data.costo}
-                            required
+                            /* required */
                             onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
                             <DialogActions>
                                 <Button
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                     variant="contained"
                                     color="primary"
                                     name={'crear'}
@@ -161,6 +182,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                                     Aceptar
                                 </Button>
                                 <Button
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                     onClick={cerrar}
                                     variant="contained"
                                     color="error"

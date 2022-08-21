@@ -14,7 +14,7 @@ const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
   rangeSeparatorText: 'de',
   selectAllRowsItem: true,
-  selectAllRowsItemText: 'Todos',
+  selectAllRowsItemText: 'Todos',  
 };
 
 function formatoNumeros(numero) {
@@ -30,10 +30,10 @@ const ListaInsumo = () => {
     const fileName = 'Lista de insumos';
     const ws = XLSX.utils.json_to_sheet(insumos
       .map(insumo => ({
-        cInsumo: insumo.cInsumo,
-        nombreInsumo: insumo.nombreInsumo,
-        cantidad: insumo.cantidad,
-        costo: insumo.costo,
+        "Codigo insumo": insumo.cInsumo,
+        "Nombre Insumo": insumo.nombreInsumo,
+        "Cantidad": insumo.cantidad,
+        "Precio": insumo.costo,
       })));
     const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
@@ -77,7 +77,7 @@ const ListaInsumo = () => {
               row={row}
               obtenerInsumos={obtenerInsumos}
             />
-            {/*<HistorialInsumo
+            {/* <HistorialInsumo
               codigoInsumo={row.cInsumo}
               obtenerInsumos={obtenerInsumos}
             /> */}
@@ -110,7 +110,8 @@ const ListaInsumo = () => {
           title='Exportar Excel'
           onClick={(e) => exportXLSX(insumos)}
         >
-          Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
+          Exportar <i
+            className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
       </Grid>
       <DataTable
         title="Lista Insumos"
@@ -127,8 +128,9 @@ const ListaInsumo = () => {
         responsive
         subHeaderAlign="right"
         subHeaderWrap
+        noDataComponent = "No hay insumos registrados"
         paginationComponentOptions={paginationComponentOptions}
-        />
+      />
     </>
   )
 }
