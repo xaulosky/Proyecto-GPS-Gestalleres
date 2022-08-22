@@ -1,7 +1,7 @@
 import React, { useState,useContext } from 'react'
 import { Alert ,Autocomplete,InputLabel, 
         Button,Box , MenuItem, Modal,Stack ,
-        Select,TextField, Typography, Grid, FormControl, 
+        Select,TextField, Typography, Grid, FormControl,useFormControl,
         FormLabel, FormHelperText} from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
@@ -45,8 +45,6 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
         cRolU: "",
     })
     
-    
-
     const submit= (e) =>{
         e.preventDefault();
         axios.post(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
@@ -61,6 +59,7 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
         .then(respuesta=>{
             obtenerUsuarios();
             handleClose();
+
             if(respuesta.data.msg == 'Agregado'){
                 console.log(respuesta.data)
                 swal("Usuario agregado", {
@@ -79,7 +78,23 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
             }
         })
     }
+
+    function rolDisabled(){
+        if(auth.cRolU == 3){
+            return true
+        }
+    }
+    
     function abrir(){
+
+        if(auth.cRolU == 3){
+            swal("No cuenta con los permisos para acceder a esta función",{
+                icon:"error",
+                timer: 1000,
+                buttons: false,
+              })
+              this.handleClose();
+        }
         setData({
             nombreU: "",
             clave: "",
@@ -92,8 +107,8 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
     function handle(e){
         const newdata={...data}
         newdata[e.target.name]= e.target.value;
-        setData(newdata);
         console.log(newdata);
+        setData(newdata);
     }
 
   return (
@@ -105,6 +120,7 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
             endIcon={<PersonAddAltIcon fontSize='small'/>}
             size = 'medium'
             type = 'submit'
+            disabled = {rolDisabled()}
         >
             Agregar
         </Button>
@@ -135,7 +151,7 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
                         label="Nombre" 
                         variant="outlined" 
                         multiline
-                        required
+                        required 
                         placeholder = "Nombre"
                         onChange={(e)=>handle(e)} />
                     <TextField 
@@ -192,7 +208,6 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
                         onClick={handleClose}
                         color = 'error'
                         size = 'medium'
-                        
                     >
                         Cancelar
                     </Button>

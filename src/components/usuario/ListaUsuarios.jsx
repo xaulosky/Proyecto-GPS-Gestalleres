@@ -13,6 +13,7 @@ import AgregarUsuarios from './AgregarUsuarios'
 import EliminarUsuario from './EliminarUsuario'
 import EditarUsuario from './EditarUsuario'
 import AuthContext from '../../context/AuthContext';
+import BuscarUsuario from './BuscarUsuario';
 
 function rol(row){
     if(row.cRolU == 1){
@@ -36,7 +37,14 @@ function rol(row){
             </div>
         )
     }
-}
+};
+
+const paginationComponentOptions = {
+    rowsPerPageText: 'Filas por página',
+    rangeSeparatorText: 'de',
+    selectAllRowsItem: true,
+    selectAllRowsItemText: 'Todos',
+};
 
 //Data Table
 const ListaUsuarios = () => {
@@ -60,15 +68,12 @@ const ListaUsuarios = () => {
             grow : 0.6,
            
         },
-        
         {	
             name: 'Acciones',		
             cell: (row) => (
                 <Stack direction="row" textAlign="center">
-            
                         <EditarUsuario row={row} obtenerUsuarios = {obtenerUsuarios}/>                
                         <EliminarUsuario row={row} obtenerUsuarios = {obtenerUsuarios}/>
-    
                 </Stack>
             ),
             ignoreRowClick: true,
@@ -86,8 +91,8 @@ const ListaUsuarios = () => {
         .then(respuesta => {
             setUsuarios(respuesta.data);
         })
+
     }
-    
     useEffect(()=>{
         obtenerUsuarios();
     },[])
@@ -107,6 +112,8 @@ const ListaUsuarios = () => {
         persistTableHead
         pointerOnHover
         responsive
+        nodatacomponent = "Sin datos"
+        paginationComponentOptions={paginationComponentOptions}
         actions={<AgregarUsuarios obtenerUsuarios = {obtenerUsuarios}/>}
     />  
     )

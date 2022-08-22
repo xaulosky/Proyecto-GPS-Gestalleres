@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
 
 import {  Button, 
     Dialog, DialogActions, DialogContent, 
@@ -10,9 +11,9 @@ import {  Button,
     FormHelperText, TextField, Grid, Divider, 
     MenuItem, InputLabel, Select, Modal, Box, makeStyles, Typography } from '@mui/material'
 
-
 const EliminarUsuario = ({row,obtenerUsuarios}) => {
   
+    const { auth } = useContext(AuthContext)
     const eliminar = (row) =>{
         console.log(row.cUsuario)
         axios.delete(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php?id='+row.cUsuario)
@@ -38,7 +39,18 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
         })
    
     }
+
     const alerta=(row)=>{
+      if(auth.cRolU == 3){
+        swal("No cuenta con los permisos para acceder a esta función",{
+            icon:"error",
+            timer: 1000,
+            buttons: false,
+          })
+          this.handleClose();
+    }
+      
+      
       console.log(row.nombreU)
       swal({
         title: "Eliminar Usuario",
@@ -70,7 +82,11 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
         }
       });
     }
-    
+    function rolDisabled(){
+      if(auth.cRolU == 3){
+          return true
+      }
+  }   
  
     return (
       <div>
@@ -79,6 +95,7 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
                   onClick= {()=>alerta(row)}
                   endIcon={<DeleteIcon />}
                   title = 'Eliminar Usuario'
+                  disabled = {rolDisabled()}
               />       
       </div>
     );

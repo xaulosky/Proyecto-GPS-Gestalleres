@@ -6,6 +6,7 @@ import { Alert ,Autocomplete,InputLabel,
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
 
 const style = {
     position: 'absolute' ,
@@ -34,6 +35,7 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
     const [open, setOpen]  = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);  
+    const { auth } = useContext(AuthContext)
 
       const[data,setData] = useState({
           cUsuario : row.cUsuario,
@@ -44,6 +46,14 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
       })
 
       function abrir(){
+        if(auth.cRolU == 3){
+            swal("No cuenta con los permisos para acceder a esta función",{
+                icon:"error",
+                timer: 1000,
+                buttons: false,
+              })
+              this.handleClose();
+        }
         obtenerUsuarios();
         setData({
             cUsuario : row.cUsuario,
@@ -61,7 +71,11 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
             obtenerUsuarios();
             console.log(newdata)
         }
-  
+        function rolDisabled(){
+            if(auth.cRolU == 3){
+                return true
+            }
+        }
       const submit= (e) =>{
           e.preventDefault()
           axios.put(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
@@ -104,6 +118,7 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
                 endIcon={<EditIcon />}
                 title = 'Editar usuario'
                 type = 'submit'
+                disabled = {rolDisabled()}
             />
           <Modal
               open = {open}
