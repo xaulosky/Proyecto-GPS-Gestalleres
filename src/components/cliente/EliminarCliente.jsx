@@ -40,6 +40,21 @@ const EliminarCliente = ({ getClientes, row }) => {
       });
   };
 
+  const eliminar=(row)=>{
+    swal({
+      title: "¿Estás seguro?",
+      text: "Una vez eliminado, no podrás recuperar este registro",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        deleteCliente(row);
+      } else {
+        swal("Cancelado", "El cliente no se eliminó", "error");
+      }
+    });
+  }
   return (
     <div>
       <Button
@@ -51,32 +66,10 @@ const EliminarCliente = ({ getClientes, row }) => {
         }}
         color="error"
         size="small"
-        onClick={handleOpen}
+        onClick={()=>eliminar(row)}
         endIcon={<DeleteIcon />}
         title="Eliminar Cliente"
       />
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Eliminar cliente "}</DialogTitle>
-
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            ¿Esta seguro de eliminar a{" "}
-            <span style={{ color: "black" }}>{row.nombreC} </span> ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => deleteCliente(row)} autoFocus>
-            Aceptar
-          </Button>
-          <Button onClick={handleClose}>Cancelar</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };

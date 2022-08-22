@@ -9,12 +9,9 @@ import {
   Stack,
   TextField,
 } from "@mui/material";
-import CrearCliente from "./CrearCliente";
 import CloseIcon from "@mui/icons-material/Close";
-import EditarCliente from "./EditarCliente";
-import EliminarCliente from "./EliminarCliente";
 import AuthContext from "../../context/AuthContext";
-import TablaClientesdes from "./TablaClientesdes";
+import RestaurarCliente from "./RestaurarCliente";
 
 const paginationComponentOptions = {
   rowsPerPageText: "Filas por página",
@@ -44,7 +41,7 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
   </div>
 );
 
-const TablaClientes = () => {
+const TablaClientesdes = ({getClientesd}) => {
   const columns = [
     {
       name: "Rut",
@@ -76,8 +73,7 @@ const TablaClientes = () => {
       name: "Acciones",
       cell: (row) => (
         <Stack direction={"row"}>
-          <EditarCliente getClientes={getClientes} row={row} />
-          <EliminarCliente getClientes={getClientes} row={row} />
+          <RestaurarCliente getClientes={getClientes} row={row} />
         </Stack>
       ),
       ignoreRowClick: true,
@@ -94,9 +90,11 @@ const TablaClientes = () => {
 
   const getClientes = async () => {
     await axios
-      .get(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php?cTaller=" + auth.cTaller)
+      .get(import.meta.env.VITE_APP_BACKEND_URL + "cliente_eliminado.php?cTaller=" + auth.cTaller)
       .then((res) => {
         setClientes(res.data);
+        getClientesd();
+        getClientes();
       });
   };
 
@@ -116,17 +114,11 @@ const TablaClientes = () => {
       }
     };
     return (
-      <>
-      <Stack direction="row">
-      <CrearCliente getClientes={getClientes}/>
       <FilterComponent
         onFilter={(e) => setFilterText(e.target.value)}
         onClear={handleClear}
         filterText={filterText}
       />
-      </Stack>
-      </>
-      
     );
   }, [filterText, resetPaginationToggle]);
 
@@ -137,7 +129,7 @@ const TablaClientes = () => {
   return (
     <>
       <DataTable
-        title="Lista de clientes"
+        title="Lista de clientes eliminados"
         columns={columns}
         data={filteredItems}
         direction="auto"
@@ -155,9 +147,8 @@ const TablaClientes = () => {
         subHeaderComponent={subHeaderComponentMemo}
         noDataComponent="No hay clientes registrados"
       />
-      <TablaClientesdes getClientesd={getClientes}/>
     </>
   );
 };
 
-export default TablaClientes;
+export default TablaClientesdes;

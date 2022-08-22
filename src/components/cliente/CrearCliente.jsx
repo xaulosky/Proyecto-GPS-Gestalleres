@@ -15,6 +15,8 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import AuthContext from "../../context/AuthContext";
+import { validateRut, formatRut, RutFormat, isRutLike } from "@fdograph/rut-utilities";
+import swal from "sweetalert";
 
 const style = {
   position: "absolute",
@@ -53,28 +55,33 @@ const CrearCliente = ({ getClientes }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(form);
-    axios
-      .post(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
-      .then((res) => {
-        setForm({
-          rutC: "",
-          emailC: "",
-          nombreC: "",
-          apellidoC: "",
-          direccionC: "",
-          cComuna: "",
+    if (isRutLike(form.rutC)) {
+      form.rutC = formatRut(form.rutC, RutFormat.DOTS_DASH);
+      axios
+        .post(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
+        .then((res) => {
+          setForm({
+            rutC: "",
+            emailC: "",
+            nombreC: "",
+            apellidoC: "",
+            direccionC: "",
+            cComuna: "",
+          });
+          console.log(res);
+          getClientes();
+          if (res.data.msg === "Cliente agregado") {
+            swal("CREADO", "Cliente creado correctamente", "success");
+          } else {
+            swal("ERROR", "No fue posible agregar al cliente, asegúrese de completar todos los campos", "error");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        console.log(res);
-        getClientes();
-        if (res.data.msg === "Cliente agregado") {
-          swal("CREADO", "Cliente creado correctamente", "success");
-        } else {
-          swal("ERROR", "No fue posible agregar al cliente", "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    }else{
+      swal("ERROR", "Rut no válido", "error");
+    }
     handleClose();
   };
 
@@ -103,6 +110,7 @@ const CrearCliente = ({ getClientes }) => {
         type={"submit"}
         name={"crear"}
         endIcon={<PersonAddAltIcon />}
+        position="start"
       >
         Agregar Cliente
       </Button>
