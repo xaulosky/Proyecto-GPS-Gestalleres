@@ -1,8 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContentText, DialogTitle, DialogContent } from '@mui/material'
-import React, {useState} from 'react'
+import React, {useState, useContext } from 'react'
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import axios from 'axios';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
+
 
 const style = {
     position: 'absolute',
@@ -24,11 +26,14 @@ const RestaurarHistorial = ({ row, obtenerInsumos, obtenerHistorial, setOpen }) 
     const [res, setRes] = useState({
         resp: '',
     });
+    const { auth } = useContext(AuthContext)
+
     const restaurar = (e) => {
         e.preventDefault();
 
         swal({
             title: "¿Estas seguro que desea restaurar los datos del insumo?",
+            text: "Nombre: " + row.nombreInsumo+"\n\n"+"Cantidad: " + row.cantidad+"\n\n"+"Valor: " + row.costo,
             icon: "warning",
             buttons: true,
             buttons: ["Cancelar", "Restaurar"],
@@ -64,10 +69,20 @@ const RestaurarHistorial = ({ row, obtenerInsumos, obtenerHistorial, setOpen }) 
         setOpen(false);
     }
 
+    function deshabilitarBoton(){
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     return (
         <><Button onClick={restaurar}
             color="primary"
             type={'submit'}
+            disabled={deshabilitarBoton()}
             name={'restaurar'}
             title={'Restaurar'}
         >

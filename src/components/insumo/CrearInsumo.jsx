@@ -78,6 +78,15 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         handleOpen();
     }
 
+    function deshabilitarBoton(){
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 
     return (
         <>
@@ -86,6 +95,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                 sx={{ ml: 3, p: '10px 15px' }}
                 title="Agregar Insumo"
                 color="primary"
+                disabled = {deshabilitarBoton()}
                 type={'submit'}
                 name={'crear'}
                 endIcon={<InventoryIcon />}

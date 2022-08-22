@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useContext } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
+
 
 
 const style = {
@@ -20,23 +22,25 @@ const style = {
     pb: 3,
 };
 
-const EliminarInsumo = ({ row, obtenerInsumos }) => {
+const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
     const [res, setRes] = React.useState({
         msg: '',
     });
 
+    const { auth } = useContext(AuthContext)
+
     function eliminar(row) {
         swal({
-            title: "¿Estas seguro de eliminar el insumo "+ row.nombreInsumo+"?",
+            title: "¿Estas seguro de eliminar el insumo " + row.nombreInsumo + "?",
             text: "Una vez eliminado no podras recuperarlo",
             icon: "warning",
             buttons: true,
             buttons: ["Cancelar", "Eliminar"],
-            dangerMode: true,   
+            dangerMode: true,
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    axios.delete(import.meta.env.VITE_APP_BACKEND_URL + '/insumo.php?cInsumo='+row.cInsumo
+                    axios.delete(import.meta.env.VITE_APP_BACKEND_URL + '/insumo.php?cInsumo=' + row.cInsumo
                     ).then(respuesta => {
                         console.log('cInsumo: ', row.cInsumo);
                         obtenerInsumos();
@@ -67,12 +71,22 @@ const EliminarInsumo = ({ row, obtenerInsumos }) => {
         eliminar(row);
     }
 
+    function deshabilitarBoton(){
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     return (
         <>
             <Button
                 onClick={() => eliminarInsumo(row)}
                 color="error"
                 name={'eliminar'}
+                disabled={deshabilitarBoton()}
                 title={'Eliminar'}
                 endIcon={<DeleteIcon />}
             >

@@ -45,6 +45,8 @@ const ListaInsumo = () => {
 
   const { auth } = useContext(AuthContext)
 
+  const idAuth = auth.cRolU;
+
   const obtenerInsumos = () => {
     axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php?cTaller=' + auth.cTaller)
       .then(respuesta => {
@@ -95,29 +97,19 @@ const ListaInsumo = () => {
     }
   ];
 
+
   useEffect(() => {
     obtenerInsumos();
   }, [])
 
   return (
     <>
-      {/* <Grid item align='right' xs={12} >
-        <CrearInsumo obtenerInsumos={obtenerInsumos} />
-        <Button align='right'
-          size='small'
-          variant="contained"
-          sx={{ ml: 3, p: '4px 15px' }}
-          title='Exportar Excel'
-          onClick={(e) => exportXLSX(insumos)}
-        >
-          Exportar <i
-            className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
-      </Grid> */}
       <DataTable
         title="Lista Insumos"
         actions={<>
           <CrearInsumo obtenerInsumos={obtenerInsumos} />
-          <Button align='right'
+          <Button
+            align='right'
             size='small'
             variant="contained"
             sx={{ ml: 3, p: '4px 15px' }}
@@ -125,8 +117,10 @@ const ListaInsumo = () => {
             onClick={(e) => exportXLSX(insumos)}
           >
             Exportar <i
-              className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i>
-          </Button> 
+              className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">
+
+            </i>
+          </Button>
         </>}
         columns={columna}
         data={insumos}
@@ -148,3 +142,5 @@ const ListaInsumo = () => {
   )
 }
 export default ListaInsumo
+
+//        if(auth.cRolU!=3){

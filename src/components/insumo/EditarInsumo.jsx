@@ -22,7 +22,7 @@ const style = {
 };
 
 
-const EditarInsumo = ({ row, obtenerInsumos }) => {
+const EditarInsumo = ({ row, obtenerInsumos}) => {
 
     const { auth } = useContext(AuthContext)
     const [open, setOpen] = React.useState(false);
@@ -107,6 +107,15 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         handleClose();
     }
 
+    function deshabilitarBoton(){
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     return (
         <>
             <Button onClick={abrir}
@@ -114,6 +123,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                 type={'submit'}
                 name={'editar'}
                 title={'Editar'}
+                disabled={deshabilitarBoton()}
                 endIcon={<EditIcon />}
             >
             </Button>
@@ -135,11 +145,8 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            /* inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }} */
                             InputLabelProps={{ shrink: true }}
-                            //shrink= {true}
                             value={data.nombreInsumo}
-                            /* required */
                             onChange={(e) => handle(e)}
 
                         />
@@ -150,12 +157,9 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
-                            //shrink={true}
                             value={data.cantidad}
-                            /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
                             title='Solo números entre 0 y 999999999'
                             InputLabelProps={{ shrink: true }}
-                            /* required */
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -165,11 +169,8 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
                             InputLabelProps={{ shrink: true }}
-                            //shrink={true}
                             value={data.costo}
-                            /* required */
                             onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
