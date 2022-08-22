@@ -60,8 +60,8 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                     setRes(respuesta.data);
                     if (respuesta.data.msg === 'ok') {
                         swal({
-                            title: "ACTUALIZADO",
-                            text: "Insumo actualizado correctamente",
+                            title: "EDITADO",
+                            text: "Insumo editado correctamente",
                             icon: "success",
                             button: "OK",
                         });
@@ -137,6 +137,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             name={'nombreInsumo'}
                             /* inputProps={{ maxLength: 256, pattern: '[0-9a-zA-Zá-úÁ-Ú- ]*' }} */
                             InputLabelProps={{ shrink: true }}
+                            //shrink= {true}
                             value={data.nombreInsumo}
                             /* required */
                             onChange={(e) => handle(e)}
@@ -149,7 +150,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
-                            Shrink={true}
+                            //shrink={true}
                             value={data.cantidad}
                             /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
                             title='Solo números entre 0 y 999999999'
@@ -166,6 +167,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             name={'costo'}
                             /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
                             InputLabelProps={{ shrink: true }}
+                            //shrink={true}
                             value={data.costo}
                             /* required */
                             onChange={(e) => handle(e)}
