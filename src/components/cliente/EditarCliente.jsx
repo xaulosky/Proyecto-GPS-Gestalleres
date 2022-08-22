@@ -12,8 +12,9 @@ import {
   Modal,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import AuthContext from "../../context/AuthContext";
 
 const style = {
   position: "absolute",
@@ -31,6 +32,7 @@ const EditarCliente = ({ getClientes, row }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { auth } = useContext(AuthContext);
 
   const confirmModal = () => {
     getClientes();
@@ -113,6 +115,14 @@ const EditarCliente = ({ getClientes, row }) => {
       });
   };
 
+  const restringirBoton = () =>{
+    if (auth.cRolU != 3) {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   useEffect(() => {
     getComunas();
   }, []);
@@ -131,6 +141,7 @@ const EditarCliente = ({ getClientes, row }) => {
         name={"crear"}
         size={"small"}
         endIcon={<EditIcon />}
+        disabled={restringirBoton()}
       ></Button>
       <Modal
         open={open}

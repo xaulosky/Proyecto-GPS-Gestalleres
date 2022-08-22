@@ -129,7 +129,7 @@ const TablaClientesdes = ({getClientesd}) => {
   return (
     <>
       <DataTable
-        title="Lista de clientes eliminados"
+        title="Historial de clientes"
         columns={columns}
         data={filteredItems}
         direction="auto"

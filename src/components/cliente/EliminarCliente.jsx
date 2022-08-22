@@ -7,8 +7,9 @@ import {
   DialogTitle,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AuthContext from "../../context/AuthContext";
 
 const EliminarCliente = ({ getClientes, row }) => {
   /* delete cliente */
@@ -16,6 +17,7 @@ const EliminarCliente = ({ getClientes, row }) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {auth} = useContext(AuthContext);
 
   const deleteCliente = async (row) => {
     console.log(row.cCliente);
@@ -55,6 +57,13 @@ const EliminarCliente = ({ getClientes, row }) => {
       }
     });
   }
+  const restringirBoton = () =>{
+    if (auth.cRolU != 3) {
+      return false;
+    }else{
+      return true;
+    }
+  }
   return (
     <div>
       <Button
@@ -69,6 +78,7 @@ const EliminarCliente = ({ getClientes, row }) => {
         onClick={()=>eliminar(row)}
         endIcon={<DeleteIcon />}
         title="Eliminar Cliente"
+        disabled={restringirBoton()}
       />
     </div>
   );

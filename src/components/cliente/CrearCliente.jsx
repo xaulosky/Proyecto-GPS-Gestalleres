@@ -101,6 +101,14 @@ const CrearCliente = ({ getClientes }) => {
     getComunas();
   }, []);
 
+  const restringirBoton = () =>{
+    if (auth.cRolU != 3) {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
   return (
     <>
       <Button
@@ -111,6 +119,7 @@ const CrearCliente = ({ getClientes }) => {
         name={"crear"}
         endIcon={<PersonAddAltIcon />}
         position="start"
+        disabled={restringirBoton()}
       >
         Agregar Cliente
       </Button>

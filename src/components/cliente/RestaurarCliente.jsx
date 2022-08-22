@@ -7,7 +7,8 @@ import {
     DialogTitle,
   } from "@mui/material";
   import axios from "axios";
-  import React, { useState } from "react";
+  import React, { useState, useContext } from "react";
+  import AuthContext from "../../context/AuthContext";
   import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
   
   const RestaurarCliente = ({ getClientes, row }) => {
@@ -16,6 +17,7 @@ import {
   
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const {auth} = useContext(AuthContext);
   
     const restoreCliente = async (row) => {
       console.log(row.cCliente);
@@ -55,6 +57,13 @@ import {
             }
         });
     }
+    const restringirBoton = () =>{
+      if (auth.cRolU != 3) {
+        return false;
+      }else{
+        return true;
+      }
+    }
 
     return (
       <div>
@@ -70,6 +79,7 @@ import {
           onClick={()=>restaurar(row)}
           endIcon={<SettingsBackupRestoreIcon />}
           title="Restaurar Cliente"
+          disabled={restringirBoton()}
         />
       </div>
     );
