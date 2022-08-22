@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import EditIcon from "@mui/icons-material/Edit";
 
 const style = {
   position: "absolute",
@@ -27,18 +27,46 @@ const style = {
   p: 4,
 };
 
-const CrearCliente = ({ getClientes }) => {
-  const [open, setOpen] = React.useState(false);
+const EditarCliente = ({ getClientes, row }) => {
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const confirmModal = () => {
+    getClientes();
+    setForm({
+      cCliente: row.cCliente,
+      rutC: row.rutC,
+      emailC: row.emailC,
+      nombreC: row.nombreC,
+      apellidoC: row.apellidoC,
+      direccionC: row.direccionC,
+      cComuna: row.cComuna,
+    });
+    handleOpen();
+  };
+
+  const closeModal = () => {
+    getClientes();
+    setForm({
+      rutC: "",
+      emailC: "",
+      nombreC: "",
+      apellidoC: "",
+      direccionC: "",
+      cComuna: "",
+    });
+    handleClose();
+  };
+
   const [form, setForm] = useState({
-    rutC: "",
-    emailC: "",
-    nombreC: "",
-    apellidoC: "",
-    direccionC: "",
-    cComuna: "",
+    rutC: row.rutC,
+    emailC: row.emailC,
+    nombreC: row.nombreC,
+    apellidoC: row.apellidoC,
+    direccionC: row.direccionC,
+    cComuna: row.cComuna,
+    cCliente: row.cCliente,
   });
   const onChange = (e) => {
     setForm({
@@ -50,7 +78,7 @@ const CrearCliente = ({ getClientes }) => {
     e.preventDefault();
     console.log(form);
     axios
-      .post(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
+      .put(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
       .then((res) => {
         setForm({
           rutC: "",
@@ -59,13 +87,13 @@ const CrearCliente = ({ getClientes }) => {
           apellidoC: "",
           direccionC: "",
           cComuna: "",
+          cCliente: "",
         });
-        console.log(res);
         getClientes();
-        if (res.data.msg === "Cliente agregado") {
-          swal("CREADO", "Cliente creado correctamente", "success");
+        if (res.data.msg === "Cliente actualizado") {
+          swal("ACTUALIZADO", "Cliente actualizado correctamente", "success");
         } else {
-          swal("ERROR", "No fue posible agregar al cliente", "error");
+          swal("ERROR", "No fue posible actualizar al cliente, asegúrese de completar todos los campos", "error");
         }
       })
       .catch((err) => {
@@ -73,35 +101,37 @@ const CrearCliente = ({ getClientes }) => {
       });
     handleClose();
   };
-
   const [comunas, setComunas] = useState([]);
   const getComunas = async () => {
     await axios
       .get(import.meta.env.VITE_APP_BACKEND_URL + "comuna.php")
       .then((res) => {
         setComunas(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     getComunas();
   }, []);
-
   return (
     <>
       <Button
-        onClick={handleOpen}
-        variant="contained"
+        sx={{
+          "& > :not(style)": {
+            mx: 0.8,
+            py: 1.5,
+          },
+        }}
+        onClick={confirmModal}
         color="primary"
         type={"submit"}
         name={"crear"}
-        endIcon={<PersonAddAltIcon />}
-      >
-        Agregar Cliente
-      </Button>
+        size={"small"}
+        endIcon={<EditIcon />}
+      ></Button>
       <Modal
         open={open}
         onClose={handleClose}
@@ -113,23 +143,14 @@ const CrearCliente = ({ getClientes }) => {
             <Stack spacing={2}>
               <FormControl fullWidth>
                 <TextField
-                  id="rutC"
                   value={form.rutC}
                   label="Rut"
                   name="rutC"
                   onChange={onChange}
-                  required={true}
-                  inputProps={{
-                    patern: "^[0-9]+-[0-9kK]{1}$",
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
                 />
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="emailc"
                   value={form.emailC}
                   label="Email"
                   name="emailC"
@@ -138,7 +159,6 @@ const CrearCliente = ({ getClientes }) => {
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="nombreC"
                   value={form.nombreC}
                   label="Nombre"
                   name="nombreC"
@@ -147,7 +167,6 @@ const CrearCliente = ({ getClientes }) => {
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="apellidoC"
                   value={form.apellidoC}
                   label="Apellido"
                   name="apellidoC"
@@ -156,7 +175,6 @@ const CrearCliente = ({ getClientes }) => {
               </FormControl>
               <FormControl fullWidth>
                 <TextField
-                  id="direccionC"
                   value={form.direccionC}
                   label="Direccion"
                   name="direccionC"
@@ -164,13 +182,10 @@ const CrearCliente = ({ getClientes }) => {
                 />
               </FormControl>
               <FormControl fullWidth>
-                {/* select */}
-                <InputLabel id="demo-simple-select-label">Comuna</InputLabel>
+                <InputLabel>Comuna</InputLabel>
                 <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
                   name="cComuna"
-                  value={form.cComuna}
+                  value={form.cComuna || ""}
                   defaultValue={form.cComuna}
                   onChange={onChange}
                 >
@@ -183,7 +198,7 @@ const CrearCliente = ({ getClientes }) => {
               </FormControl>
               <FormControl fullWidth>
                 <Button variant="contained" color="primary" type="submit">
-                  Crear Cliente
+                  Editar
                 </Button>
               </FormControl>
             </Stack>
@@ -194,4 +209,4 @@ const CrearCliente = ({ getClientes }) => {
   );
 };
 
-export default CrearCliente;
+export default EditarCliente;
