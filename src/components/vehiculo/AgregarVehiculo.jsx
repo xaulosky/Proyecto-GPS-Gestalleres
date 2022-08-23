@@ -2,10 +2,12 @@ import * as React from 'react'
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, MenuItem, Input, InputLabel, Select, Menu, FormControl, Stack, Autocomplete } from '@mui/material'
 import axios from 'axios';
 import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import { useClientes } from '../../hooks/useClientes';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
+
 
 const style = {
 
@@ -31,23 +33,30 @@ const opciones = [
     },
     {
         value: 3,
-        label: 'Reparado',
+        label: 'Pintura'
     },
     {
         value: 4,
-        label: 'Entregado',
+        label: 'Reparado',
     },
     {
         value: 5,
-        label: 'Cancelado',
+        label: 'Entregado',
     },
     {
         value: 6,
+        label: 'Cancelado',
+    },
+    {
+        value: 7,
         label: 'En espera',
     },
 ];
 
 const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
+
+    const { auth } = useContext(AuthContext)
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -120,13 +129,20 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
         })
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php').then(respuesta => {
             setTipoCarrocerias(respuesta.data);
-
         })
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php').then(respuesta => {
             setClientes(respuesta.data);
-
         })
     }, []);
+
+    const deshabilitarBoton = () =>{
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
 
     return (
         <>
@@ -135,11 +151,11 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                 color="primary"
                 type={'submit'}
                 name={'crear'}
+                disabled={deshabilitarBoton()}
                 endIcon={<CarRepairIcon />}
             >
                 Añadir Vehiculo
             </Button>
-
 
             <Modal
                 open={open}
@@ -203,7 +219,6 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                                 ...data,
                                                 cAseguradora: ''
                                             })
-
                                         }
                                     }
                                     }

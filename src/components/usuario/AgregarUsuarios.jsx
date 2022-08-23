@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
     Alert, Autocomplete, InputLabel,
     Button, Box, MenuItem, Modal, Stack,
@@ -7,6 +7,9 @@ import {
 } from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
+import AuthContext from '../../context/AuthContext';
+import swal from 'sweetalert';
+
 
 const style = {
     position: 'absolute',
@@ -22,7 +25,7 @@ const style = {
 const opciones = [
     {
         value: 2,
-        label: 'Secretaria',
+        label: 'Editor',
     },
     {
         value: 3,
@@ -31,6 +34,7 @@ const opciones = [
 ];
 
 const AgregarUsuarios = () => {
+    const { auth } = useContext(AuthContext)
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -41,7 +45,7 @@ const AgregarUsuarios = () => {
         nombreU: "",
         clave: "",
         email: "",
-        cTaller: "",
+        cTaller: auth.cTaller,
         cRolU: "",
     })
 
@@ -61,11 +65,61 @@ const AgregarUsuarios = () => {
             cRolU: data.cRolU,
             cTaller: data.cTaller,
             nombreU: data.nombreU,
+
         })
             .then(respuesta => {
-                console.log(respuesta.data)
+                obtenerUsuarios();
+                handleClose();
+
+                if (respuesta.data.msg == 'Agregado') {
+                    console.log(respuesta.data)
+                    swal("Usuario agregado", {
+                        icon: "success",
+                        timer: 1000,
+                        buttons: false,
+                    });
+                }
+                if (respuesta.data.msg == 'Datos insuficientes') {
+                    console.log(respuesta.data)
+                    swal("No se puedo agregar al usuario", {
+                        icon: "error",
+                        timer: 1000,
+                        buttons: false,
+                    })
+                }
             })
     }
+
+    function rolDisabled() {
+        if (auth.cRolU == 3) {
+            return true
+        }
+    }
+
+    function editorRol() {
+        if (auth.cRolU == 2) {
+            return true
+        }
+    }
+
+    function abrir() {
+        setData({
+            nombreU: "",
+            clave: "",
+            email: "",
+            cTaller: auth.cTaller,
+            cRolU: 3,
+        });
+        handleOpen();
+    }
+    function handle(e) {
+        const newdata = { ...data }
+        newdata[e.target.name] = e.target.value;
+        console.log(newdata);
+        setData(newdata);
+    }
+
+
 
     return (
         <div>
@@ -133,8 +187,8 @@ const AgregarUsuarios = () => {
                             onChange={(e) => handle(e)} />
 
                         <FormControl>
-                            <InputLabel id="demo-simple-select-label" sx={{ mx: 2 }}>Rol</InputLabel>
-                            <Grid sx={{ mx: 2, width: 360 }} >
+                            <InputLabel sx={{ my: 2, mx: 2 }} >Rol</InputLabel>
+                            <Grid sx={{ my: 2, mx: 2, width: 360 }} >
                                 <Select
                                     id='cRolU'
                                     value={data.cRolU}
@@ -142,10 +196,12 @@ const AgregarUsuarios = () => {
                                     fullWidth
                                     onChange={handle}
                                     label='Rol'
+                                    required
+                                    disabled={editorRol()}
+                                    defaultValue={3}
                                 >
-
                                     {opciones.map(opcion => (
-                                        <MenuItem key={opcion.value} value={opcion.value}>
+                                        <MenuItem key={opcion.value} value={opcion.value} disabled={editorRol()} >
                                             {opcion.label}
                                         </MenuItem>
                                     ))}
@@ -185,8 +241,9 @@ const AgregarUsuarios = () => {
                         </Stack >
 
                     </Box>
-
                 </Box>
+
+
             </Modal>
         </div>
 
@@ -194,4 +251,5 @@ const AgregarUsuarios = () => {
 }
 
 export default AgregarUsuarios
+
 
