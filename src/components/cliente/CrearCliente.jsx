@@ -15,8 +15,14 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import AuthContext from "../../context/AuthContext";
-import { validateRut, formatRut, RutFormat, isRutLike } from "@fdograph/rut-utilities";
+import {
+  validateRut,
+  formatRut,
+  RutFormat,
+  isRutLike,
+} from "@fdograph/rut-utilities";
 import swal from "sweetalert";
+import ValidarCliente from "../funciones/clientes/ValidarCliente";
 
 const style = {
   position: "absolute",
@@ -43,7 +49,6 @@ const CrearCliente = ({ getClientes }) => {
     apellidoC: "",
     direccionC: "",
     cComuna: "",
-    
   });
   const onChange = (e) => {
     setForm({
@@ -55,7 +60,7 @@ const CrearCliente = ({ getClientes }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(form);
-    if (isRutLike(form.rutC)) {
+    if (isRutLike(form.rutC) && ValidarCliente(form)) {
       form.rutC = formatRut(form.rutC, RutFormat.DOTS_DASH);
       axios
         .post(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
@@ -73,14 +78,18 @@ const CrearCliente = ({ getClientes }) => {
           if (res.data.msg === "Cliente agregado") {
             swal("CREADO", "Cliente creado correctamente", "success");
           } else {
-            swal("ERROR", "No fue posible agregar al cliente, asegúrese de completar todos los campos", "error");
+            swal(
+              "ERROR",
+              "No fue posible agregar al cliente, asegúrese de completar todos los campos",
+              "error"
+            );
           }
         })
         .catch((err) => {
           console.log(err);
         });
-    }else{
-      swal("ERROR", "Rut no válido", "error");
+    } else {
+      swal("ERROR", "Uno o mas campos no son validos", "error");
     }
     handleClose();
   };
@@ -101,13 +110,13 @@ const CrearCliente = ({ getClientes }) => {
     getComunas();
   }, []);
 
-  const restringirBoton = () =>{
+  const restringirBoton = () => {
     if (auth.cRolU != 3) {
       return false;
-    }else{
+    } else {
       return true;
     }
-  }
+  };
 
   return (
     <>
