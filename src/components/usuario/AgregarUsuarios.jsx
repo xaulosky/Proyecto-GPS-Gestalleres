@@ -8,6 +8,7 @@ import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
 
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -21,8 +22,8 @@ const style = {
 };
 const opciones = [
     {
-        value: 2,
-        label: 'Secretaria',
+      value: 2,
+      label: 'Editor',
     },
     {
         value: 3,
@@ -64,9 +65,58 @@ const AgregarUsuarios = () => {
             
         })
         .then(respuesta=>{
-            console.log(respuesta.data)
+            obtenerUsuarios();
+            handleClose();
+
+            if(respuesta.data.msg == 'Agregado'){
+                console.log(respuesta.data)
+                swal("Usuario agregado", {
+                    icon: "success",
+                    timer: 1000,
+                    buttons: false,
+                  });
+            }
+            if(respuesta.data.msg == 'Datos insuficientes'){
+                console.log(respuesta.data)
+                swal("No se puedo agregar al usuario",{
+                    icon:"error",
+                    timer: 1000,
+                    buttons: false,
+                  })
+            }
         })
     }
+
+    function rolDisabled(){
+        if(auth.cRolU == 3){
+            return true
+        }
+    }
+
+    function editorRol(){
+        if(auth.cRolU == 2){
+            return true
+        }
+    }
+    
+    function abrir(){
+        setData({
+            nombreU: "",
+            clave: "",
+            email: "",
+            cTaller: auth.cTaller,
+            cRolU: 3,
+        });
+        handleOpen();
+      }
+    function handle(e){
+        const newdata={...data}
+        newdata[e.target.name]= e.target.value;
+        console.log(newdata);
+        setData(newdata);
+    }
+
+    
 
   return (
     <div>
@@ -134,8 +184,8 @@ const AgregarUsuarios = () => {
                         onChange={(e)=>handle(e)} />
                     
                     <FormControl>
-                    <InputLabel id="demo-simple-select-label" sx={{mx:2}}>Rol</InputLabel>
-                    <Grid sx={{mx:2, width: 360}} >
+                    <InputLabel sx={{my:2,mx:2}} >Rol</InputLabel> 
+                    <Grid sx={{my:2,mx:2, width: 360}} >
                     <Select
                         id='cRolU'
                         value={data.cRolU}
@@ -143,12 +193,14 @@ const AgregarUsuarios = () => {
                         fullWidth
                         onChange={handle}
                         label = 'Rol'
+                        required
+                        disabled = {editorRol()}
+                        defaultValue = {3}
                     >  
-                     
-                        {opciones.map(opcion => (
-                        <MenuItem key={opcion.value} value={opcion.value}>
-                        {opcion.label}
-                    </MenuItem>
+                        {opciones.map(opcion => (  
+                                <MenuItem key={opcion.value} value={opcion.value} disabled = {editorRol()} >
+                                    {opcion.label}
+                                </MenuItem>
                     ))}                
                     </Select>    
                     </Grid>

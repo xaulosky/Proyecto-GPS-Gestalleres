@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import axios from 'axios';
 import swal from 'sweetalert';
 import AuthContext from '../../context/AuthContext';
@@ -41,17 +41,6 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
     }
 
     const alerta=(row)=>{
-      if(auth.cRolU == 3){
-        swal("No cuenta con los permisos para acceder a esta función",{
-            icon:"error",
-            timer: 1000,
-            buttons: false,
-          })
-          this.handleClose();
-    }
-      
-      
-      console.log(row.nombreU)
       swal({
         title: "Eliminar Usuario",
         text: "¿Esta seguro de eliminar a "+row.nombreU,
@@ -93,7 +82,7 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
           <Button
                   color = 'error'
                   onClick= {()=>alerta(row)}
-                  endIcon={<DeleteIcon />}
+                  endIcon={<DeleteOutlineIcon />}
                   title = 'Eliminar Usuario'
                   disabled = {rolDisabled()}
               />       
