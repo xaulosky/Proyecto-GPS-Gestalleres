@@ -32,14 +32,18 @@ const opciones = [
     },
     {
         value: 3,
-        label: 'Reparado',
+        label: 'Pintura'
     },
     {
         value: 4,
-        label: 'Entregado',
+        label: 'Reparado',
     },
     {
         value: 5,
+        label: 'Entregado',
+    },
+    {
+        value: 6,
         label: 'Cancelado',
     },
     {
@@ -150,7 +154,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
 
     const deshabilitarBoton = () =>{
 
-        if(auth.cRolU<=3){
+        if(auth.cRolU!=3){
             return false;
         }else{
             return true;
@@ -163,7 +167,6 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                 type={'submit'}
                 name={'editar'}
                 color="primary"
-                disabled={deshabilitarBoton()}
                 endIcon={<EditIcon />}
             >
             </Button>
@@ -188,6 +191,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                             value={data.patenteV}
                             required
                             onChange={(e) => handle(e)}
+                            disabled={deshabilitarBoton()}
                         />
                         <TextField fullWidth
                             id='modeloV'
@@ -199,6 +203,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                             value={data.modeloV}
                             required
                             onChange={(e) => handle(e)}
+                            disabled={deshabilitarBoton()}
                         />
                         <TextField fullWidth
                             id='colorV'
@@ -210,6 +215,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                             value={data.colorV}
                             required
                             onChange={(e) => handle(e)}
+                            disabled={deshabilitarBoton()}
                         />
                         <TextField fullWidth
                             id='estadoV'
@@ -221,6 +227,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                             value={data.estadoV}
                             required
                             onChange={(e) => handle(e)}
+                            disabled={deshabilitarBoton()}
                         />
                         <Autocomplete
                             options={opciones}
@@ -247,6 +254,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                             InputProps={{ inputProps: { min: 0 } }}
                             required
                             onChange={(e) => handle(e)}
+                            disabled={deshabilitarBoton()}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px', Textalign: 'center' }}>
                             <DialogActions>
