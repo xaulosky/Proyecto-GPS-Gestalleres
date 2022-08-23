@@ -10,6 +10,7 @@ import axios from "axios";
 import React, { useState, useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AuthContext from "../../context/AuthContext";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const EliminarCliente = ({ getClientes, row }) => {
   /* delete cliente */
@@ -76,7 +77,7 @@ const EliminarCliente = ({ getClientes, row }) => {
         color="error"
         size="small"
         onClick={()=>eliminar(row)}
-        endIcon={<DeleteIcon />}
+        endIcon={<DeleteOutlineIcon />}
         title="Eliminar Cliente"
         disabled={restringirBoton()}
       />
