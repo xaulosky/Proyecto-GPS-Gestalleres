@@ -28,7 +28,7 @@ const ListaRepuesto = () => {
         "Fecha Llegada": repuestos.fechaLlegada,
         "Estado Repuesto": repuestos.estadoRepuesto
       })));
-    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const wb = { Sheets: { 'Hoja 1': ws }, SheetNames: ['Hoja 1'] };
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
     const data = new Blob([excelBuffer], { type: fileType });
     FileSaver.saveAs(data, fileName + fileExtension);
