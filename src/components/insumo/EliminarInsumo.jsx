@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import swal from 'sweetalert';
@@ -31,7 +31,7 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
         swal({
             title: "¿Estas seguro de eliminar el insumo " + row.nombreInsumo + "?",
             icon: "warning",
-            buttons: true,
+            //buttons: true,
             buttons: ["Cancelar", "Eliminar"],
             dangerMode: true,
         })
@@ -85,7 +85,7 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
                 name={'eliminar'}
                 disabled={deshabilitarBoton()}
                 title={'Eliminar'}
-                endIcon={<DeleteIcon />}
+                endIcon={<DeleteOutlineIcon />}
             >
             </Button>
         </>
