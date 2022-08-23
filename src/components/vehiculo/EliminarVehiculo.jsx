@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Grid, Stack, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import { useEffect, useState, useContext } from 'react';
 import swal from 'sweetalert';
 import AuthContext from '../../context/AuthContext';
@@ -101,7 +101,7 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
                 name={'eliminar'}
                 disabled={deshabilitarBoton()}
                 title={'Eliminar'}
-                endIcon={<DeleteIcon />}
+                endIcon={<DeleteOutlineIcon/>}
             >
             </Button>
             <Dialog
