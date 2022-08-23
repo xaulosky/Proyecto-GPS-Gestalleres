@@ -8,6 +8,7 @@ import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
 
+
 const style = {
     position: 'absolute' ,
     top: '50%',
@@ -22,7 +23,7 @@ const style = {
   const opciones = [
     {
       value: 2,
-      label: 'Secretaria',
+      label: 'Editor',
     },
     {  
       value: 3,
@@ -84,23 +85,20 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
             return true
         }
     }
+
+    function editorRol(){
+        if(auth.cRolU == 2){
+            return true
+        }
+    }
     
     function abrir(){
-
-        if(auth.cRolU == 3){
-            swal("No cuenta con los permisos para acceder a esta función",{
-                icon:"error",
-                timer: 1000,
-                buttons: false,
-              })
-              this.handleClose();
-        }
         setData({
             nombreU: "",
             clave: "",
             email: "",
             cTaller: auth.cTaller,
-            cRolU: "",
+            cRolU: 3,
         });
         handleOpen();
       }
@@ -110,6 +108,8 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
         console.log(newdata);
         setData(newdata);
     }
+
+    
 
   return (
     <div>
@@ -175,7 +175,7 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
                         onChange={(e)=>handle(e)} />
                     
                     <FormControl>
-                    <InputLabel sx={{my:2,mx:2}}>Rol</InputLabel>
+                    <InputLabel sx={{my:2,mx:2}} >Rol</InputLabel> 
                     <Grid sx={{my:2,mx:2, width: 360}} >
                     <Select
                         id='cRolU'
@@ -185,11 +185,13 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
                         onChange={handle}
                         label = 'Rol'
                         required
+                        disabled = {editorRol()}
+                        defaultValue = {3}
                     >  
-                        {opciones.map(opcion => (
-                        <MenuItem key={opcion.value} value={opcion.value}>
-                        {opcion.label}
-                    </MenuItem>
+                        {opciones.map(opcion => (  
+                                <MenuItem key={opcion.value} value={opcion.value} disabled = {editorRol()} >
+                                    {opcion.label}
+                                </MenuItem>
                     ))}                
                     </Select>    
                     </Grid>

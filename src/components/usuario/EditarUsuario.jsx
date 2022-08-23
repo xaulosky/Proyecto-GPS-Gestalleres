@@ -1,11 +1,14 @@
 import React, { useState, useContext } from 'react'
-import { Alert ,Autocomplete,InputLabel, 
-        Button,Box , MenuItem, Modal,Stack ,
+import { Alert ,Autocomplete,InputLabel,FilledInput, OutlinedInput,
+        InputAdornment,
+        Button,Box ,IconButton, MenuItem, Modal,Stack ,
         Select,TextField, Typography, Grid, FormControl, 
         FormLabel, FormHelperText} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AuthContext from '../../context/AuthContext';
 
 const style = {
@@ -21,8 +24,12 @@ const style = {
   };
   const opciones = [
     {
+        value: 1,
+        label: 'Administrador',
+      },
+    {
       value: 2,
-      label: 'Secretaria',
+      label: 'Editor',
     },
     {  
       value: 3,
@@ -45,15 +52,8 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
           cRolU: row.cRolU,
       })
 
+
       function abrir(){
-        if(auth.cRolU == 3){
-            swal("No cuenta con los permisos para acceder a esta función",{
-                icon:"error",
-                timer: 1000,
-                buttons: false,
-              })
-              this.handleClose();
-        }
         obtenerUsuarios();
         setData({
             cUsuario : row.cUsuario,
@@ -108,6 +108,11 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
             }
           })
       }
+      const admin = (row) =>{
+        if(row.cRolU === 1){
+            return true
+        }
+      }
 
     return (
       <div>
@@ -154,13 +159,13 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
                     <TextField 
                         id="clave" 
                         name = 'clave' 
-                        type= 'text' 
-                        value={data.clave} 
+                        type= "password"
+                        value={data.clave}
                         label="Contraseña" 
                         variant="outlined" 
                         multiline
                         required
-                        placeholder = "Contraseña"
+                        placeholder = "Contraseña"        
                         onChange={(e)=>handle(e)} />
                     <TextField 
                         id="email" 
@@ -183,16 +188,16 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
                         fullWidth
                         onChange={handle}
                         label = 'Rol'
+                        disabled = {admin(row)}
                     >  
                         {opciones.map(opcion => (
-                        <MenuItem key={opcion.value} value={opcion.value}>
+                            <MenuItem key={opcion.value} value={opcion.value} disabled = {admin(row)}>
                         {opcion.label}
                     </MenuItem>
                     ))}                
                     </Select>    
                     </Grid>
                     </FormControl>
-                      
                     <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
                     <Button  
                         variant ='contained'

@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell,
     DialogContentText, DialogTitle, Slide, 
     FormControl, FormLabel, FormGroup, 
     FormHelperText, TextField, Grid, Divider, 
-    MenuItem, InputLabel, Select, Modal, Box, makeStyles, Stack } from '@mui/material'
+    MenuItem, InputLabel, Select, Modal, Box, makeStyles, Stack, Typography } from '@mui/material'
 import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react'
 import DataTable from 'react-data-table-component'
@@ -19,14 +19,14 @@ function rol(row){
     if(row.cRolU == 1){
         return(
             <div>
-                Jefe de taller
+                Administrador
             </div>
         )
     }
     if(row.cRolU == 2){
         return(
            <div>
-                Secretaria
+                Editor
             </div> 
         )
     }
@@ -48,9 +48,7 @@ const paginationComponentOptions = {
 
 //Data Table
 const ListaUsuarios = () => {
-
     const columns = [
-    
         {
             name: 'Nombre',
             selector: row => row.nombreU,
@@ -96,6 +94,7 @@ const ListaUsuarios = () => {
     useEffect(()=>{
         obtenerUsuarios();
     },[])
+
     
     return (
       
@@ -112,7 +111,12 @@ const ListaUsuarios = () => {
         persistTableHead
         pointerOnHover
         responsive
-        nodatacomponent = "Sin datos"
+        subHeaderWrap
+        subHeaderAlign="right"
+        noDataComponent = {<Typography variant="h5" component="h2"s>
+                                No existen datos disponibles
+                            </Typography>
+                            }
         paginationComponentOptions={paginationComponentOptions}
         actions={<AgregarUsuarios obtenerUsuarios = {obtenerUsuarios}/>}
     />  
