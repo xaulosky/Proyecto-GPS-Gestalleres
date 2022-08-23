@@ -192,6 +192,7 @@ const EditarRepuesto = ({ row, obtenerRepuestos }) => {
 
                         <TextField
                             fullWidth
+                            inputProps={{ min: data.fechaSolicitud }}
                             id='standard-basic'
                             label='Fecha Llegada'
                             margin='normal'
