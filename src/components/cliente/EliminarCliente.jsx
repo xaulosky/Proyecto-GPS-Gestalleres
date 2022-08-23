@@ -7,8 +7,10 @@ import {
   DialogTitle,
 } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AuthContext from "../../context/AuthContext";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const EliminarCliente = ({ getClientes, row }) => {
   /* delete cliente */
@@ -16,6 +18,7 @@ const EliminarCliente = ({ getClientes, row }) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const {auth} = useContext(AuthContext);
 
   const deleteCliente = async (row) => {
     console.log(row.cCliente);
@@ -40,6 +43,28 @@ const EliminarCliente = ({ getClientes, row }) => {
       });
   };
 
+  const eliminar=(row)=>{
+    swal({
+      title: "¿Estás seguro?",
+      text: "Una vez eliminado, no podrás recuperar este registro",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        deleteCliente(row);
+      } else {
+        swal("Cancelado", "El cliente no se eliminó", "error");
+      }
+    });
+  }
+  const restringirBoton = () =>{
+    if (auth.cRolU != 3) {
+      return false;
+    }else{
+      return true;
+    }
+  }
   return (
     <div>
       <Button
@@ -51,32 +76,11 @@ const EliminarCliente = ({ getClientes, row }) => {
         }}
         color="error"
         size="small"
-        onClick={handleOpen}
-        endIcon={<DeleteIcon />}
+        onClick={()=>eliminar(row)}
+        endIcon={<DeleteOutlineIcon />}
         title="Eliminar Cliente"
+        disabled={restringirBoton()}
       />
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"Eliminar cliente "}</DialogTitle>
-
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            ¿Esta seguro de eliminar a{" "}
-            <span style={{ color: "black" }}>{row.nombreC} </span> ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => deleteCliente(row)} autoFocus>
-            Aceptar
-          </Button>
-          <Button onClick={handleClose}>Cancelar</Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };
