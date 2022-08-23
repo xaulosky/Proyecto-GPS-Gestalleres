@@ -9,6 +9,13 @@ import EditarRepuesto from './EditarRepuesto';
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 
+const paginationComponentOptions = {
+  rowsPerPageText: 'Filas por página',
+  rangeSeparatorText: 'de',
+  selectAllRowsItem: true,
+  selectAllRowsItemText: 'Todos',
+};
+
 const ListaRepuesto = () => {
 
   const { auth } = useContext(AuthContext)
@@ -129,6 +136,8 @@ const ListaRepuesto = () => {
         pointerOnHover
         responsive
         subHeader
+        noDataComponent="No hay repuestos registrados."
+        paginationComponentOptions={paginationComponentOptions}
       />
     </>
   )
