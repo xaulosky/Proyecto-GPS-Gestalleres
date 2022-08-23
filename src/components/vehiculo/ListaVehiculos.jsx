@@ -6,13 +6,23 @@ import EditarVehiculo from './EditarVehiculo';
 import EliminarVehiculo from './EliminarVehiculo';
 import AgregarVehiculo from './AgregarVehiculo';
 
+
+
+function formatoNumeros(numero) {
+    return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+/*const formatoDinero = (numero) => {
+    return ' $ ' + formatoNumeros(numero);
+}*/
+
+
 const ListaVehiculos = () => {
 
     const columns = [
         {
             name: '#Vehiculo',
             selector: row => row.cVehiculo,
-            sortable: true
         },
         {
             name: 'Patente',
@@ -36,23 +46,27 @@ const ListaVehiculos = () => {
         },
         {
             name: 'Aseguradora Monto',
-            selector: row => row.montoAseguradora,
+            selector: row => (formatoNumeros(row.montoAseguradora)),
+        },
+        {
+            name: 'Tipo Carroceria',
+            selector: row => row.cTipoCarroceria,
         },
         {
             name: 'Acciones',
             cell: (row) => {
-              return (
-                <Stack direction={row} textAlign="center" >
-                  <EditarVehiculo   
-                    row={row}
-                    obtenerVehiculos={obtenerVehiculos}
-                />
-                <EliminarVehiculo
-                  row={row}
-                  obtenerVehiculos={obtenerVehiculos}
-                />
-                </Stack>
-              )
+                return (
+                    <Stack direction={row} textAlign="center" >
+                        <EditarVehiculo
+                            row={row}
+                            obtenerVehiculos={obtenerVehiculos}
+                        />
+                        <EliminarVehiculo
+                            row={row}
+                            obtenerVehiculos={obtenerVehiculos}
+                        />
+                    </Stack>
+                )
             },
             ignoreRowClick: true,
             allowOverflow: true,
@@ -61,7 +75,10 @@ const ListaVehiculos = () => {
             align: 'center',
         }
     ];
-    
+
+    const [tipoCarrocerias, setTipoCarrocerias] = useState();
+    const [tipoCarroceriaSeleccionada, setTipoCarroceriaSeleccionada] = useState();
+
 
     const [vehiculos, setVehiculos] = useState([]);
 
@@ -72,28 +89,36 @@ const ListaVehiculos = () => {
             })
     }
 
+    const obtenerTipoCarrocerias = () => {
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'tipoCarroceria.php')
+            .then(respuesta => {
+                setTipoCarrocerias(respuesta.data);
+            })
+    }
+
     useEffect(() => {
         obtenerVehiculos();
-    }, []);
+        obtenerTipoCarrocerias();
+    }, [])
 
     return (
         <>
-        <Grid item align='right' xs={12} >
-            <AgregarVehiculo obtenerVehiculos={obtenerVehiculos}/>
-        </Grid>
+            <Grid item align='right' xs={12} >
+                <AgregarVehiculo obtenerVehiculos={obtenerVehiculos} />
+            </Grid>
 
-        <DataTable
-            title=""
-            columns={columns}
-            data={vehiculos}
-            dense
-            direction="auto"
-            fixedHeaderScrollHeight="300px"
-            pagination
-            responsive
-            subHeaderAlign="center"
-            subHeaderWrap
-        />
+            <DataTable
+                title=""
+                columns={columns}
+                data={vehiculos}
+                dense
+                direction="auto"
+                fixedHeaderScrollHeight="300px"
+                pagination
+                responsive
+                subHeaderAlign="center"
+                subHeaderWrap
+            />
         </>
     )
 }

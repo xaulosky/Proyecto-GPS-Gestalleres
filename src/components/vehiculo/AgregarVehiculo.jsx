@@ -1,10 +1,11 @@
 import * as React from 'react'
-import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, createTheme, ThemeProvider, CssBaseline } from '@mui/material'
+import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, MenuItem, Input, InputLabel, Select, Menu, FormControl, Stack, Autocomplete } from '@mui/material'
 import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
-import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
+import { useClientes } from '../../hooks/useClientes';
+import swal from 'sweetalert';
 
 const style = {
 
@@ -19,13 +20,39 @@ const style = {
     p: 4,
 };
 
+const opciones = [
+    {
+        value: 1,
+        label: 'En revisión',
+    },
+    {
+        value: 2,
+        label: 'En reparación',
+    },
+    {
+        value: 3,
+        label: 'Reparado',
+    },
+    {
+        value: 4,
+        label: 'Entregado',
+    },
+    {
+        value: 5,
+        label: 'Cancelado',
+    },
+    {
+        value: 6,
+        label: 'En espera',
+    },
+];
 
-const AgregarVehiculo = ({ obtenerVehiculos }) => {
-    const [open, setOpen] = React.useState(false);
+const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         patenteV: '',
         modeloV: '',
         colorV: '',
@@ -47,44 +74,59 @@ const AgregarVehiculo = ({ obtenerVehiculos }) => {
             estadoV: data.estadoV,
             estadoRevisionTecnicaV: data.estadoRevisionTecnicaV,
             montoAseguradora: data.montoAseguradora,
+            cCliente: data.cCliente,
             cAseguradora: data.cAseguradora,
             cTipoCarroceria: data.cTipoCarroceria,
-            cCliente: data.cCliente,
-        })
-            .then(respuesta => {
-                obtenerVehiculos()
-                handleClose();
-            })
 
-    }
+        }).then(respuesta => {
+            obtenerVehiculos()
+            console.log(respuesta.data);
+            handleClose();
+            if (respuesta.data.msg === 'Agregado correctamente') {
+
+                swal("CREADO!", "Vehiculo creado correctamente", "success");
+            } else {
+                swal("ERROR", "Error al crear el vehiculo", "error");
+                console.log(respuesta.data.msg);
+            }
+            setTimeout(() => {
+                swal.close()
+            }, 3000);
+        })
+
+    };
 
     function handle(e) {
         const newdata = { ...data }
         newdata[e.target.name] = e.target.value;
         setData(newdata);
         console.log(newdata);
-    }
+    };
 
 
+    const [aseguradoras, setAseguradoras] = useState();
+    const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState();
 
-    const theme = createTheme({
-        overrides: {
-            MuiCssBaseline: {
-                "@global": {
-                    "*::-webkit-scrollbar": {
-                        width: "10px"
-                    },
-                    "*::-webkit-scrollbar-track": {
-                        background: "#E4EFEF"
-                    },
-                    "*::-webkit-scrollbar-thumb": {
-                        background: "#1D388F61",
-                        borderRadius: "2px"
-                    }
-                }
-            }
-        }
-    });
+    const [tipoCarrocerias, setTipoCarrocerias] = useState();
+    const [tipoCarroceriaSeleccionada, setTipoCarroceriaSeleccionada] = useState();
+
+    const [clientes, setClientes] = useState();
+    const [clienteSeleccionado, setClienteSeleccionado] = useState();
+
+
+    useEffect(() => {
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'aseguradora.php').then(respuesta => {
+            setAseguradoras(respuesta.data);
+        })
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php').then(respuesta => {
+            setTipoCarrocerias(respuesta.data);
+
+        })
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php').then(respuesta => {
+            setClientes(respuesta.data);
+
+        })
+    }, []);
 
     return (
         <>
@@ -107,123 +149,151 @@ const AgregarVehiculo = ({ obtenerVehiculos }) => {
             >
 
                 <Box component='form' sx={style} onSubmit={submit} >
-                    <ScopedCssBaseline>
-                        <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
-                            Añadir Vehiculo
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 1 }} component={'div'}>
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'text'}
-                                name={'patenteV'}
-                                label="Patente"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'text'}
-                                name={'modeloV'}
-                                label="Modelo"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'text'}
-                                name={'colorV'}
-                                label="Color"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'text'}
-                                name={'estadoV'}
-                                label="Estado"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'text'}
-                                name={'estadoRevisionTecnicaV'}
-                                label="Estado Revision Tecnica"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'number'}
-                                name={'montoAseguradora'}
-                                label="Monto Aseguradora"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'number'}
-                                name={'cAseguradora'}
-                                label="Código Aseguradora"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'number'}
-                                name={'cTipoCarroceria'}
-                                label="Código Tipo Carroceria"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <TextField fullWidth
-                                id="standard-basic"
-                                margin="normal"
-                                variant="outlined"
-                                type={'number'}
-                                name={'cCliente'}
-                                label="Código Cliente"
-                                required
-                                onChange={(e) => handle(e)}
-                            />
-                            <Grid item align='center' xs={12} sm={12} style={{ height: '100px' }}>
-                                <DialogActions >
+                    <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
+                        Añadir Vehiculo
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 1 }} component={'div'}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <TextField id="patenteV" name="patenteV" label="Patente" type={'text'} required onChange={(e) => handle(e)} />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField id="modeloV" name="modeloV" label="Modelo" type={'text'} required onChange={(e) => handle(e)} />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField id="colorV" name="colorV" label="Color" type={'text'} required onChange={(e) => handle(e)} />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField id="estadoV" name="estadoV" label="Estado" type={'text'} required onChange={(e) => handle(e)} />
+                            </Grid>
+                            <Grid item xs={6}>
+                                {/*Autocomplete de estado de revision tecnica*/}
+                                <Autocomplete
+                                    id="estadoRevisionTecnicaV"
+                                    options={opciones}
+                                    getOptionLabel={(option) => option.label}
+                                    
+                                    onChange={(e, value) => {
+                                        setData({ ...data, estadoRevisionTecnicaV: value.label})
+                                    }
+                                    }
+                                    renderInput={(params) => <TextField {...params} label="Estado de revision tecnica" required />}
+                                />
+
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField id="montoAseguradora" name="montoAseguradora" label="Monto Aseguradora" type={'number'} required InputProps={{ inputProps: { min: 0 } }} onChange={(e) => handle(e)} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Autocomplete
+                                    id="aseguradora"
+                                    options={aseguradoras}
+                                    value={aseguradoraSeleccionada}
+                                    getOptionLabel={(option) => option.nombreAseguradora}
+                                    onChange={(event, value) => {
+                                        if (value) {
+                                            setData({
+                                                ...data,
+                                                cAseguradora: value.cAseguradora
+                                            })
+                                            setAseguradoraSeleccionada(value)
+                                        } else {
+                                            setAseguradoraSeleccionada()
+                                            setData({
+                                                ...data,
+                                                cAseguradora: ''
+                                            })
+
+                                        }
+                                    }
+                                    }
+                                    renderInput={(params) => <TextField {...params} label="Aseguradora" variant="outlined" fullWidth required />}
+                                    isOptionEqualToValue={(option, value) => option.cAseguradora === value.cAseguradora}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <Autocomplete
+                                    id="TipoCarroceria"
+                                    options={tipoCarrocerias}
+                                    value={tipoCarroceriaSeleccionada}
+                                    getOptionLabel={(option) => option.tipoCarroceria}
+                                    onChange={(event, value) => {
+                                        if (value) {
+                                            setData({
+                                                ...data,
+                                                cTipoCarroceria: value.cTipoCarroceria
+                                            })
+                                            setTipoCarroceriaSeleccionada(value)
+                                        } else {
+                                            setTipoCarroceriaSeleccionada()
+                                            setData({
+                                                ...data,
+                                                cTipoCarroceria: ''
+                                            })
+
+                                        }
+                                    }
+                                    }
+                                    renderInput={(params) => <TextField {...params} label="Tipo Carroceria" variant="outlined" fullWidth required />}
+                                    isOptionEqualToValue={(option, value) => option.cTipoCarroceria === value.cTipoCarroceria}
+                                />
+                            </Grid>
+                            <Grid item xs={6} fullWidth align='center'>
+                                <Autocomplete
+                                    id="Cliente"
+                                    options={clientes}
+                                    value={clienteSeleccionado}
+                                    getOptionLabel={(option) => option.nombreC}
+                                    onChange={(event, value) => {
+                                        if (value) {
+                                            setData({
+                                                ...data,
+                                                cCliente: value.cCliente,
+
+                                            })
+                                            setClienteSeleccionado(value)
+                                        } else {
+                                            setClienteSeleccionado()
+                                            setData({
+                                                ...data,
+                                                cCliente: ''
+                                            })
+
+                                        }
+                                    }
+                                    }
+                                    isOptionEqualToValue={(option, value) => option.cCliente === value.cCliente}
+                                    renderInput={(params) => (<TextField {...params} label="Cliente" variant="outlined" fullWidth required />)}
+                                />
+                            </Grid>
+                            <Grid item xs={12} fullWidth>
+                                <DialogActions>
                                     <Button
+                                        xs={6}
+                                        align='center'
+                                        fullWidth
                                         variant="contained"
                                         color="primary"
-                                        name={'crear'}
+                                        name={'Aceptar'}
                                         type={'submit'}
                                     >
                                         Aceptar
                                     </Button>
                                     <Button
+                                        xs={6}
+                                        align='center'
+                                        fullWidth
                                         onClick={handleClose}
                                         variant="contained"
                                         color="error"
-                                        name={'cancelar'}
+                                        name={'Cancelar'}
                                     >
                                         Cancelar
                                     </Button>
                                 </DialogActions>
                             </Grid>
-                        </Typography>
-                    </ScopedCssBaseline>
+                        </Grid>
+                    </Typography>
                 </Box>
             </Modal>
         </>

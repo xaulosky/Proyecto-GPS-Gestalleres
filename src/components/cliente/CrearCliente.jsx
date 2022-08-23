@@ -62,6 +62,11 @@ const CrearCliente = ({ getClientes }) => {
         });
         console.log(res);
         getClientes();
+        if (res.data.msg === "Cliente agregado") {
+          swal("CREADO", "Cliente creado correctamente", "success");
+        } else {
+          swal("ERROR", "No fue posible agregar al cliente", "error");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -113,6 +118,13 @@ const CrearCliente = ({ getClientes }) => {
                   label="Rut"
                   name="rutC"
                   onChange={onChange}
+                  required={true}
+                  inputProps={{
+                    patern: "^[0-9]+-[0-9kK]{1}$",
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </FormControl>
               <FormControl fullWidth>

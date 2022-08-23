@@ -1,9 +1,11 @@
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import InventoryIcon from '@mui/icons-material/Inventory';
 import axios from 'axios';
-import AuthContext from '../../context/AuthContext'
+import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
+import validar from '../funciones/insumos/validarDatosInsumo';
+/* import Validar from './ValidarInsumo'; */
 
 const style = {
 
@@ -21,53 +23,79 @@ const style = {
 const CrearInsumo = ({ obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
-
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         nombreInsumo: '',
         cantidad: '',
         costo: '',
     });
 
-    const [res, setRes] = React.useState({
+    const [res, setRes] = useState({
         msg: '',
     });
 
     const submit = (e) => {
         e.preventDefault();
-        axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
-            nombreInsumo: data.nombreInsumo,
-            cantidad: data.cantidad,
-            costo: data.costo,
-            cTaller: auth.cTaller,
-        })
-            .then(respuesta => {
-                obtenerInsumos()
-                handleClose();
-                setRes(respuesta.data);
-                if (respuesta.data.msg === 'ok') {
-                    swal("CREADO", "Insumo creado correctamente", "success");
-                } else {
-                    swal("ERROR", "Error al crear el insumo", "error");
-                }
-            })
 
+        let tof = validar(data);
+        
+        if (tof) {
+            axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
+                nombreInsumo: data.nombreInsumo,
+                cantidad: data.cantidad,
+                costo: data.costo,
+                cTaller: auth.cTaller,
+            })
+                .then(respuesta => {
+                    obtenerInsumos()
+                    handleClose();
+                    setRes(respuesta.data);
+                    if (respuesta.data.msg === 'ok') {
+                        swal("CREADO", "Insumo creado correctamente", "success");
+                    } else {
+                        swal("ERROR", "Error al crear el insumo", "error");
+                    }
+                })
+        }
     }
 
     function handle(e) {
         const newdata = { ...data }
         newdata[e.target.name] = e.target.value;
         setData(newdata);
-        console.log(newdata);
     }
+
+    function abrir() {
+        obtenerInsumos();
+        setData({
+            nombreInsumo: '',
+            cantidad: '',
+            costo: '',
+        });
+        handleOpen();
+    }
+
+    function deshabilitarBoton(){
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 
     return (
         <>
-            <Button onClick={handleOpen}
+            <Button onClick={abrir}
+                variant="contained"
+                sx={{ ml: 3, p: '10px 15px' }}
+                title="Agregar Insumo"
                 color="primary"
+                disabled = {deshabilitarBoton()}
                 type={'submit'}
                 name={'crear'}
                 endIcon={<InventoryIcon />}
@@ -93,8 +121,12 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            inputProps={{ maxLength: 256 }}
-                            required={true}
+/*                             value={Nombre.campo}
+                            onChange={onChangeNombre}
+                            onKeyUp={validarNombre}
+                            onBlur={validarNombre}
+                            error={Nombre.valido} */
+                            InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
@@ -104,24 +136,27 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'number'}
                             name={'cantidad'}
-                            InputProps={{ inputProps: { min: 0 } }}
-                            required={true}
+                            /* inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }}
+                            required={true} */
+                            InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Valor"
+                            label="Precio"
                             margin="normal"
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            required={true}
-                            InputProps={{ inputProps: { min: 0 } }}
+                            /*required={true}
+                            inputProps={{ pattern: '[0-9]*', min: 0, max: 999999999 }} */
+                            InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
-                        <Grid item xs={12} sm={12} style={{ height: '100px' }}>
+                        <Grid item xs={12} sm={12} style={{ height: '70px' }}>
                             <DialogActions >
                                 <Button
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                     variant="contained"
                                     color="primary"
                                     name={'crear'}
@@ -131,6 +166,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                                 </Button>
                                 <Button
                                     onClick={handleClose}
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                     variant="contained"
                                     color="error"
                                     name={'cancelar'}
@@ -147,3 +183,11 @@ const CrearInsumo = ({ obtenerInsumos }) => {
 }
 
 export default CrearInsumo
+
+
+/* 
+
+
+
+
+*/
