@@ -1,7 +1,8 @@
 import { Button } from '@mui/material';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react'
-import { DeleteIcon } from '@mui/icons-material/Delete';
+import React, { useState } from 'react'
+import { useEffect } from 'react';
+//import { DeleteIcon } from '@mui/icons-material/Delete';
 import swal from 'sweetalert';
 
 const style = {
@@ -20,33 +21,33 @@ const style = {
 };
 
 const EliminarRepuesto = ({row, obtenerRepuestos}) => {
-  console.log(row);
 
   const [res, setRes] = useState({
+
     msg: ''
   });
 
   function eliminarFila(row) {
 
-    /* swal({
+    swal({
 
       title: "¿Está seguro de eliminar el repuesto" + row.nombreRepuesto + "?",
       text: "Esta acción no puede deshacerse",
       icon: "warning",
       buttons: true,
-      buttons: ["Eliminar", "Cancelar"],
+      buttons: ["Cancelar", "Eliminar"],
       dangerMode: true
     })
       .then((willDelete) => {
 
-        if (willDelete) {*/
+        if (willDelete) {
 
           axios.delete(import.meta.env.VITE_APP_BACKEND_URL + '/repuesto.php?cRepuesto=' + row.cRepuesto)
             .then(respuesta => {
 
               obtenerRepuestos();
               setRes(respuesta.data)
-              if (respuesta.data.msg === 'ok') {
+              if (respuesta.data.msg === 'Repuesto Eliminado') {
                 
                 swal("El repuesto ha sido eliminado", {
 
@@ -63,8 +64,8 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
                 });
               }
             })
-          /*}
-      }); */
+          }
+      });
   }
 
   useEffect(() => {
@@ -85,11 +86,58 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
         color='error'
         name={'eliminar'}
         title={'Eliminar'}
-        endIcon={<DeleteIcon />}
+        endIcon={<DeleteIcon/>}
       >
+        eliminar
       </Button>
     </>
   )
 }
+
+/* import { Button } from '@mui/material'
+import axios from 'axios'
+import { DeleteIcon } from '@mui/icons-material/Delete'
+import React, { useEffect, useState } from 'react'
+
+const EliminarRepuesto = ({ row, obtenerRepuestos }) => {
+
+  const [res, setRes] = useState({
+
+    mensaje: ''
+  })
+
+  function eliminar(row) {
+  
+    axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'repuesto.php?cRepuesto=' + row.cRepuesto)
+      .then(respuesta => {
+  
+        setRes(respuesta.data)
+        obtenerRepuestos()
+      })
+  }
+
+  function eliminarRepuesto() {
+    obtenerRepuestos()
+    eliminar(row)
+  }
+
+  useEffect(() => {
+
+    obtenerRepuestos();
+  }, [])
+
+  return (
+    <>
+      <Button
+      onClick={() => eliminarRepuesto(row)}
+      color="error"
+      name={'eliminar'}
+      title={'Eliminar'}
+      >
+ELIMINAR
+      </Button>
+    </>
+  )
+} */
 
 export default EliminarRepuesto
