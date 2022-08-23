@@ -1,6 +1,6 @@
-const nombreInsumoER = /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]{1,100}$/;
+const nombreInsumoER = /^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ /]{1,100}$/;
 const numeroER = /^[0-9]{1,11}$/;
-const consecutivos = /( )\1{2}/;
+const consecutivos = /( )\1/;
 const espacioIncial = /^[ ]+/;
 
 const validar = (data) => {
@@ -12,7 +12,7 @@ const validar = (data) => {
         msg1 = 'El nombre del insumo es requerido.'
         contador++;
     } else if (!nombreInsumoER.test(data.nombreInsumo)) {
-        msg2 = 'El nombre del insumo solo permite letras, números, espacios y guiones.'
+        msg2 = 'El nombre del insumo no puede contener caracteres especiales.'
         contador++;
     } else if (data.nombreInsumo.length > 100 || data.nombreInsumo.length < 1) {
         msg3 = 'El nombre del insumo debe tener entre 1 y 100 caracteres.'

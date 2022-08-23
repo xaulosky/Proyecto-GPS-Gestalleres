@@ -2,7 +2,7 @@ import { Button } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-//import { DeleteIcon } from '@mui/icons-material/Delete';
+import DeleteIcon from '@mui/icons-material/Delete';
 import swal from 'sweetalert';
 
 const style = {
@@ -88,7 +88,6 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
         title={'Eliminar'}
         endIcon={<DeleteIcon/>}
       >
-        eliminar
       </Button>
     </>
   )

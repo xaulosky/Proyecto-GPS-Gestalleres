@@ -5,8 +5,6 @@ import Button from '@mui/material/Button';
 import swal from 'sweetalert';
 import AuthContext from '../../context/AuthContext';
 
-
-
 const style = {
     position: 'absolute',
     top: '50%',
@@ -32,7 +30,6 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
     function eliminar(row) {
         swal({
             title: "¿Estas seguro de eliminar el insumo " + row.nombreInsumo + "?",
-            text: "Una vez eliminado no podras recuperarlo",
             icon: "warning",
             buttons: true,
             buttons: ["Cancelar", "Eliminar"],
@@ -71,11 +68,11 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
         eliminar(row);
     }
 
-    function deshabilitarBoton(){
+    function deshabilitarBoton() {
 
-        if(auth.cRolU!=3){
+        if (auth.cRolU != 3) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
