@@ -5,7 +5,6 @@ import TablaEmpleados from './TablaEmpleados'
 const EmpleadoScreen = () => {
   return (
     <>
-    <CrearEmpleado/>
     <TablaEmpleados/>
     </>
   )

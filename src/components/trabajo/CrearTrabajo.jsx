@@ -1,8 +1,22 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, TextField } from '@mui/material'
+import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, TextField } from '@mui/material'
 import { useState } from 'react'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
 
+const opciones = [
+  {
+      value: 1,
+      label: 'Activo',
+  },
+  {
+      value: 2,
+      label: 'Inactivo',
+  },
+  {
+    value: 3,
+    label: 'Finalizado'
+  },
+];
 const CrearTrabajo = ({obtenerTrabajos}) => {
   const[open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true);
@@ -13,12 +27,12 @@ const CrearTrabajo = ({obtenerTrabajos}) => {
     descripcionTrabajo: "",
     fechaEstimadaT: "",
     fechaRealT: "",
+    estadoT: "",
     costoT: "",
     horasT: "",
     cOrdenTrabajo: "",
     cTipoT: "",
-    cEmpleado: "",
-    cTipoE: ""
+    cEmpleado: ""
 
 
 })
@@ -29,12 +43,12 @@ const submit= (e) =>{
       descripcionTrabajo: data.descripcionTrabajo,
       fechaEstimadaT: data.fechaEstimadaT,
       fechaRealT: data.fechaRealT,
+      estadoT: data.estadoT,
       costoT: data.costoT,
       horasT: data.horasT,
       cOrdenTrabajo: data.cOrdenTrabajo,
       cTipoT: data.cTipoT,
-      cEmpleado: data.cEmpleado,
-      cTipoE: data.cTipoE
+      cEmpleado: data.cEmpleado
   })
   .then(respuesta=>{
     obtenerTrabajos()
@@ -48,6 +62,7 @@ function handle(e){
   setData(newdata)
   console.log(newdata)
 }
+
 
     return (
         <>
@@ -88,8 +103,8 @@ function handle(e){
             fullWidth
             autoFocus
             id="fechaEstimadaT"
+            margin="dense"
             type="date"
-            defaultValue="2022-05-31"
             value={data.fechaEstimadaT} 
             onChange={(e)=>handle(e)}
             />
@@ -99,11 +114,21 @@ function handle(e){
             id="fechaRealT"
             margin="dense"
             type="date"
-            defaultValue="2022-05-31"
             value={data.fechaRealT} 
             onChange={(e)=>handle(e)}
             />
-          
+            <Autocomplete
+             id="estadoT"
+             options={opciones}
+             getOptionLabel={(option) => option.label}
+
+             onChange={(e, value) => {
+                setData({ ...data, estadoT: value.label})
+                  }}
+             renderInput={(params) => <TextField {...params} label="Estado" 
+                 />}
+                        
+          />
             <TextField
             fullWidth
             autoFocus
@@ -116,6 +141,7 @@ function handle(e){
             value={data.costoT} 
             onChange={(e)=>handle(e)}
             />
+            
             <TextField
             fullWidth
             autoFocus
@@ -160,17 +186,7 @@ function handle(e){
             value={data.cEmpleado}
             onChange={(e)=>handle(e)}
             />
-              <TextField
-            fullWidth
-            autoFocus
-            id="cTipoE"
-            margin="dense"
-            type="text"
-            label="Estado"
-            value={data.cTipoE} 
-            onChange={(e)=>handle(e)}
-            />  
-            
+              
         
 
            </DialogContent>

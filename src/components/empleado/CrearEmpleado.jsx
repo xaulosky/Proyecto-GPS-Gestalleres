@@ -4,7 +4,7 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
 import { AccountCircle } from '@mui/icons-material';
 
-const CrearEmpleado = () => {
+const CrearEmpleado = ({obtenerEmpleados}) => {
   const[open, setOpen] = useState(false)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -32,6 +32,7 @@ const submit= (e) =>{
       cTaller: data.cTaller
   })
   .then(respuesta=>{
+    obtenerEmpleados()
     setOpen(false)
       console.log(respuesta.data)
   })
@@ -45,7 +46,7 @@ function handle(e){
 
     return (
         <>
-        <button endIcon={<PersonAddAltIcon />} onClick={() => setOpen(true)}>Agregar Empleado </button >
+        <Button variant="contained" endIcon={<PersonAddAltIcon />} onClick={() => setOpen(true)}>Agregar Empleado </Button >
         <Dialog
             open={open}
             onClose={() => setOpen(false)}
@@ -60,6 +61,14 @@ function handle(e){
             margin="dense"
             id="rutEmpleado"
             label="Rut del Empleado"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
+            variant="standard"
             type="text"
             value={data.rutEmpleado} 
             onChange={(e)=>handle(e)}
@@ -107,6 +116,14 @@ function handle(e){
             margin="dense"
             type="text"
             label ="Email"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
+            variant="standard"
             value={data.emailEmpleado} 
             onChange={(e)=>handle(e)}
             />
@@ -118,6 +135,14 @@ function handle(e){
             margin="dense"
             type="number"
             label ="Número de Teléfono"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle />
+                </InputAdornment>
+              ),
+            }}
+            variant="standard"
             value={data.numeroTelefonoEmpleado}
             onChange={(e)=>handle(e)}
             />

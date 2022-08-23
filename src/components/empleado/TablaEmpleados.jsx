@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
+import { Button, Stack } from '@mui/material';
+import CrearEmpleado from './CrearEmpleado';
+import { BorderColor, Delete } from '@mui/icons-material';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -51,12 +54,34 @@ const TablaEmpleados = () => {
             selector: row => row.cRolE,
             sortable: true
         },
+
         {
-            name: 'Taller',
-            selector: row => row.cTaller,
-            sortable: true
-        }
+            name: 'Acciones',
+            cell: (row) => (
+                <Stack direction={"row"}>
+                <Button  size="small" variant ="contained" endIcon={<BorderColor />} onClick={() => console.log(row)} >Editar</Button>
+                <Button  size="small" variant ="contained" endIcon={<Delete />} onClick={() => eliminarEmpleado(row)}>Eliminar</Button>
+                </Stack>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+      width: "30%",
+      center: true,
+      right: true,
+    }
     ];
+    const eliminarEmpleado = (row) => {
+        console.log(row)
+        axios.delete(import.meta.env.VITE_APP_BACKEND_URL+'empleado.php?cEmpleado='+row.cEmpleado)
+            .then(respuesta => {
+                console.log(respuesta.data)
+                obtenerEmpleados();
+            }
+            )
+
+
+    }
 
   const [empleados, setEmpleados] = useState([]);
 
@@ -75,8 +100,9 @@ const TablaEmpleados = () => {
     }, [])
 
     return (
+        <>
         <DataTable
-            title="Lista de empleados"
+            title="Lista de Empleados"
             columns={columns}
             data={empleados}
             direction="auto"
@@ -93,6 +119,11 @@ const TablaEmpleados = () => {
             paginationComponentOptions={paginationComponentOptions}
 
         />
+         <CrearEmpleado
+        obtenerEmpleados={obtenerEmpleados}   
+        />
+        </>
+        
         
 
        

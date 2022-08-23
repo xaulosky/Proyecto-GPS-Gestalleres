@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import DataTable from 'react-data-table-component'
-import { Button } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import CrearTrabajo from './CrearTrabajo';
+import { BorderColor, Delete } from '@mui/icons-material';
+import EditarTrabajo from './EditarTrabajo';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -44,23 +46,31 @@ const TablaTrabajos = () => {
             sortable: true
         }, 
         {
+            name: 'Estado',
+            selector: row => row.estadoT,
+            sortable: true
+        }, 
+        {
             name: 'Costo',
             selector: row => row.costoT,
             sortable: true
         },
-        {
-            name: 'Horas',
-            selector: row => row.horasT,
-            sortable: true
-        },
+
         {
             name: 'Acciones',
-            cell: row => <div>
-                <Button onClick={() => console.log(row)} >Editar</Button>
-                <Button onClick={() => eliminarTrabajo(row)}>Eliminar</Button>
-            </div>
-
-        }
+            cell: (row) => (
+                <Stack direction={"row"}>
+                <Button  size="small" variant ="contained" endIcon={<BorderColor />} onClick={() => EditarTrabajo(row)} >Editar</Button>
+                <Button  size="small" variant ="contained" endIcon={<Delete />} onClick={() => eliminarTrabajo(row)}>Eliminar</Button>
+                </Stack>
+      ),
+      ignoreRowClick: true,
+      allowOverflow: true,
+      button: true,
+      width: "30%",
+      center: true,
+      right: true,
+    }
     ];
     const eliminarTrabajo = (row) => {
         console.log(row)
@@ -81,6 +91,7 @@ const TablaTrabajos = () => {
         axios.get(import.meta.env.VITE_APP_BACKEND_URL+'trabajo.php')
             .then(respuesta => {
                 setTrabajos(respuesta.data);
+                console.log(respuesta.data);
             })
             .catch(error => {
                 console.log(error);
@@ -94,7 +105,7 @@ const TablaTrabajos = () => {
     return (
         <>
         <DataTable
-            title="Lista de trabajos"
+            title="Lista de Trabajos"
             columns={columns}
             data={trabajos}
             direction="auto"
