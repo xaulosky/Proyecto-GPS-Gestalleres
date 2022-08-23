@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Alert ,Autocomplete,InputLabel, 
         Button,Box , MenuItem, Modal,Stack ,
         Select,TextField, Typography, Grid, FormControl, 
         FormLabel, FormHelperText} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
-
+import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
 
 const style = {
     position: 'absolute' ,
@@ -30,32 +31,53 @@ const style = {
   ];
 
 //editar usuario
-const EditarUsuario = ({row}) => {
+const EditarUsuario = ({row, obtenerUsuarios}) => {
     const [open, setOpen]  = useState(false);
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-  
-    const cod = row.cUsuario
+    const handleClose = () => setOpen(false);  
+    const { auth } = useContext(AuthContext)
 
       const[data,setData] = useState({
-
           cUsuario : row.cUsuario,
-          nombreU: "",
-          clave: "",
-          email: "",
-          cRolU: "",
-          
+          nombreU: row.nombreU,
+          clave: row.clave,
+          email: row.email,
+          cRolU: row.cRolU,
       })
-      
-          function handle(e){
-              
-              const newdata={...data}
-              newdata[e.target.name]= e.target.value
-              setData(newdata)
-              console.log(newdata)
-          }
-  
+
+      function abrir(){
+        if(auth.cRolU == 3){
+            swal("No cuenta con los permisos para acceder a esta función",{
+                icon:"error",
+                timer: 1000,
+                buttons: false,
+              })
+              this.handleClose();
+        }
+        obtenerUsuarios();
+        setData({
+            cUsuario : row.cUsuario,
+            nombreU: row.nombreU,
+            clave: row.clave,
+            email: row.email,
+            cRolU: row.cRolU,
+        });
+        handleOpen();
+      }
+      function handle(e){
+            const newdata={...data}
+            newdata[e.target.name]= e.target.value
+            setData(newdata)
+            obtenerUsuarios();
+            console.log(newdata)
+        }
+        function rolDisabled(){
+            if(auth.cRolU == 3){
+                return true
+            }
+        }
       const submit= (e) =>{
+          e.preventDefault()
           axios.put(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
               
               cUsuario: data.cUsuario,
@@ -65,27 +87,39 @@ const EditarUsuario = ({row}) => {
               nombreU: data.nombreU,
           })
           .then(respuesta=>{
+              obtenerUsuarios();             
+              handleClose();
               console.log(respuesta.data)
+              if(respuesta.data.msg == 'Actualizado'){
+                console.log(respuesta.data)
+                swal("Usuario editado", {
+                    icon: "success",
+                    timer: 1000,
+                    buttons: false,
+                });
+            }
+            if(respuesta.data.msg == 'Datos insuficientes'){
+                console.log(respuesta.data)
+                swal("No se puedo editar al usuario",{
+                    icon:"error",
+                    timer: 1000,
+                    buttons: false,
+                })
+            }
           })
       }
-  
+
     return (
       <div>
-  
-  
+        
         <Button
-                 sx={{
-                    '& > :not(style)': {
-                      py: 1.5,
-                    },
-                  }}
                 color = 'primary'
-                onClick={handleOpen}
+                onClick={abrir}
                 endIcon={<EditIcon />}
                 title = 'Editar usuario'
+                type = 'submit'
+                disabled = {rolDisabled()}
             />
-        
-          
           <Modal
               open = {open}
               onClose={handleClose}
@@ -93,7 +127,7 @@ const EditarUsuario = ({row}) => {
               aria-describedby = "modal-modal-description"
           >
               
-              <Box sx={style}>
+              <Box sx={style} >
                   <Typography id="modal-modal-title" variant="h6" component="h2">
                       Datos de ingreso
                   </Typography>
@@ -106,79 +140,76 @@ const EditarUsuario = ({row}) => {
                       autoComplete="off"
                       onSubmit={(e) => submit(e)}
                   >
-                      <div>
                       <TextField 
-                          id="nombreU" 
-                          type='text' 
-                          name = 'nombreU'
-                          value={data.nombreU} 
-                          label="Nombre" 
-                          variant="outlined" 
+                        id="nombreU" 
+                        type='text' 
+                        name = 'nombreU'
+                        value={data.nombreU} 
+                        label="Nombre" 
+                        variant="outlined" 
+                        multiline
+                        required
+                        placeholder = "Nombre"
+                        onChange={(e)=>handle(e)} />
+                    <TextField 
+                        id="clave" 
+                        name = 'clave' 
+                        type= 'text' 
+                        value={data.clave} 
+                        label="Contraseña" 
+                        variant="outlined" 
+                        multiline
+                        required
+                        placeholder = "Contraseña"
+                        onChange={(e)=>handle(e)} />
+                    <TextField 
+                        id="email" 
+                        name = 'email'
+                        type = 'email' 
+                        value={data.email} 
+                        label="Email" 
+                        fullWidth
+                        required
+                        variant="outlined" 
+                        onChange={(e)=>handle(e)} />
 
-                          placeholder = {row.nombreU}
-                          onChange={(e)=>handle(e)} />
-                      <TextField 
-                          id="clave" 
-                          name = 'clave' 
-                          type= 'text' 
-                          value={data.clave} 
-                          label="Contraseña" 
-                          variant="outlined" 
-               
-                          placeholder = "Contraseña"
-                          onChange={(e)=>handle(e)} />
-                      </div>
-                      <div>
-                      <TextField 
-                          id="email" 
-                          name = 'email'
-                          type = 'email' 
-                          value={data.email} 
-                          label="Email" 
-                          fullWidth
-                          variant="outlined" 
-                          onChange={(e)=>handle(e)} />
-                      </div>
-                      <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label" sx={{mx:2}}>Rol</InputLabel>
-                      <Grid sx={{mx:2, width: 360}} >
-                      <Select
-                          id='cRolU'
-                          value={data.cRolU}
-                          name='cRolU'
-                          fullWidth
-                          onChange={handle}
-                          label = 'Rol'
-                          placeholder='Rol'
-                      >  
-                       
-                          {opciones.map(opcion => (
-                          <MenuItem key={opcion.value} value={opcion.value}>
-                          {opcion.label}
-                      </MenuItem>
-                      ))}                
-                      </Select>    
-                      </Grid>
-                      </FormControl>
+                    <FormControl>
+                    <InputLabel sx={{my:2,mx:2}}>Rol</InputLabel>
+                    <Grid sx={{my:2,mx:2, width: 360}} >
+                    <Select
+                        id='cRolU'
+                        value={data.cRolU}
+                        name='cRolU'
+                        fullWidth
+                        onChange={handle}
+                        label = 'Rol'
+                    >  
+                        {opciones.map(opcion => (
+                        <MenuItem key={opcion.value} value={opcion.value}>
+                        {opcion.label}
+                    </MenuItem>
+                    ))}                
+                    </Select>    
+                    </Grid>
+                    </FormControl>
                       
-                      <Grid  sx={{mx:-3, my:1}} container justifyContent="flex-end">
-                      <Button  
-                          variant ='outlined'
-                          type='submit'
-                          size = 'medium'
-                      >
-                          Aceptar
-                      </Button>
-                      <Button 
-                          variant ='outlined' 
-                          onClick={handleClose}
-                          color = 'error'
-                          size = 'medium'
-                          
-                      >
-                          Cancelar
-                      </Button>
-                      </Grid>
+                    <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
+                    <Button  
+                        variant ='contained'
+                        type='submit'
+                        size = 'medium'
+                    >
+                        Aceptar
+                    </Button>
+                    <Button 
+                        variant ='contained' 
+                        onClick={handleClose}
+                        color = 'error'
+                        size = 'medium'   
+                    >
+                        Cancelar
+                    </Button>
+                    </Stack >
                       
                   </Box>
               </Box>

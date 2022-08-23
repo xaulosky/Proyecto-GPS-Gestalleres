@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import {
-    Alert, Autocomplete, InputLabel,
-    Button, Box, MenuItem, Modal, Stack,
-    Select, TextField, Typography, Grid, FormControl,
-    FormLabel, FormHelperText
-} from "@mui/material";
+import { Alert ,Autocomplete,InputLabel, 
+        Button,Box , MenuItem, Modal,Stack ,
+        Select,TextField, Typography, Grid, FormControl, 
+        FormLabel, FormHelperText} from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
+import AuthContext from '../../context/AuthContext';
+import swal from 'sweetalert';
 
 const style = {
     position: 'absolute',
@@ -31,167 +31,170 @@ const opciones = [
 ];
 
 const AgregarUsuarios = () => {
+  
+  const [open, setOpen]  = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const [data, setData] = useState({
-
+    const[data,setData] = useState({
+        
         nombreU: "",
         clave: "",
         email: "",
-        cTaller: "",
+        cTaller: auth.cTaller,
         cRolU: "",
     })
+    
+        function handle(e){
+            
+            const newdata={...data}
+            newdata[e.target.name]= e.target.value
+            setData(newdata)
+            console.log(newdata)
+        }
 
-    function handle(e) {
-
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value
-        setData(newdata)
-        console.log(newdata)
-    }
-
-    const submit = (e) => {
-        axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'usuario.php', {
-
-            email: data.email,
-            clave: data.clave,
+    const submit= (e) =>{
+        axios.post(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
+            
+            email: data.email ,
+            clave: data.clave  ,
             cRolU: data.cRolU,
             cTaller: data.cTaller,
-            nombreU: data.nombreU,
+            nombreU:data.nombreU,
+            
         })
-            .then(respuesta => {
-                console.log(respuesta.data)
-            })
+        .then(respuesta=>{
+            console.log(respuesta.data)
+        })
     }
 
-    return (
-        <div>
+  return (
+    <div>
 
-            <Button
-                onClick={handleOpen}
-                variant="contained"
-                endIcon={<PersonAddAltIcon fontSize='small' />}
-                size='medium'
-            >
-                Agregar
-            </Button>
-
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labellebdy="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Datos de ingreso
-                    </Typography>
-                    <Box
-                        component="form"
-                        sx={{
-                            '& .MuiTextField-root': { m: 2, width: '40ch' },
-                        }}
-                        noValidate
-                        autoComplete="off"
-                        onSubmit={(e) => submit(e)}
+        <Button
+            onClick={ handleOpen}
+            variant="contained" 
+            endIcon={<PersonAddAltIcon fontSize='small'/>}
+            size = 'medium'
+        >
+            Agregar
+        </Button>
+        
+        <Modal
+            open = {open}
+            onClose={handleClose}
+            aria-labellebdy = "modal-modal-title"
+            aria-describedby = "modal-modal-description"
+        >
+            
+            <Box sx={style}>
+                <Typography id="modal-modal-title" variant="h6" component="h2">
+                    Datos de ingreso
+                </Typography>
+                <Box
+                    component="form"
+                    sx={{
+                        '& .MuiTextField-root': { m: 2, width: '40ch' },
+                    }}
+                    noValidate
+                    autoComplete="off"
+                    onSubmit={(e) => submit(e)}
+                >
+                    
+                    <TextField 
+                        id="nombreU" 
+                        type='text' 
+                        name = 'nombreU'
+                        value={data.nombreU} 
+                        label="Nombre" 
+                        variant="outlined" 
+                        multiline
+                        placeholder = "Nombre"
+                        onChange={(e)=>handle(e)} />
+                    <TextField 
+                        id="clave" 
+                        name = 'clave' 
+                        type= 'text' 
+                        value={data.clave} 
+                        label="Contraseña" 
+                        variant="outlined" 
+                        multiline
+                        placeholder = "Contraseña"
+                        onChange={(e)=>handle(e)} />
+                    
+                    
+                    <TextField 
+                        id="email" 
+                        name = 'email'
+                        type = 'email' 
+                        value={data.email} 
+                        label="Email" 
+                        fullWidth
+                        variant="outlined" 
+                        onChange={(e)=>handle(e)} />
+                    
+                    <FormControl>
+                    <InputLabel id="demo-simple-select-label" sx={{mx:2}}>Rol</InputLabel>
+                    <Grid sx={{mx:2, width: 360}} >
+                    <Select
+                        id='cRolU'
+                        value={data.cRolU}
+                        name='cRolU'
+                        fullWidth
+                        onChange={handle}
+                        label = 'Rol'
+                    >  
+                     
+                        {opciones.map(opcion => (
+                        <MenuItem key={opcion.value} value={opcion.value}>
+                        {opcion.label}
+                    </MenuItem>
+                    ))}                
+                    </Select>    
+                    </Grid>
+                    </FormControl>
+                    
+                          
+                    <TextField 
+                        id="cTaller"
+                        name = 'cTaller'
+                        type = 'number' 
+                        value={data.cTaller} 
+                        label="Taller" 
+                        variant="outlined" 
+                        onChange={(e)=>handle(e)} 
+                    />
+                    
+                    
+                    <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
+                    <Button  
+                        variant ='contained'
+                        type='submit'
+                        size = 'medium'
                     >
-
-                        <TextField
-                            id="nombreU"
-                            type='text'
-                            name='nombreU'
-                            value={data.nombreU}
-                            label="Nombre"
-                            variant="outlined"
-                            multiline
-                            placeholder="Nombre"
-                            onChange={(e) => handle(e)} />
-                        <TextField
-                            id="clave"
-                            name='clave'
-                            type='text'
-                            value={data.clave}
-                            label="Contraseña"
-                            variant="outlined"
-                            multiline
-                            placeholder="Contraseña"
-                            onChange={(e) => handle(e)} />
-
-
-                        <TextField
-                            id="email"
-                            name='email'
-                            type='email'
-                            value={data.email}
-                            label="Email"
-                            fullWidth
-                            variant="outlined"
-                            onChange={(e) => handle(e)} />
-
-                        <FormControl>
-                            <InputLabel id="demo-simple-select-label" sx={{ mx: 2 }}>Rol</InputLabel>
-                            <Grid sx={{ mx: 2, width: 360 }} >
-                                <Select
-                                    id='cRolU'
-                                    value={data.cRolU}
-                                    name='cRolU'
-                                    fullWidth
-                                    onChange={handle}
-                                    label='Rol'
-                                >
-
-                                    {opciones.map(opcion => (
-                                        <MenuItem key={opcion.value} value={opcion.value}>
-                                            {opcion.label}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </Grid>
-                        </FormControl>
-
-
-                        <TextField
-                            id="cTaller"
-                            name='cTaller'
-                            type='number'
-                            value={data.cTaller}
-                            label="Taller"
-                            variant="outlined"
-                            onChange={(e) => handle(e)}
-                        />
-
-
-                        <Stack direction="row" spacing={1} justifyContent='flex-end' sx={{ mx: 3 }}>
-                            <Button
-                                variant='contained'
-                                type='submit'
-                                size='medium'
-                            >
-                                Aceptar
-                            </Button>
-                            <Button
-                                variant='contained'
-                                onClick={handleClose}
-                                color='error'
-                                size='medium'
-
-                            >
-                                Cancelar
-                            </Button>
-                        </Stack >
-
-                    </Box>
-
+                        Aceptar
+                    </Button>
+                    <Button 
+                        variant ='contained' 
+                        onClick={handleClose}
+                        color = 'error'
+                        size = 'medium'
+                        
+                    >
+                        Cancelar
+                    </Button>
+                    </Stack >
+                    
                 </Box>
-            </Modal>
-        </div>
-
-    )
+            </Box>
+            
+            
+        </Modal>
+    </div>
+    
+  )
 }
 
 export default AgregarUsuarios
+
 
