@@ -9,7 +9,6 @@ import swal from 'sweetalert';
 
 
 const style = {
-
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -47,7 +46,7 @@ const opciones = [
         label: 'Cancelado',
     },
     {
-        value: 6,
+        value: 7,
         label: 'En espera',
     },
 ];

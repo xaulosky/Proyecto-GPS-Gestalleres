@@ -32,18 +32,22 @@ const opciones = [
     },
     {
         value: 3,
-        label: 'Reparado',
+        label: 'Pintura'
     },
     {
         value: 4,
-        label: 'Entregado',
+        label: 'Reparado',
     },
     {
         value: 5,
-        label: 'Cancelado',
+        label: 'Entregado',
     },
     {
         value: 6,
+        label: 'Cancelado',
+    },
+    {
+        value: 7,
         label: 'En espera',
     },
 ];
@@ -124,11 +128,9 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
         })
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php').then(respuesta => {
             setTipoCarrocerias(respuesta.data);
-
         })
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php').then(respuesta => {
             setClientes(respuesta.data);
-
         })
     }, []);
 
@@ -153,7 +155,6 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
             >
                 Añadir Vehiculo
             </Button>
-
 
             <Modal
                 open={open}
@@ -217,7 +218,6 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                                 ...data,
                                                 cAseguradora: ''
                                             })
-
                                         }
                                     }
                                     }
