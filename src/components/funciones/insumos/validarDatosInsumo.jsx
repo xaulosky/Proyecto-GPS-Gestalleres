@@ -20,11 +20,11 @@ const validar = (data) => {
     }
 
     if (espacioIncial.test(data.nombreInsumo)) {
-        msg4 = 'El nombre del insumo no puede comenzar con un espacio en blanco.'
+        msg4 = 'El nombre del insumo no puede comenzar con un espacio.'
         contador++;
     }
     if (consecutivos.test(data.nombreInsumo)) {
-        msg5 = 'El nombre del insumo no puede espacios consecutivos.'
+        msg5 = 'El nombre del insumo no puede contener espacios consecutivos.'
         contador++;
     }
 

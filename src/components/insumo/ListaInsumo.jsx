@@ -142,5 +142,3 @@ const ListaInsumo = () => {
   )
 }
 export default ListaInsumo
-
-//        if(auth.cRolU!=3){
