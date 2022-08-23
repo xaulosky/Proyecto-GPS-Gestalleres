@@ -2,10 +2,11 @@ import * as React from 'react'
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, MenuItem, Input, InputLabel, Select, Menu, FormControl, Stack, Autocomplete } from '@mui/material'
 import axios from 'axios';
 import { useState } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
 import CarRepairIcon from '@mui/icons-material/CarRepair';
 import { useClientes } from '../../hooks/useClientes';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
 
 const style = {
 
@@ -48,6 +49,9 @@ const opciones = [
 ];
 
 const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
+
+    const { auth } = useContext(AuthContext)
+
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -128,6 +132,15 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
         })
     }, []);
 
+    const deshabilitarBoton = () =>{
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     return (
         <>
             <Button onClick={handleOpen}
@@ -135,6 +148,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                 color="primary"
                 type={'submit'}
                 name={'crear'}
+                disabled={deshabilitarBoton()}
                 endIcon={<CarRepairIcon />}
             >
                 Añadir Vehiculo

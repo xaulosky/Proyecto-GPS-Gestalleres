@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext} from 'react'
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, Autocomplete } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import EditIcon from '@mui/icons-material/Edit';
@@ -49,6 +49,8 @@ const opciones = [
 ];
 
 const EditarVehiculo = ({ row, obtenerVehiculos }) => {
+
+    const { auth } = useContext(AuthContext)
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -146,12 +148,22 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
             })
     }, []);
 
+    const deshabilitarBoton = () =>{
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     return (
         <>
             <Button onClick={abrirModal}
                 type={'submit'}
                 name={'editar'}
                 color="primary"
+                disabled={deshabilitarBoton()}
                 endIcon={<EditIcon />}
             >
             </Button>
