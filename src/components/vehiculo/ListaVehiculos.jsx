@@ -45,7 +45,7 @@ const ListaVehiculos = () => {
             selector: row => row.estadoRevisionTecnicaV,
         },
         {
-            name: 'Aseguradora Monto',
+            name: 'Monto Aseguradora',
             selector: row => (formatoNumeros(row.montoAseguradora)),
         },
         {
