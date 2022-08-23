@@ -150,7 +150,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
 
     const deshabilitarBoton = () =>{
 
-        if(auth.cRolU!=3){
+        if(auth.cRolU<=3){
             return false;
         }else{
             return true;
