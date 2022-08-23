@@ -39,7 +39,7 @@ const SideBar = () => {
                         <ListItemText primary="Inicio" />
                     </ListItem>
                 </NavLink>
-                <NavLink to="/ficha" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")} >
+                <NavLink to="/agregar-ficha" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")} >
                     <ListItem button>
                         <ListItemIcon>
                             <PostAddIcon />

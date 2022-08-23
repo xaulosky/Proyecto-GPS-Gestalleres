@@ -1,14 +1,15 @@
-import { Autocomplete, Button, Grid, TextField } from '@mui/material'
+import { Autocomplete, Button, Grid, IconButton, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
 import { useFichas } from '../../hooks/useFichas'
 import { usePartes } from '../../hooks/usePartes'
 import { useVehiculos } from '../../hooks/useVehiculos'
-import { getFichas, getUltimaFicha, postFicha } from '../../api/apiFicha'
-import { postEstadosPV } from '../../api/apiEstadoPV'
+import { getFichas, getUltimaFicha, postFicha } from '../../services/apiFicha'
+import { postEstadosPV } from '../../services/apiEstadoPV'
 import swal from 'sweetalert'
-
+import { Link } from 'react-router-dom'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 
 /* screen final */
@@ -16,6 +17,8 @@ const ScreenFicha = () => {
 
     /* usuario loggeado */
     const { auth } = useAuth()
+
+    console.log(auth)
     /* getVehiculos  */
     const { result: vehiculos } = useVehiculos({ action: 'get' })
     const { result: partes } = usePartes({ action: 'get' }) /* getPartes */
@@ -45,39 +48,53 @@ const ScreenFicha = () => {
 
     const submitFicha = async (event) => {
         event.preventDefault()
-        postFicha(dataFicha).then(response => {
-            setDataFicha({
-                fechaIngresoFicha: new Date().toISOString().substring(0, 10),
-                fechaEntregaEstimada: new Date().toISOString().substring(0, 10),
-                fechaEntrega: "",
-                cTaller: auth.cTaller,
-                cVehiculo: '',
-                cUsuario: auth.cUsuario,
-                fichaObservacion: '',
-            })
-
-        }).then(() => {
-            postEstadosPV(estadoPartes).then(response => {
-                console.log(response)
-            }).then(() => {
-                setPartesSeleccionadas([])
-                setVehiculoSeleccionado()
-            })
-        }).then(() => {
+        if (dataFicha.cVehiculo == '' || dataFicha.fichaObservacion == '') {
             swal(
-                'Ficha creada!', {
-                icon: 'success',
+                'Todos los campos son requeridos', {
+                icon: 'error',
                 buttons: false,
             });
             setTimeout(() => {
                 swal.close()
             }, 2000);
-            setEstadoPartes([])
-        })
+        } else {
+            postFicha(dataFicha).then(response => {
+                setDataFicha({
+                    fechaIngresoFicha: new Date().toISOString().substring(0, 10),
+                    fechaEntregaEstimada: new Date().toISOString().substring(0, 10),
+                    fechaEntrega: "",
+                    cTaller: auth.cTaller,
+                    cVehiculo: '',
+                    cUsuario: auth.cUsuario,
+                    fichaObservacion: '',
+                })
+
+            }).then(() => {
+                postEstadosPV(estadoPartes).then(response => {
+                    console.log(response)
+                }).then(() => {
+                    setEstadoPartes([])
+                    setPartesSeleccionadas([])
+                    setVehiculoSeleccionado()
+                })
+            }).then(() => {
+                swal(
+                    'Ficha creada!', {
+                    icon: 'success',
+                    buttons: false,
+                });
+                setTimeout(() => {
+                    swal.close()
+                }, 2000);
+                setEstadoPartes([])
+            })
+        }
+
+
     }
 
     useEffect(() => {
-        getUltimaFicha().then(response => {
+        getUltimaFicha(auth.cTaller).then(response => {
             setUltimaFicha(response)
             console.log(response)
         }).catch(error => {
@@ -87,88 +104,98 @@ const ScreenFicha = () => {
 
 
     return (
-        <Box component='form'>
-            <h1>Ingresar Vehículo a Taller</h1>
-
-            <Grid item xs={12}>
-
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <TextField label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} fullWidth />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField label="Fecha Entrega Estimada" type="date" name="fechaEntregaEstimada" onChange={handleChange} value={dataFicha.fechaEntregaEstimada} fullWidth />
-                    </Grid>
+        <Grid container>
+            <Grid item md={6}>
+                <h1>Ingresar Vehículo a Taller</h1>
+            </Grid>
+            <Grid item md={6} display={'flex'} justifyContent={'end'} alignItems={'center'}>
+                <Link to={'/fichas'} >
+                    <Button variant='contained' startIcon={<FormatListBulletedIcon />}>
+                        Lista de Fichas
+                    </Button>
+                </Link>
+            </Grid>
+            <Grid item md={12}>
+                <Box component='form'>
                     <Grid item xs={12}>
-                        <Autocomplete
-                            id="vehiculo"
-                            options={vehiculos}
-                            value={vehiculoSeleccionado}
-                            getOptionLabel={(option) => option.nombreC + ' ' + option.rutC + ' ' + option.patenteV + '  ' + option.modeloV}
-                            onChange={(event, value) => {
-                                if (value) {
-                                    setDataFicha({
-                                        ...dataFicha,
-                                        cVehiculo: value.cVehiculo
-                                    })
-                                    setVehiculoSeleccionado(value)
-                                } else {
-                                    setVehiculoSeleccionado()
-                                    setDataFicha({
-                                        ...dataFicha,
-                                        cVehiculo: ''
-                                    })
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <TextField label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} fullWidth />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField label="Fecha Entrega Estimada" type="date" name="fechaEntregaEstimada" onChange={handleChange} value={dataFicha.fechaEntregaEstimada} fullWidth />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Autocomplete
+                                    id="vehiculo"
+                                    options={vehiculos}
+                                    value={vehiculoSeleccionado}
+                                    getOptionLabel={(option) => option.nombreC + ' ' + option.rutC + ' ' + option.patenteV + '  ' + option.modeloV}
+                                    onChange={(event, value) => {
+                                        if (value) {
+                                            setDataFicha({
+                                                ...dataFicha,
+                                                cVehiculo: value.cVehiculo
+                                            })
+                                            setVehiculoSeleccionado(value)
+                                        } else {
+                                            setVehiculoSeleccionado()
+                                            setDataFicha({
+                                                ...dataFicha,
+                                                cVehiculo: ''
+                                            })
 
-                                }
-                            }
-                            }
-                            renderInput={(params) => <TextField {...params} label="Selecciona Vehiculo" variant="outlined" fullWidth />}
-                            isOptionEqualToValue={(option, value) => option.cVehiculo === value.cVehiculo}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        {/* autocomplete multiple partes */}
-                        <Autocomplete
-                            multiple={true}
-                            value={partesSeleccionadas}
-                            id="partes"
-                            options={partes || []}
-                            getOptionLabel={(option) => option.nombrePV}
-                            onChange={(event, value) => {
-                                if (value) {
-                                    setPartesSeleccionadas(value)
-                                    setEstadoPartes(value.map(parte => {
-                                        return {
-                                            cParteV: parte.cParteV,
-                                            cFicha: ultimaFicha.cFicha + 1,
-                                            estado: true
                                         }
                                     }
-                                    ))
-                                } else {
-                                    setPartesSeleccionadas([])
-                                    setEstadoPartes([])
-                                }
+                                    }
+                                    renderInput={(params) => <TextField {...params} label="Selecciona Vehiculo" variant="outlined" fullWidth />}
+                                    isOptionEqualToValue={(option, value) => option.cVehiculo === value.cVehiculo}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                {/* autocomplete multiple partes */}
+                                <Autocomplete
+                                    multiple={true}
+                                    value={partesSeleccionadas}
+                                    id="partes"
+                                    options={partes || []}
+                                    getOptionLabel={(option) => option.nombrePV}
+                                    onChange={(event, value) => {
+                                        if (value) {
+                                            setPartesSeleccionadas(value)
+                                            setEstadoPartes(value.map(parte => {
+                                                return {
+                                                    cParteV: parte.cParteV,
+                                                    cFicha: ultimaFicha.cFicha + 1,
+                                                    estado: true
+                                                }
+                                            }
+                                            ))
+                                        } else {
+                                            setPartesSeleccionadas([])
+                                            setEstadoPartes([])
+                                        }
 
-                            }
-                            }
-                            renderInput={(params) => <TextField {...params} label="Selecciona Partes" variant="outlined" fullWidth />}
-                            isOptionEqualToValue={(option, value) => option.cParteV === value.cParteV}
-                        />
+                                    }
+                                    }
+                                    renderInput={(params) => <TextField {...params} label="Selecciona Partes" variant="outlined" fullWidth />}
+                                    isOptionEqualToValue={(option, value) => option.cParteV === value.cParteV}
+                                />
 
-
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField label="Observaciones" name="fichaObservacion" onChange={handleChange} value={dataFicha.fichaObservacion} fullWidth multiline rows={"4"} />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button variant="contained" color="primary" onClick={submitFicha} fullWidth size='large'>
+                                    Ingresar Vehículo al Taller
+                                </Button>
+                            </Grid>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField label="Observaciones" name="fichaObservacion" onChange={handleChange} value={dataFicha.fichaObservacion} fullWidth multiline rows={"4"} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button variant="contained" color="primary" onClick={submitFicha} fullWidth size='large'>
-                            Ingresar Vehículo al Taller
-                        </Button>
-                    </Grid>
-                </Grid>
+                </Box>
             </Grid>
-        </Box>
+        </Grid>
     )
 }
 

@@ -6,8 +6,10 @@ import CrearInsumo from './CrearInsumo';
 import EditarInsumo from './EditarInsumo';
 import EliminarInsumo from './EliminarInsumo';
 import AuthContext from '../../context/AuthContext'
+
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+
 import HistorialInsumo from './HistorialInsumo';
 
 const paginationComponentOptions = {
@@ -110,7 +112,8 @@ const ListaInsumo = () => {
           sx={{ ml: 3, p: '5px 15px' }}
           onClick={(e) => exportXLSX(insumos)}
         >
-          Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i> </Button>
+          Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i>
+        </Button>
       </Grid>
       <DataTable
         title="Lista Insumos"
