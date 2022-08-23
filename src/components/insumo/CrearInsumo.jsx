@@ -41,7 +41,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         e.preventDefault();
 
         let tof = validar(data);
-        
+
         if (tof) {
             axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
                 nombreInsumo: data.nombreInsumo,
@@ -78,11 +78,11 @@ const CrearInsumo = ({ obtenerInsumos }) => {
         handleOpen();
     }
 
-    function deshabilitarBoton(){
+    function deshabilitarBoton() {
 
-        if(auth.cRolU!=3){
+        if (auth.cRolU != 3) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -95,7 +95,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                 sx={{ ml: 3, p: '10px 15px' }}
                 title="Agregar Insumo"
                 color="primary"
-                disabled = {deshabilitarBoton()}
+                disabled={deshabilitarBoton()}
                 type={'submit'}
                 name={'crear'}
                 endIcon={<InventoryIcon />}
@@ -121,11 +121,11 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-/*                             value={Nombre.campo}
-                            onChange={onChangeNombre}
-                            onKeyUp={validarNombre}
-                            onBlur={validarNombre}
-                            error={Nombre.valido} */
+                            /*                             value={Nombre.campo}
+                                                        onChange={onChangeNombre}
+                                                        onKeyUp={validarNombre}
+                                                        onBlur={validarNombre}
+                                                        error={Nombre.valido} */
                             InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
@@ -153,28 +153,31 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
-                        <Grid item xs={12} sm={12} style={{ height: '70px' }}>
-                            <DialogActions >
-                                <Button
-                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
-                                    variant="contained"
-                                    color="primary"
-                                    name={'crear'}
-                                    type={'submit'}
-                                >
-                                    Aceptar
-                                </Button>
-                                <Button
-                                    onClick={handleClose}
-                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
-                                    variant="contained"
-                                    color="error"
-                                    name={'cancelar'}
-                                >
-                                    Cancelar
-                                </Button>
-                            </DialogActions>
+                        <Grid>
+                            <Grid item xs={12} sm={12} style={{ height: '70px' }}>
+                                <DialogActions >
+                                    <Button
+                                        sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
+                                        variant="contained"
+                                        color="primary"
+                                        name={'crear'}
+                                        type={'submit'}
+                                    >
+                                        Aceptar
+                                    </Button>
+                                    <Button
+                                        onClick={handleClose}
+                                        sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
+                                        variant="contained"
+                                        color="error"
+                                        name={'cancelar'}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </DialogActions>
+                            </Grid>
                         </Grid>
+
                     </Typography>
                 </Box>
             </Modal>

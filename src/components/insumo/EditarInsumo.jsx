@@ -22,7 +22,7 @@ const style = {
 };
 
 
-const EditarInsumo = ({ row, obtenerInsumos}) => {
+const EditarInsumo = ({ row, obtenerInsumos }) => {
 
     const { auth } = useContext(AuthContext)
     const [open, setOpen] = React.useState(false);
@@ -107,11 +107,11 @@ const EditarInsumo = ({ row, obtenerInsumos}) => {
         handleClose();
     }
 
-    function deshabilitarBoton(){
+    function deshabilitarBoton() {
 
-        if(auth.cRolU!=3){
+        if (auth.cRolU != 3) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -173,28 +173,32 @@ const EditarInsumo = ({ row, obtenerInsumos}) => {
                             value={data.costo}
                             onChange={(e) => handle(e)}
                         />
-                        <Grid item xs={12} sm={12} style={{ height: '100px' }}>
-                            <DialogActions>
-                                <Button
-                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
-                                    variant="contained"
-                                    color="primary"
-                                    name={'crear'}
-                                    type={'submit'}
-                                >
-                                    Aceptar
-                                </Button>
-                                <Button
-                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
-                                    onClick={cerrar}
-                                    variant="contained"
-                                    color="error"
-                                    name={'cancelar'}
-                                >
-                                    Cancelar
-                                </Button>
-                            </DialogActions>
+                        <Grid>
+                            <Grid item xs={12} sm={12} style={{ height: '100px' }}>
+                                <DialogActions>
+                                    <Button
+                                        sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
+                                        variant="contained"
+                                        color="primary"
+                                        name={'crear'}
+                                        type={'submit'}
+                                    >
+                                        Aceptar
+                                    </Button>
+                                    <Button
+                                        sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
+                                        onClick={cerrar}
+                                        variant="contained"
+                                        color="error"
+                                        name={'cancelar'}
+                                    >
+                                        Cancelar
+                                    </Button>
+                                </DialogActions>
+                            </Grid>
                         </Grid>
+
+
                     </Typography>
                 </Box>
             </Modal>
