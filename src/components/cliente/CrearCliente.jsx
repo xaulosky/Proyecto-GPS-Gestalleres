@@ -149,6 +149,8 @@ const CrearCliente = ({ getClientes }) => {
                   label="Email"
                   name="emailC"
                   onChange={onChange}
+                  required={true}
+                  type="email"
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -158,6 +160,7 @@ const CrearCliente = ({ getClientes }) => {
                   label="Nombre"
                   name="nombreC"
                   onChange={onChange}
+                  required={true}
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -167,6 +170,7 @@ const CrearCliente = ({ getClientes }) => {
                   label="Apellido"
                   name="apellidoC"
                   onChange={onChange}
+                  required={true}
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -176,6 +180,7 @@ const CrearCliente = ({ getClientes }) => {
                   label="Direccion"
                   name="direccionC"
                   onChange={onChange}
+                  required={true}
                 />
               </FormControl>
               <FormControl fullWidth>

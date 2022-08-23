@@ -166,6 +166,7 @@ const EditarCliente = ({ getClientes, row }) => {
                   label="Email"
                   name="emailC"
                   onChange={onChange}
+                  type="email"
                 />
               </FormControl>
               <FormControl fullWidth>

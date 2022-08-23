@@ -12,6 +12,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import AuthContext from "../../context/AuthContext";
 import RestaurarCliente from "./RestaurarCliente";
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 const paginationComponentOptions = {
   rowsPerPageText: "Filas por página",
@@ -105,6 +107,25 @@ const TablaClientesdes = ({getClientesd}) => {
       item.rutC &&
       item.rutC.toLowerCase().includes(filterText.toLowerCase())
   );
+  const exportXLSX = (clientes) => {
+
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+    const fileName = 'Lista de clientes';
+    const ws = XLSX.utils.json_to_sheet(clientes
+      .map(cliente => ({
+        "Rut Cliente": cliente.rutC,
+        "E-mail": cliente.emailC,
+        "Nombre": cliente.nombreC,
+        "Apellido": cliente.apellidoC,
+        "Direccion": cliente.direccionC,
+        "Comuna": cliente.nombreCo,
+      })));
+    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
+  }
   const subHeaderComponentMemo = React.useMemo(() => {
     const handleClear = () => {
       if (filterText) {
@@ -129,7 +150,7 @@ const TablaClientesdes = ({getClientesd}) => {
   return (
     <>
       <DataTable
-        title="Historial de clientes"
+        title="Historial de clientes elimminados"
         columns={columns}
         data={filteredItems}
         direction="auto"
@@ -144,10 +165,24 @@ const TablaClientesdes = ({getClientesd}) => {
         subHeader
         paginationComponentOptions={paginationComponentOptions}
         paginationResetDefaultPage={resetPaginationToggle}
-        subHeaderComponent={subHeaderComponentMemo}
+        actions={subHeaderComponentMemo}
         noDataComponent="No hay clientes registrados"
       />
+      <Button
+            align='right'
+            size='small'
+            variant="contained"
+            sx={{ ml: 3, p: '4px 15px' }}
+            title='Exportar Excel'
+            onClick={(e) => exportXLSX(clientes)}
+          >
+            Exportar Eliminados<i
+              className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">
+
+            </i>
+          </Button>
     </>
+    
   );
 };
 
