@@ -6,13 +6,33 @@ import AuthContext from '../../context/AuthContext'
 import AgregarRepuesto from './AgregarRepuesto';
 import EliminarRepuesto from './EliminarRepuesto';
 import EditarRepuesto from './EditarRepuesto';
-
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 
 const ListaRepuesto = () => {
 
   const { auth } = useContext(AuthContext)
 
   const [repuestos, setRepuestos] = useState([])
+
+  function exportXLSX(repuestos) {
+
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+    const fileName = 'Lista de repuestos';
+    const ws = XLSX.utils.json_to_sheet(repuestos
+      .map(repuestos => ({
+        "Nombre Repuesto": repuestos.nombreRepuesto,
+        "Cantidad": repuestos.cantidad,
+        "Fecha Solicitud": repuestos.fechaSolicitud,
+        "Fecha Llegada": repuestos.fechaLlegada,
+        "Estado Repuesto": repuestos.estadoRepuesto
+      })));
+    const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+    const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+    const data = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(data, fileName + fileExtension);
+  }
 
   const obtenerRepuestos = () => {
 
@@ -81,6 +101,22 @@ const ListaRepuesto = () => {
     <>
       <DataTable
         title="Repuestos"
+        actions={<>
+          <AgregarRepuesto obtenerRepuestos={obtenerRepuestos} />
+          <Button
+            align='right'
+            size='small'
+            variant="contained"
+            sx={{ ml: 3, p: '4px 15px' }}
+            title='Exportar Excel'
+            onClick={(e) => exportXLSX(repuestos)}
+          >
+            Exportar <i
+              className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">
+
+            </i>
+          </Button>
+        </>}
         columns={columns}
         data={repuestos}
         direction="auto"
@@ -93,7 +129,6 @@ const ListaRepuesto = () => {
         pointerOnHover
         responsive
         subHeader
-        subHeaderComponent={<AgregarRepuesto obtenerRepuestos={obtenerRepuestos} />}
       />
     </>
   )

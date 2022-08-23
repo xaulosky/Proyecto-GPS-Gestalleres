@@ -1,5 +1,5 @@
 import { Add, Today } from '@mui/icons-material';
-import { Button, Grid, Modal, Box, Typography, TextField } from '@mui/material'
+import { Button, Grid, Modal, Box, Typography, TextField, DialogActions } from '@mui/material'
 import axios from 'axios'
 import AuthContext from '../../context/AuthContext'
 import React, { useContext, useState } from 'react'
@@ -11,13 +11,14 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
+    height: 400,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '1px solid #000',
     boxShadow: 24,
     p: 4,
 };
 
-const AgregarRepuesto = ({obtenerRepuestos}) => {
+const AgregarRepuesto = ({ obtenerRepuestos }) => {
     const { auth } = useContext(AuthContext)
 
     //Comportamiento Modal
@@ -42,7 +43,6 @@ const AgregarRepuesto = ({obtenerRepuestos}) => {
         const newData = { ...data }
         newData[e.target.name] = e.target.value
         setData(newData)
-        console.log(newData)
     }
 
     const submit = (e) => {
@@ -65,6 +65,7 @@ const AgregarRepuesto = ({obtenerRepuestos}) => {
         <div>
             <Button
                 onClick={handleOpen}
+                sx={{ ml: 3, p: '10px 15px' }}
                 variant='contained'
                 color='primary'
                 type={'submit'}
@@ -92,10 +93,11 @@ const AgregarRepuesto = ({obtenerRepuestos}) => {
                         Agregar Repuesto
                     </Typography>
                     <Typography
-                    id='modal-modal-description'
-                    sx={{ mt: 2 }}
-                    component={'div'}>
+                        id='modal-modal-description'
+                        sx={{ mt: 2 }}
+                        component={'div'}>
                         <TextField
+                            fullWidth
                             id='standard-basic'
                             label='Nombre Repuesto'
                             margin='normal'
@@ -108,6 +110,7 @@ const AgregarRepuesto = ({obtenerRepuestos}) => {
                         />
 
                         <TextField
+                            fullWidth
                             id='standard-basic'
                             label='Cantidad'
                             margin='normal'
@@ -121,6 +124,7 @@ const AgregarRepuesto = ({obtenerRepuestos}) => {
                         />
 
                         <TextField
+                            fullWidth
                             id='standard-basic'
                             label='Fecha Solicitud'
                             margin='normal'
@@ -134,6 +138,7 @@ const AgregarRepuesto = ({obtenerRepuestos}) => {
                         />
 
                         <TextField
+                            fullWidth
                             id='standard-basic'
                             label='Estado Repuesto'
                             margin='normal'
@@ -146,26 +151,35 @@ const AgregarRepuesto = ({obtenerRepuestos}) => {
                             onChange={(e) => handle(e)}
                         />
                     </Typography>
-                    <Button
-                        sx={{ m1: 5, p: '4px 15px' }}
-                        variant='contained'
-                        color='primary'
-                        name={'agregarRepuesto'}
-                        type={'submit'}
+                    <Grid
+                        item
+                        xs={12}
+                        sm={12}
+                        style={{ height: '50px' }}
                     >
+                        <DialogActions>
+                            <Button
+                                sx={{ m1: 10, p: '5px 20px' }}
+                                variant='contained'
+                                color='primary'
+                                name={'agregarRepuesto'}
+                                type={'submit'}
+                            >
 
-                        Añadir
-                    </Button>
-                    <Button
-                        sx={{ m1: 5, p: '4px 15px' }}
-                        onClick={handleClose}
-                        variant='contained'
-                        color='error'
-                        name={'salir'}
-                    >
+                                Añadir
+                            </Button>
+                            <Button
+                                sx={{ m1: 10, p: '5px 20px' }}
+                                onClick={handleClose}
+                                variant='contained'
+                                color='error'
+                                name={'salir'}
+                            >
 
-                        Cancelar
-                    </Button>
+                                Cancelar
+                            </Button>
+                        </DialogActions>
+                    </Grid>
                 </Box>
             </Modal>
         </div >

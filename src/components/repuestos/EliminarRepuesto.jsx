@@ -2,7 +2,8 @@ import { Button } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react'
 import { useEffect } from 'react';
-//import { DeleteIcon } from '@mui/icons-material/Delete';
+import { DeleteIcon } from '@mui/icons-material/Delete';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import swal from 'sweetalert';
 
 const style = {
@@ -31,7 +32,7 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
 
     swal({
 
-      title: "¿Está seguro de eliminar el repuesto" + row.nombreRepuesto + "?",
+      title: "¿Está seguro de eliminar el repuesto " + row.nombreRepuesto + "?",
       text: "Esta acción no puede deshacerse",
       icon: "warning",
       buttons: true,
@@ -86,58 +87,11 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
         color='error'
         name={'eliminar'}
         title={'Eliminar'}
-        endIcon={<DeleteIcon/>}
+        endIcon={<DeleteOutlineIcon/>}
       >
-        eliminar
       </Button>
     </>
   )
 }
-
-/* import { Button } from '@mui/material'
-import axios from 'axios'
-import { DeleteIcon } from '@mui/icons-material/Delete'
-import React, { useEffect, useState } from 'react'
-
-const EliminarRepuesto = ({ row, obtenerRepuestos }) => {
-
-  const [res, setRes] = useState({
-
-    mensaje: ''
-  })
-
-  function eliminar(row) {
-  
-    axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'repuesto.php?cRepuesto=' + row.cRepuesto)
-      .then(respuesta => {
-  
-        setRes(respuesta.data)
-        obtenerRepuestos()
-      })
-  }
-
-  function eliminarRepuesto() {
-    obtenerRepuestos()
-    eliminar(row)
-  }
-
-  useEffect(() => {
-
-    obtenerRepuestos();
-  }, [])
-
-  return (
-    <>
-      <Button
-      onClick={() => eliminarRepuesto(row)}
-      color="error"
-      name={'eliminar'}
-      title={'Eliminar'}
-      >
-ELIMINAR
-      </Button>
-    </>
-  )
-} */
 
 export default EliminarRepuesto
