@@ -1,39 +1,75 @@
-import React, { useContext } from 'react'
-import { Outlet, Navigate } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Outlet, Navigate, useLocation } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import NavBar from './ui/NavBar'
-import { Box, Grid } from '@mui/material'
+import { Box, Card, Grid, Hidden } from '@mui/material'
 import SideBar from './ui/SideBar'
-import AuthContext from '../context/AuthContex'
+import { display } from '@mui/system'
 
 const Layout = () => {
 
-    const { auth } = useContext(AuthContext);
-    if (auth.logged == false) {
-        return <Navigate to="/login" replace={true} />
-    } else {
-        return (
-            <Grid container>
-                <Grid md={3}>
-                    <SideBar style={{
-                        position: 'sticky',
-                        top: '0',
-                        zIndex: '1',
-                        backgroundColor: '#010101',
-                        height: '100vh',
-                        color: '#fff'
-                    }} />
-                </Grid>
-                <Grid md={9}>
+    const [sidebarOpen, setSidebarOpen] = useState(true)
 
-                    <NavBar />
+    const onClick = () => {
+        setSidebarOpen(!sidebarOpen)
+    }
+
+    window.addEventListener('resize', function (event) {
+        if (event.target.screen.width < 900) {
+            setSidebarOpen(false)
+        } else {
+            setSidebarOpen(true)
+        }
+    }, true)
+
+    return (
+        /* contenedor */
+        <Grid container style={{
+            backgroundColor: "#f7f7f7",
+            position: "relative",
+        }}>
+            {/* sidebar */}
+            {
+                sidebarOpen
+                    ? <Grid item xs={true} md={"2"}  >
+                        <Card style={{
+                            margin: "10px",
+                            borderRadius: "10px",
+                            textAlign: "center",
+                            position: "sticky",
+                            top: 10,
+                            /*  visibility: sidebarOpen ? "visible" : "hidden",
+                             transition: "all 0.5s ease-in-out", */
+                        }}>
+                            <SideBar />
+                        </Card>
+                    </Grid>
+                    : null
+            }
+            {/* cierre sidebar */}
+            <Grid item xs={12} md={sidebarOpen ? "10" : "12"}>
+                <Card style={{
+                    margin: "10px",
+                    borderRadius: "10px",
+                    position: "sticky",
+                    top: 10,
+                    zIndex: 9,
+                }}>
+                    <NavBar onClick={onClick} />
+                </ Card>
+                {/* contenido */}
+                <Card style={{
+                    margin: "10px",
+                    borderRadius: "10px",
+
+                }}>
                     <Box component="main" p={2}>
-
                         <Outlet />
                     </Box >
-                </Grid>
+                </ Card>
+
             </Grid>
-        )
-    }
+        </Grid> /* cierre contenedor */
+    )
 }
 export default Layout

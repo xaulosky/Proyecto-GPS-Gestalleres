@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import LoginScreen from './components/login/LoginScreen';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ClienteScreen from './components/cliente/ClienteScreen';
@@ -7,10 +8,22 @@ import UsuarioScreen from './components/usuario/UsuarioScreen';
 import { AuthProvider } from './context/AuthContex';
 import TrabajoScreen from './components/trabajo/TrabajoScreen';
 import EmpleadoScreen from './components/empleado/EmpleadoScreen';
+=======
+import AppRouter from './routes/AppRouter';
+import { AuthProvider } from './context/AuthContext';
+import { esES } from '@mui/material/locale';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+/* traduccion de los componentes */
+const theme = createTheme(
+  esES
+);
+
+>>>>>>> 308a94d8cf4c2bed921966e8a6765b715496615e
 
 function App() {
-
   return (
+<<<<<<< HEAD
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -27,6 +40,13 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+=======
+    <ThemeProvider theme={theme}>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
+    </ThemeProvider>
+>>>>>>> 308a94d8cf4c2bed921966e8a6765b715496615e
   )
 }
 
