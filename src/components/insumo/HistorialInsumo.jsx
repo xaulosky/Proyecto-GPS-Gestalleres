@@ -24,13 +24,6 @@ function formatoNumeros(numero) {
     return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
   
-const paginationComponentOptions = {
-    rowsPerPageText: 'Filas por página',
-    rangeSeparatorText: 'de',
-    selectAllRowsItem: true,
-    selectAllRowsItemText: 'Todos',
-};
-
 const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
 
     const [open, setOpen] = React.useState(false);
@@ -43,6 +36,12 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
         {
             name: 'Fecha de modificacion',
             selector: row => row.fechaCambio,
+            width: '175px',            
+        },
+        {
+            name: 'Nombre del insumo',
+            selector: row => row.nombreInsumo,
+            width: '175px',
         },
         {
             name: 'Cantidad',
@@ -57,9 +56,10 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
             cell: (row) => {
                 return (
                     <RestaurarHistorial
-                        row ={row }
+                        row ={row}
                         obtenerInsumos = {obtenerInsumos}
                         obtenerHistorial = {obtenerHistorial}
+                        setOpen = {setOpen}
                     />
                 )
             },
@@ -79,18 +79,12 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
             })
     }
 
-    function handle(e) {
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value;
-        setData(newdata);
-    }
-
     return (
         <>
             <Button
                 onClick={obtenerHistorial}
                 color="primary"
-                //type={'submit'}
+                type={'submit'}
                 name={'historial'}
                 title={'Historial'}
             >
@@ -104,10 +98,10 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
             >
                 <Box component='form' sx={style} >
                     <Typography id="modal-modal-title" variant="h6" component={'div'} align='center'>
-                        HISTORIAL INSUMO
+                        HISTORIAL MODIFICACIONES INSUMO
                     </Typography>
                     <DataTable
-                        title="Lista Insumos"
+                        /* title="Lista Insumos" */
                         columns={columna}
                         data={datosHistorial}
                         direction="auto"
@@ -120,6 +114,8 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
                         responsive
                         subHeaderAlign="right"
                         subHeaderWrap
+                        noDataComponent = "No existen modificaciones en el insumo."
+                        
                     />
                     <DialogActions >
                         <Button
@@ -135,29 +131,4 @@ const HistorialInsumo = ({ codigoInsumo, obtenerInsumos }) => {
     )
 }
 
-export default HistorialInsumo
-
-/* <Modal
-                open={true}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <DataTable
-                    title="Lista Insumos"
-                    columns={columna}
-                    data={insumos}
-                    direction="auto"
-                    fixedHeader
-                    fixedHeaderScrollHeight="500px"
-                    highlightOnHover
-                    noContextMenu
-                    pagination
-                    persistTableHead
-                    pointerOnHover
-                    responsive
-                    subHeaderAlign="right"
-                    subHeaderWrap
-                    paginationComponentOptions={paginationComponentOptions}
-                />
-
-            </Modal> */
+export default HistorialInsumo;

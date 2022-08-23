@@ -32,10 +32,10 @@ const ListaInsumo = () => {
     const fileName = 'Lista de insumos';
     const ws = XLSX.utils.json_to_sheet(insumos
       .map(insumo => ({
-        cInsumo: insumo.cInsumo,
-        nombreInsumo: insumo.nombreInsumo,
-        cantidad: insumo.cantidad,
-        costo: insumo.costo,
+        "Nombre Insumo": insumo.nombreInsumo,
+        "Cantidad": insumo.cantidad,
+        "Valor": insumo.costo,
+        "Valor Total": insumo.costo * insumo.cantidad,
       })));
     const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
@@ -47,6 +47,8 @@ const ListaInsumo = () => {
 
   const { auth } = useContext(AuthContext)
 
+  const idAuth = auth.cRolU;
+
   const obtenerInsumos = () => {
     axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php?cTaller=' + auth.cTaller)
       .then(respuesta => {
@@ -56,7 +58,7 @@ const ListaInsumo = () => {
 
   const columna = [
     {
-      name: 'Nombre de insumo',
+      name: 'Nombre del insumo',
       selector: row => row.nombreInsumo,
       width: '600px',
     },
@@ -97,31 +99,36 @@ const ListaInsumo = () => {
     }
   ];
 
+
   useEffect(() => {
     obtenerInsumos();
   }, [])
 
   return (
     <>
-      <Grid item align='right' xs={12} >
-        <CrearInsumo obtenerInsumos={obtenerInsumos} />
-        <Button align='right'
-          size='small'
-          variant="contained"
-          title='Exportar Excel'
-          sx={{ ml: 3, p: '5px 15px' }}
-          onClick={(e) => exportXLSX(insumos)}
-        >
-          Exportar <i className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true"></i>
-        </Button>
-      </Grid>
       <DataTable
         title="Lista Insumos"
+        actions={<>
+          <CrearInsumo obtenerInsumos={obtenerInsumos} />
+          <Button
+            align='right'
+            size='small'
+            variant="contained"
+            sx={{ ml: 3, p: '4px 15px' }}
+            title='Exportar Excel'
+            onClick={(e) => exportXLSX(insumos)}
+          >
+            Exportar <i
+              className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">
+
+            </i>
+          </Button>
+        </>}
         columns={columna}
         data={insumos}
         direction="auto"
         fixedHeader
-        fixedHeaderScrollHeight="500px"
+        fixedHeaderScrollHeight="600px"
         highlightOnHover
         noContextMenu
         pagination
@@ -130,9 +137,12 @@ const ListaInsumo = () => {
         responsive
         subHeaderAlign="right"
         subHeaderWrap
+        noDataComponent="No hay insumos registrados."
         paginationComponentOptions={paginationComponentOptions}
       />
     </>
-  );
+  )
 }
 export default ListaInsumo
+
+//        if(auth.cRolU!=3){

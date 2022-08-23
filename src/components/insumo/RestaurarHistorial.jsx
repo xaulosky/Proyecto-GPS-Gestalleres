@@ -1,7 +1,10 @@
 import { Button, Dialog, DialogActions, DialogContentText, DialogTitle, DialogContent } from '@mui/material'
-import React from 'react'
+import React, {useState, useContext } from 'react'
 import SettingsBackupRestoreIcon from '@mui/icons-material/SettingsBackupRestore';
 import axios from 'axios';
+import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
+
 
 const style = {
     position: 'absolute',
@@ -18,75 +21,73 @@ const style = {
     pb: 3,
 };
 
-const RestaurarHistorial = ({ row, obtenerInsumo, obtenerHistorial }) => {
+const RestaurarHistorial = ({ row, obtenerInsumos, obtenerHistorial, setOpen }) => {
 
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    const [data, setData] = React.useState({
-        nombreInsumo: row.nombreInsumo,
-        cantidad: row.cantidad,
-        costo: row.costo,
-        cInsumo: row.cInsumo,
+    const [res, setRes] = useState({
+        resp: '',
     });
-    const submit = (e) => {
-        e.preventDefault();
-        axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumoHistorial.php', {
-            data: {
+    const { auth } = useContext(AuthContext)
 
-                nombreInsumo: row.nombreInsumo,
-                cantidad: row.cantidad,
-                costo: row.costo,
-                cInsumo: row.cInsumo
-            }
+    const restaurar = (e) => {
+        e.preventDefault();
+
+        swal({
+            title: "¿Estas seguro que desea restaurar los datos del insumo?",
+            text: "Nombre: " + row.nombreInsumo+"\n\n"+"Cantidad: " + row.cantidad+"\n\n"+"Valor: " + row.costo,
+            icon: "warning",
+            buttons: true,
+            buttons: ["Cancelar", "Restaurar"],
+            //dangerMode: true,
         })
-            .then(respuesta => {
-                obtenerInsumos();
-                handleClose();
+            .then((willDelete) => {
+                if (willDelete) {
+                    axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumoHistorial.php', {
+
+                            nombreInsumo: row.nombreInsumo,
+                            cantidad: row.cantidad,
+                            costo: row.costo,
+                            cInsumo: row.cInsumo
+                    })
+                        .then(respuesta => {
+                            
+                            obtenerInsumos();
+                            cerrarModal(respuesta.data.msg);
+
+                        })
+                }
             })
+
+    }
+
+    function cerrarModal(res) {
+        console.log(res);
+        if (res === 'ok') {
+            swal("Restaurado", "Insumo restaurado correctamente", "success");
+        } else {
+            swal("ERROR", "Error al restaurar el insumo", "error");
+        }
+        setOpen(false);
+    }
+
+    function deshabilitarBoton(){
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     return (
-        <><Button onClick={handleOpen}
+        <><Button onClick={restaurar}
             color="primary"
             type={'submit'}
+            disabled={deshabilitarBoton()}
             name={'restaurar'}
             title={'Restaurar'}
         >
             <SettingsBackupRestoreIcon />
         </Button>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle  > Restaurar Insumo </DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        ¿Está seguro que desea restaurar los datos del insumo?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        onClick={submit}
-                        variant="contained"
-                        color="primary"
-                        name={'restaurar'}
-                    >
-                        Aceptar
-                    </Button>
-                    <Button
-                        onClick={handleClose}
-                        variant="contained"
-                        color="error"
-                        name={'cancelar'}
-                    >
-                        Cancelar
-                    </Button>
-                </DialogActions>
-            </Dialog>
         </>
     )
 }

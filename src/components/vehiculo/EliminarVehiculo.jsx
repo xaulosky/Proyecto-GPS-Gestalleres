@@ -3,6 +3,8 @@ import { Button, Grid, Stack, Dialog, DialogActions, DialogContent, DialogConten
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useEffect, useState } from 'react';
+import swal from 'sweetalert';
 
 const style = {
     position: 'absolute',
@@ -21,11 +23,11 @@ const style = {
 
 const EliminarVehiculo = ({row, obtenerVehiculos}) => {
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [data, setData] = React.useState({
+    const [data, setData] = useState({
         cVehiculo: row.cVehiculo
     });
 
@@ -34,12 +36,21 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
         ).then(respuesta => {   
             obtenerVehiculos();
             handleClose(e);
+            if (respuesta.data.msg === 'Vehiculo eliminado') {
+                
+                swal("EXITO!", "Vehiculo eliminado correctamente", "success");
+            } else {
+                swal("ERROR", "Error al eliminar el vehiculo", "error");
+                console.log(respuesta.data.msg);
+            }
+            setTimeout(() => {
+                swal.close()
+            }, 3000);
         })
     }
 
-    function handle(e) {
+    const abrirModal = () => {
         obtenerVehiculos();
-        handleOpen(e);
         setData({
             patenteV: row.patenteV,
             modeloV: row.modeloV,
@@ -50,11 +61,27 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
             tipoAseguradora: row.tipoAseguradora,
             cVehiculo: row.cVehiculo,
         });
+        handleOpen();
     }
+
+    const cerrarModal = () => {
+        obtenerVehiculos();
+        setData({
+            patenteV: '',
+            modeloV: '',
+            colorV: '',
+            estadoV: '',
+            estadoRevisionTecnicaV: '',
+            montoAseguradora: '',
+            tipoAseguradora: '',
+            cVehiculo: '',
+        });
+        handleClose();
+    };
 
   return (
     <>
-            <Button onClick={handle}
+            <Button onClick={abrirModal}
                 color="error"
                 type={'submit'}
                 name={'eliminar'}
@@ -64,7 +91,7 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
             </Button>
             <Dialog
                 open={open}
-                onClose={handleClose}
+                onClose={cerrarModal}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
@@ -85,7 +112,7 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
                         Aceptar
                     </Button>
                     <Button
-                        onClick={handleClose}
+                        onClick={cerrarModal}
                         variant="contained"
                         color="error"
                         name={'cancelar'}

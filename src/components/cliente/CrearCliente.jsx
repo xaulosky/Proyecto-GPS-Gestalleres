@@ -12,8 +12,17 @@ import {
   Modal,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
+import AuthContext from "../../context/AuthContext";
+import {
+  validateRut,
+  formatRut,
+  RutFormat,
+  isRutLike,
+} from "@fdograph/rut-utilities";
+import swal from "sweetalert";
+import ValidarCliente from "../funciones/clientes/ValidarCliente";
 
 const style = {
   position: "absolute",
@@ -31,6 +40,7 @@ const CrearCliente = ({ getClientes }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { auth } = useContext(AuthContext);
 
   const [form, setForm] = useState({
     rutC: "",
@@ -44,28 +54,43 @@ const CrearCliente = ({ getClientes }) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+      cTaller: auth.cTaller,
     });
   };
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(form);
-    axios
-      .post(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
-      .then((res) => {
-        setForm({
-          rutC: "",
-          emailC: "",
-          nombreC: "",
-          apellidoC: "",
-          direccionC: "",
-          cComuna: "",
+    if (isRutLike(form.rutC) && ValidarCliente(form)) {
+      form.rutC = formatRut(form.rutC, RutFormat.DOTS_DASH);
+      axios
+        .post(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
+        .then((res) => {
+          setForm({
+            rutC: "",
+            emailC: "",
+            nombreC: "",
+            apellidoC: "",
+            direccionC: "",
+            cComuna: "",
+          });
+          console.log(res);
+          getClientes();
+          if (res.data.msg === "Cliente agregado") {
+            swal("CREADO", "Cliente creado correctamente", "success");
+          } else {
+            swal(
+              "ERROR",
+              "No fue posible agregar al cliente, asegúrese de completar todos los campos",
+              "error"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        console.log(res);
-        getClientes();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    } else {
+      swal("ERROR", "Uno o mas campos no son validos", "error");
+    }
     handleClose();
   };
 
@@ -75,7 +100,7 @@ const CrearCliente = ({ getClientes }) => {
       .get(import.meta.env.VITE_APP_BACKEND_URL + "comuna.php")
       .then((res) => {
         setComunas(res.data);
-        console.log(res.data);
+        /* console.log(res.data); */
       })
       .catch((err) => {
         console.log(err);
@@ -84,6 +109,14 @@ const CrearCliente = ({ getClientes }) => {
   useEffect(() => {
     getComunas();
   }, []);
+
+  const restringirBoton = () => {
+    if (auth.cRolU != 3) {
+      return false;
+    } else {
+      return true;
+    }
+  };
 
   return (
     <>
@@ -94,6 +127,8 @@ const CrearCliente = ({ getClientes }) => {
         type={"submit"}
         name={"crear"}
         endIcon={<PersonAddAltIcon />}
+        position="start"
+        disabled={restringirBoton()}
       >
         Agregar Cliente
       </Button>
@@ -113,6 +148,7 @@ const CrearCliente = ({ getClientes }) => {
                   label="Rut"
                   name="rutC"
                   onChange={onChange}
+                  required={true}
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -122,6 +158,8 @@ const CrearCliente = ({ getClientes }) => {
                   label="Email"
                   name="emailC"
                   onChange={onChange}
+                  required={true}
+                  type="email"
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -131,6 +169,7 @@ const CrearCliente = ({ getClientes }) => {
                   label="Nombre"
                   name="nombreC"
                   onChange={onChange}
+                  required={true}
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -140,6 +179,7 @@ const CrearCliente = ({ getClientes }) => {
                   label="Apellido"
                   name="apellidoC"
                   onChange={onChange}
+                  required={true}
                 />
               </FormControl>
               <FormControl fullWidth>
@@ -149,6 +189,7 @@ const CrearCliente = ({ getClientes }) => {
                   label="Direccion"
                   name="direccionC"
                   onChange={onChange}
+                  required={true}
                 />
               </FormControl>
               <FormControl fullWidth>

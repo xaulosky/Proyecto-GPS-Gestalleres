@@ -1,9 +1,11 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, resetState } from 'react'
 import EditIcon from '@mui/icons-material/Edit';
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import AuthContext from '../../context/AuthContext';
 import swal from 'sweetalert';
+import validar from '../funciones/insumos/validarDatosInsumo';
+
 
 const style = {
 
@@ -12,14 +14,15 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
+    height: 350,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '1px solid #000',
     boxShadow: 24,
     p: 4,
 };
 
 
-const EditarInsumo = ({ row, obtenerInsumos }) => {
+const EditarInsumo = ({ row, obtenerInsumos}) => {
 
     const { auth } = useContext(AuthContext)
     const [open, setOpen] = React.useState(false);
@@ -41,44 +44,92 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
 
     const submit = (e) => {
         e.preventDefault();
-        axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
-            nombreInsumo: data.nombreInsumo,
-            cantidad: data.cantidad,
-            costo: data.costo,
-            cInsumo: data.cInsumo,
-            cTaller: auth.cTaller,
-        })
-            .then(respuesta => {
-                obtenerInsumos();
-                handleClose();
-                setRes(respuesta.data);
-                if (respuesta.data.msg === 'ok') {
-                    swal("ACTUALIZADO", "Insumo actualizado correctamente", "success");
-                } else {
-                    swal("ERROR", "Error al editar insumo", "error");
-                }
+
+        let tof = validar(data);
+        if (tof) {
+            axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'insumo.php', {
+                nombreInsumo: data.nombreInsumo,
+                cantidad: data.cantidad,
+                costo: data.costo,
+                cInsumo: data.cInsumo,
+                cTaller: auth.cTaller,
             })
+                .then(respuesta => {
+                    obtenerInsumos();
+                    handleClose();
+                    setRes(respuesta.data);
+                    if (respuesta.data.msg === 'ok') {
+                        swal({
+                            title: "EDITADO",
+                            text: "Insumo editado correctamente",
+                            icon: "success",
+                            button: "OK",
+                        });
+                    } else {
+                        swal({
+                            title: "ERROR",
+                            text: "Error al editar insumo",
+                            icon: "error",
+                            button: "Cerrar",
+                        });
+                    }
+                })
+        }
     }
 
     function handle(e) {
         const newdata = { ...data }
         newdata[e.target.name] = e.target.value;
         setData(newdata);
-        console.log(newdata);
     }
+
+    function abrir() {
+        obtenerInsumos();
+        setData({
+            nombreInsumo: row.nombreInsumo,
+            cantidad: row.cantidad,
+            costo: row.costo,
+            cInsumo: row.cInsumo,
+            cTaller: auth.cTaller,
+        });
+        handleOpen();
+    }
+
+    function cerrar() {
+        obtenerInsumos();
+        setData({
+            nombreInsumo: row.nombreInsumo,
+            cantidad: row.cantidad,
+            costo: row.costo,
+            cInsumo: row.cInsumo,
+            cTaller: auth.cTaller,
+        });
+        handleClose();
+    }
+
+    function deshabilitarBoton(){
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
     return (
         <>
-            <Button onClick={handleOpen}
+            <Button onClick={abrir}
                 color="primary"
                 type={'submit'}
                 name={'editar'}
                 title={'Editar'}
+                disabled={deshabilitarBoton()}
                 endIcon={<EditIcon />}
             >
             </Button>
             <Modal
                 open={open}
-                onClose={handleClose}
+                onClose={cerrar}
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
@@ -94,10 +145,10 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             variant="outlined"
                             type={'text'}
                             name={'nombreInsumo'}
-                            inputProps={{ maxLength: 256 }}
+                            InputLabelProps={{ shrink: true }}
                             value={data.nombreInsumo}
-                            required
                             onChange={(e) => handle(e)}
+
                         />
                         <TextField fullWidth
                             id="standard-basic"
@@ -107,25 +158,25 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             type={'number'}
                             name={'cantidad'}
                             value={data.cantidad}
-                            InputProps={{ inputProps: { min: 0 } }}
-                            required
+                            title='Solo números entre 0 y 999999999'
+                            InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
                             id="standard-basic"
-                            label="Valor"
+                            label="Precio"
                             margin="normal"
                             variant="outlined"
                             type={'number'}
                             name={'costo'}
-                            InputProps={{ inputProps: { min: 0 } }}
+                            InputLabelProps={{ shrink: true }}
                             value={data.costo}
-                            required
                             onChange={(e) => handle(e)}
                         />
                         <Grid item xs={12} sm={12} style={{ height: '100px' }}>
                             <DialogActions>
                                 <Button
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                     variant="contained"
                                     color="primary"
                                     name={'crear'}
@@ -134,7 +185,8 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                                     Aceptar
                                 </Button>
                                 <Button
-                                    onClick={handleClose}
+                                    sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
+                                    onClick={cerrar}
                                     variant="contained"
                                     color="error"
                                     name={'cancelar'}
