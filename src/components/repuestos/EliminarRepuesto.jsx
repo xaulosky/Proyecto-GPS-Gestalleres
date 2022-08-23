@@ -21,7 +21,7 @@ const style = {
   pb: 3
 };
 
-const EliminarRepuesto = ({row, obtenerRepuestos}) => {
+const EliminarRepuesto = ({ row, obtenerRepuestos }) => {
 
   const [res, setRes] = useState({
 
@@ -49,7 +49,7 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
               obtenerRepuestos();
               setRes(respuesta.data)
               if (respuesta.data.msg === 'Repuesto Eliminado') {
-                
+
                 swal("El repuesto ha sido eliminado", {
 
                   icon: "success",
@@ -65,7 +65,7 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
                 });
               }
             })
-          }
+        }
       });
   }
 
@@ -87,7 +87,7 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
         color='error'
         name={'eliminar'}
         title={'Eliminar'}
-        endIcon={<DeleteOutlineIcon/>}
+        endIcon={<DeleteOutlineIcon />}
       >
       </Button>
     </>
