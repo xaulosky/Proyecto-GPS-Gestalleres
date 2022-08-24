@@ -100,6 +100,14 @@ const ListaRepuesto = () => {
     }
   ]
 
+  const restringirBoton = () => {
+    if (auth.cRolU != 3) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   useEffect(() => {
 
     obtenerRepuestos()
@@ -117,6 +125,7 @@ const ListaRepuesto = () => {
             sx={{ ml: 3, p: '4px 15px' }}
             title='Exportar Excel'
             onClick={(e) => exportXLSX(repuestos)}
+            disabled={restringirBoton()}
           >
             Exportar <i
               className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">

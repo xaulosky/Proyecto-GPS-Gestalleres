@@ -118,6 +118,14 @@ const EditarRepuesto = ({ row, obtenerRepuestos }) => {
         handleClose()
     }
 
+    const restringirBoton = () => {
+        if (auth.cRolU != 3) {
+          return false;
+        } else {
+          return true;
+        }
+      };
+
     return (
         <>
             <Button
@@ -127,6 +135,7 @@ const EditarRepuesto = ({ row, obtenerRepuestos }) => {
                 name={'editar'}
                 title='Editar'
                 endIcon={<EditIcon />}
+                disabled={restringirBoton()}
             >
             </Button>
             <Modal
