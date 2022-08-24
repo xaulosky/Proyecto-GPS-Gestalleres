@@ -88,7 +88,6 @@ const ScreenFicha = () => {
             })
         }
     }
-
     useEffect(() => {
         getUltimaFicha(auth.cTaller).then(response => {
             setUltimaFicha(response)

@@ -1,11 +1,9 @@
 import React, { useEffect, useContext } from 'react'
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import axios from 'axios';
 import Button from '@mui/material/Button';
 import swal from 'sweetalert';
 import AuthContext from '../../context/AuthContext';
-
-
 
 const style = {
     position: 'absolute',
@@ -32,9 +30,8 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
     function eliminar(row) {
         swal({
             title: "¿Estas seguro de eliminar el insumo " + row.nombreInsumo + "?",
-            text: "Una vez eliminado no podras recuperarlo",
             icon: "warning",
-            buttons: true,
+            //buttons: true,
             buttons: ["Cancelar", "Eliminar"],
             dangerMode: true,
         })
@@ -71,11 +68,11 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
         eliminar(row);
     }
 
-    function deshabilitarBoton(){
+    function deshabilitarBoton() {
 
-        if(auth.cRolU!=3){
+        if (auth.cRolU != 3) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -88,7 +85,7 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
                 name={'eliminar'}
                 disabled={deshabilitarBoton()}
                 title={'Eliminar'}
-                endIcon={<DeleteIcon />}
+                endIcon={<DeleteOutlineIcon />}
             >
             </Button>
         </>

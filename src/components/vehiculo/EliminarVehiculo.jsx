@@ -2,9 +2,10 @@ import React from 'react'
 import { Button, Grid, Stack, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useEffect, useState } from 'react';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { useEffect, useState, useContext } from 'react';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
 
 const style = {
     position: 'absolute',
@@ -21,7 +22,11 @@ const style = {
     pb: 3,
 };
 
+
+
 const EliminarVehiculo = ({row, obtenerVehiculos}) => {
+
+    const { auth } = useContext(AuthContext)
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
@@ -79,14 +84,24 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
         handleClose();
     };
 
+    const deshabilitarBoton = () =>{
+
+        if(auth.cRolU!=3){
+            return false;
+        }else{
+            return true;
+        }
+    }
+    
   return (
     <>
             <Button onClick={abrirModal}
                 color="error"
                 type={'submit'}
                 name={'eliminar'}
+                disabled={deshabilitarBoton()}
                 title={'Eliminar'}
-                endIcon={<DeleteIcon />}
+                endIcon={<DeleteOutlineIcon/>}
             >
             </Button>
             <Dialog
@@ -107,7 +122,7 @@ const EliminarVehiculo = ({row, obtenerVehiculos}) => {
                         variant="contained"
                         color="primary"
                         name={'eliminar'}
-
+                        
                     >
                         Aceptar
                     </Button>
