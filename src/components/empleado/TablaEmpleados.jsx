@@ -3,7 +3,8 @@ import axios from 'axios';
 import DataTable from 'react-data-table-component'
 import { Button, Stack } from '@mui/material';
 import CrearEmpleado from './CrearEmpleado';
-import { BorderColor, Delete } from '@mui/icons-material';
+import EditarEmpleados from './EditarEmpleados';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
@@ -57,19 +58,28 @@ const TablaEmpleados = () => {
 
         {
             name: 'Acciones',
-            cell: (row) => (
-                <Stack direction={"row"}>
-                <Button  size="small" variant ="contained" endIcon={<BorderColor />} onClick={() => console.log(row)} >Editar</Button>
-                <Button  size="small" variant ="contained" endIcon={<Delete />} onClick={() => eliminarEmpleado(row)}>Eliminar</Button>
-                </Stack>
-      ),
-      ignoreRowClick: true,
-      allowOverflow: true,
-      button: true,
-      width: "30%",
-      center: true,
-      right: true,
-    }
+            cell: (row) => {
+                return (
+                    <Stack direction={row} textAlign="center" >
+                        <EditarEmpleados
+                            row={row}
+                            obtenerEmpleados={obtenerEmpleados}
+                        />
+                        <Button size="large" endIcon={<DeleteOutlineIcon/>} onClick={() => eliminarEmpleado(row)}></Button>
+                    </Stack>
+                )
+            },
+            /* <Stack direction={"row"}>
+                <Button size="small" variant="contained" endIcon={<BorderColor />} onClick={() => EditarTrabajo(row)} >Editar</Button>
+                <Button size="small" variant="contained" endIcon={<Delete />} onClick={() => eliminarTrabajo(row)}>Eliminar</Button>
+            </Stack> */
+            ignoreRowClick: true,
+            allowOverflow: true,
+            button: true,
+            width: "30%",
+            center: true,
+            right: true,
+        }
     ];
     const eliminarEmpleado = (row) => {
         console.log(row)
