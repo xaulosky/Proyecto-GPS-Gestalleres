@@ -43,7 +43,7 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
     const alerta=(row)=>{
       swal({
         title: "Eliminar Usuario",
-        text: "¿Esta seguro de eliminar a "+row.nombreU,
+        text: "Â¿Esta seguro de eliminar a "+row.nombreU,
         icon: "warning",
         dangerMode:true,
         buttons:{

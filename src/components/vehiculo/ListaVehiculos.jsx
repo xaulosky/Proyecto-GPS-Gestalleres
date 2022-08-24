@@ -1,11 +1,11 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
-import { Button, Grid, Stack } from '@mui/material';
+import React, { useEffect, useState, useContext } from 'react'
+import { Button, Grid, Stack, Typography} from '@mui/material';
 import DataTable from 'react-data-table-component';
 import EditarVehiculo from './EditarVehiculo';
 import EliminarVehiculo from './EliminarVehiculo';
 import AgregarVehiculo from './AgregarVehiculo';
-
+import AuthContext from '../../context/AuthContext';
 
 
 function formatoNumeros(numero) {
@@ -19,10 +19,12 @@ function formatoNumeros(numero) {
 
 const ListaVehiculos = () => {
 
+    const { auth } = useContext(AuthContext)
+
     const columns = [
         {
-            name: '#Vehiculo',
-            selector: row => row.cVehiculo,
+            name: 'Rut cliente',
+            selector: row => row.rutC,
         },
         {
             name: 'Patente',
@@ -50,7 +52,7 @@ const ListaVehiculos = () => {
         },
         {
             name: 'Tipo Carroceria',
-            selector: row => row.cTipoCarroceria,
+            selector: row => row.tipoCarroceria,
         },
         {
             name: 'Acciones',
@@ -83,12 +85,12 @@ const ListaVehiculos = () => {
     const [vehiculos, setVehiculos] = useState([]);
 
     const obtenerVehiculos = () => {
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo.php')
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo.php?cTaller=' + auth.cTaller)
             .then(respuesta => {
                 setVehiculos(respuesta.data);
             })
     }
-
+    console.log(auth)
     const obtenerTipoCarrocerias = () => {
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'tipoCarroceria.php')
             .then(respuesta => {
@@ -100,6 +102,14 @@ const ListaVehiculos = () => {
         obtenerVehiculos();
         obtenerTipoCarrocerias();
     }, [])
+
+    //Pie de pagina 
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Filas por página',
+        rangeSeparatorText: 'de',
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'Todos',
+    };
 
     return (
         <>
@@ -117,6 +127,11 @@ const ListaVehiculos = () => {
                 pagination
                 responsive
                 subHeaderAlign="center"
+                noDataComponent = {<Typography variant="h5" component="h2"s>
+                                No existen datos disponibles
+                            </Typography>
+                            }
+                paginationComponentOptions={paginationComponentOptions}
                 subHeaderWrap
             />
         </>
