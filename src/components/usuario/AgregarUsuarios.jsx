@@ -109,7 +109,6 @@ const AgregarUsuarios = ({obtenerUsuarios}) => {
         setData(newdata);
     }
 
-    
 
   return (
     <div>

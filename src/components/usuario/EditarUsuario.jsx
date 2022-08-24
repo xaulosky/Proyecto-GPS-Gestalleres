@@ -7,9 +7,8 @@ import { Alert ,Autocomplete,InputLabel,FilledInput, OutlinedInput,
 import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import swal from 'sweetalert';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import AuthContext from '../../context/AuthContext';
+import CambioPass from './CambioPass';
 
 const style = {
     position: 'absolute' ,
@@ -53,7 +52,7 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
       })
 
 
-      function abrir(){
+      const abrir =() =>{
         obtenerUsuarios();
         setData({
             cUsuario : row.cUsuario,
@@ -64,7 +63,7 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
         });
         handleOpen();
       }
-      function handle(e){
+      const handle = (e) =>{
             const newdata={...data}
             newdata[e.target.name]= e.target.value
             setData(newdata)
@@ -89,9 +88,7 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
           .then(respuesta=>{
               obtenerUsuarios();             
               handleClose();
-              console.log(respuesta.data)
               if(respuesta.data.msg == 'Actualizado'){
-                console.log(respuesta.data)
                 swal("Usuario editado", {
                     icon: "success",
                     timer: 1000,
@@ -99,7 +96,6 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
                 });
             }
             if(respuesta.data.msg == 'Datos insuficientes'){
-                console.log(respuesta.data)
                 swal("No se puedo editar al usuario",{
                     icon:"error",
                     timer: 1000,
@@ -108,6 +104,7 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
             }
           })
       }
+    
       const admin = (row) =>{
         if(row.cRolU === 1){
             return true
@@ -156,17 +153,7 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
                         required
                         placeholder = "Nombre"
                         onChange={(e)=>handle(e)} />
-                    <TextField 
-                        id="clave" 
-                        name = 'clave' 
-                        type= "password"
-                        value={data.clave}
-                        label="Contraseña" 
-                        variant="outlined" 
-                        multiline
-                        required
-                        placeholder = "Contraseña"        
-                        onChange={(e)=>handle(e)} />
+                    
                     <TextField 
                         id="email" 
                         name = 'email'
@@ -198,7 +185,14 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
                     </Select>    
                     </Grid>
                     </FormControl>
-                    <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
+                    <Stack direction="row" spacing={1}  sx={{my:-2,mx:2, width: 360}}>
+                        <CambioPass 
+                            row={row} 
+                            obtenerUsuarios = {obtenerUsuarios} 
+                            />
+                    </Stack>
+                    
+                    <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3, my:2}}>
                     <Button  
                         variant ='contained'
                         type='submit'

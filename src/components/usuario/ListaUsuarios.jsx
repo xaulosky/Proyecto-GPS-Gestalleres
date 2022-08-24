@@ -15,6 +15,7 @@ import EditarUsuario from './EditarUsuario'
 import AuthContext from '../../context/AuthContext';
 import BuscarUsuario from './BuscarUsuario';
 
+//Roles usuarios
 function rol(row){
     if(row.cRolU == 1){
         return(
@@ -39,6 +40,7 @@ function rol(row){
     }
 };
 
+//pie de pagina 
 const paginationComponentOptions = {
     rowsPerPageText: 'Filas por página',
     rangeSeparatorText: 'de',
@@ -67,6 +69,7 @@ const ListaUsuarios = () => {
            
         },
         {	
+            //llamada a los botones
             name: 'Acciones',		
             cell: (row) => (
                 <Stack direction="row" textAlign="center">
@@ -80,10 +83,10 @@ const ListaUsuarios = () => {
             width: '150px',
         },
     ];
-
+    
     const [usuarios,setUsuarios] = useState([]);
     const { auth } = useContext(AuthContext)
-
+    //Llamada a la api
     const obtenerUsuarios = () =>{
         axios.get(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php?cTaller='+auth.cTaller)
         .then(respuesta => {
@@ -94,8 +97,7 @@ const ListaUsuarios = () => {
     useEffect(()=>{
         obtenerUsuarios();
     },[])
-
-    
+      
     return (
       
         <DataTable
