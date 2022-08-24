@@ -51,6 +51,17 @@ const opciones = [
     },
 ];
 
+const opciones1 = [
+    {
+        value: 1,
+        label: 'Activo',
+    },
+    {
+        value: 2,
+        label: 'Finalizado',
+    }
+];
+
 const EditarVehiculo = ({ row, obtenerVehiculos }) => {
 
     const { auth } = useContext(AuthContext)
@@ -216,17 +227,19 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                             onChange={(e) => handle(e)}
                             disabled={deshabilitarBoton()}
                         />
-                        <TextField fullWidth
-                            id='estadoV'
-                            name={'estadoV'}
-                            label="Estado"
-                            margin="normal"
-                            variant="outlined"
-                            type={'text'}
-                            value={data.estadoV}
-                            required
-                            onChange={(e) => handle(e)}
-                            disabled={deshabilitarBoton()}
+                        <Autocomplete
+                            options={opciones1}
+                            getOptionLabel={(option) => option.label}
+
+                            onChange={(e, value) => {
+                                setData({
+                                    ...data,
+                                    estadoV: value.label
+                                })
+                            }}
+                            renderInput={(params) => <TextField {...params} value={data.estadoV} label="Estado Vehiculo" id="estadoV"
+                                name={'estadoV'}
+                                required />}
                         />
                         <Autocomplete
                             options={opciones}

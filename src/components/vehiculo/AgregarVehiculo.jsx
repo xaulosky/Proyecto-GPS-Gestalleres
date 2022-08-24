@@ -53,6 +53,17 @@ const opciones = [
     },
 ];
 
+const opciones1 = [
+    {
+        value: 1,
+        label: 'Activo',
+    },
+    {
+        value: 2,
+        label: 'Finalizado',
+    }
+];
+
 const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
 
     const { auth } = useContext(AuthContext)
@@ -71,6 +82,7 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
         cAseguradora: '',
         cTipoCarroceria: '',
         cCliente: '',
+        cTaller: '',
     });
 
     const submit = (e) => {
@@ -86,6 +98,8 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
             cCliente: data.cCliente,
             cAseguradora: data.cAseguradora,
             cTipoCarroceria: data.cTipoCarroceria,
+            cTaller: auth.cTaller,
+
 
         }).then(respuesta => {
             obtenerVehiculos()
@@ -124,22 +138,25 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
 
 
     useEffect(() => {
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'aseguradora.php').then(respuesta => {
-            setAseguradoras(respuesta.data);
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'aseguradora.php')
+            .then(respuesta => {
+                setAseguradoras(respuesta.data);
         })
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php').then(respuesta => {
-            setTipoCarrocerias(respuesta.data);
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php')
+            .then(respuesta => {
+                setTipoCarrocerias(respuesta.data);
         })
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php').then(respuesta => {
-            setClientes(respuesta.data);
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo_cliente.php?cTaller=' + auth.cTaller)
+            .then(respuesta => {
+                setClientes(respuesta.data);
         })
     }, []);
 
-    const deshabilitarBoton = () =>{
+    const deshabilitarBoton = () => {
 
-        if(auth.cRolU!=3){
+        if (auth.cRolU != 3) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -180,20 +197,30 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                                 <TextField id="colorV" name="colorV" label="Color" type={'text'} required onChange={(e) => handle(e)} />
                             </Grid>
                             <Grid item xs={6}>
-                                <TextField id="estadoV" name="estadoV" label="Estado" type={'text'} required onChange={(e) => handle(e)} />
+                                <Autocomplete
+                                    id="estadoV"
+                                    options={opciones}
+                                    getOptionLabel={(option) => option.label}
+
+                                    onChange={(e, value) => {
+                                        setData({ ...data, estadoV: value.label })
+                                    }
+                                    }
+                                    renderInput={(params) => <TextField {...params} label="Estado Vehiculo" required />}
+                                />
                             </Grid>
                             <Grid item xs={6}>
                                 {/*Autocomplete de estado de revision tecnica*/}
                                 <Autocomplete
                                     id="estadoRevisionTecnicaV"
-                                    options={opciones}
+                                    options={opciones1}
                                     getOptionLabel={(option) => option.label}
-                                    
+
                                     onChange={(e, value) => {
-                                        setData({ ...data, estadoRevisionTecnicaV: value.label})
+                                        setData({ ...data, estadoRevisionTecnicaV: value.label })
                                     }
                                     }
-                                    renderInput={(params) => <TextField {...params} label="Estado de revision tecnica" required />}
+                                    renderInput={(params) => <TextField {...params} label="Estado revision tecnica" required />}
                                 />
 
                             </Grid>
