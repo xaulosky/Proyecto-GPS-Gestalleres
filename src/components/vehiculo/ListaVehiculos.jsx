@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react'
-import { Button, Grid, Stack } from '@mui/material';
+import { Button, Grid, Stack, Typography} from '@mui/material';
 import DataTable from 'react-data-table-component';
 import EditarVehiculo from './EditarVehiculo';
 import EliminarVehiculo from './EliminarVehiculo';
@@ -103,6 +103,14 @@ const ListaVehiculos = () => {
         obtenerTipoCarrocerias();
     }, [])
 
+    //Pie de pagina 
+    const paginationComponentOptions = {
+        rowsPerPageText: 'Filas por página',
+        rangeSeparatorText: 'de',
+        selectAllRowsItem: true,
+        selectAllRowsItemText: 'Todos',
+    };
+
     return (
         <>
             <Grid item align='right' xs={12} >
@@ -119,6 +127,11 @@ const ListaVehiculos = () => {
                 pagination
                 responsive
                 subHeaderAlign="center"
+                noDataComponent = {<Typography variant="h5" component="h2"s>
+                                No existen datos disponibles
+                            </Typography>
+                            }
+                paginationComponentOptions={paginationComponentOptions}
                 subHeaderWrap
             />
         </>
