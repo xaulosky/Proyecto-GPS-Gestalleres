@@ -87,7 +87,7 @@ const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
                 onClick={abrir}
                 title = 'Recuperar contraseña'
                 size = 'small'
-            >Recuperar contraseña</Button>
+            >Cambiar contraseña</Button>
           <Modal
               open = {open}
               onClose = {handleClosePass}
