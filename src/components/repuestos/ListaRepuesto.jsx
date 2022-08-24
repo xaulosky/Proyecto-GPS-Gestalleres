@@ -145,7 +145,7 @@ const ListaRepuesto = () => {
         pointerOnHover
         responsive
         subHeader
-        noDataComponent="No hay repuestos registrados."
+        noDataComponent='No hay repuestos registrados'
         paginationComponentOptions={paginationComponentOptions}
       />
     </>
