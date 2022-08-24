@@ -61,6 +61,14 @@ const AgregarRepuesto = ({ obtenerRepuestos }) => {
             })
     }
 
+    const restringirBoton = () => {
+        if (auth.cRolU != 3) {
+          return false;
+        } else {
+          return true;
+        }
+      };
+
     return (
         <div>
             <Button
@@ -70,7 +78,8 @@ const AgregarRepuesto = ({ obtenerRepuestos }) => {
                 color='primary'
                 type={'submit'}
                 title='Agregar Repuesto'
-                endIcon={<Add />}>
+                endIcon={<Add />}
+                disabled={restringirBoton()}>
 
                 Agregar Repuesto
             </Button>

@@ -1,10 +1,11 @@
 import { Button } from '@mui/material';
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useEffect } from 'react';
 import { DeleteIcon } from '@mui/icons-material/Delete';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import swal from 'sweetalert';
+import AuthContext from '../../context/AuthContext';
 
 const style = {
 
@@ -21,7 +22,8 @@ const style = {
   pb: 3
 };
 
-const EliminarRepuesto = ({ row, obtenerRepuestos }) => {
+const EliminarRepuesto = ({row, obtenerRepuestos}) => {
+  const { auth } = useContext(AuthContext)
 
   const [res, setRes] = useState({
 
@@ -80,6 +82,14 @@ const EliminarRepuesto = ({ row, obtenerRepuestos }) => {
     eliminarFila(row);
   }
 
+  const restringirBoton = () => {
+    if (auth.cRolU != 3) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   return (
     <>
       <Button
@@ -87,7 +97,8 @@ const EliminarRepuesto = ({ row, obtenerRepuestos }) => {
         color='error'
         name={'eliminar'}
         title={'Eliminar'}
-        endIcon={<DeleteOutlineIcon />}
+        endIcon={<DeleteOutlineIcon/>}
+        disabled={restringirBoton()}
       >
       </Button>
     </>
