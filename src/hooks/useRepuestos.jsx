@@ -1,25 +1,22 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-export const useClientes = () => {
-    const [clientes, setClientes] = useState([]);
+export const useRepuestos = () => {
+    const [repuestos, setRepuestos] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setLoading(true);
-        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'cliente.php')
-
+        axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'repuesto.php?cTaller=' + cTaller)
             .then(res => {
-                setClientes(res.data);
+                setRepuestos(res.data);
                 setLoading(false);
-            }
-            )
+            })
             .catch(err => {
                 setError(true);
                 setLoading(false);
-            }
-            )
+            })
     }, []);
 
-    return { clientes, error, loading };
+    return { repuestos, error, loading };
 }

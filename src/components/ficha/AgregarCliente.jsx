@@ -1,5 +1,4 @@
 import { Button, Grid, TextField } from '@mui/material'
-import { Box } from '@mui/system'
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { clearRUT, validarRUT } from 'validar-rut'
@@ -28,80 +27,70 @@ const AgregarCliente = ({ clienteSeleccionado }) => {
                 rutC: clienteSeleccionado.rutC,
                 emailC: clienteSeleccionado.emailC,
             })
-        } else {
-            setCliente({
-                cCliente: '',
-                nombreC: "",
-                apellidoC: "",
-                rutC: '',
-                emailC: '',
-            })
         }
     }, [clienteSeleccionado])
 
     return (
-        <Box component={'form'}>
-            <Grid container spacing={2}>
-                <Grid item md={6}>
-                    <TextField
-                        label="Nombre"
-                        value={cliente.nombreC}
-                        onChange={handleChangeCliente}
-                        fullWidth
-                        name='nombreC'
-                        data
-                        disabled={clienteSeleccionado ? true : false}
-                    />
-                </Grid>
-                <Grid item md={6}>
-                    <TextField
-                        label="Apellido"
-                        value={cliente.apellidoC}
-                        fullWidth
-                        onChange={handleChangeCliente}
-                        name='apellidoC'
-                        disabled={clienteSeleccionado ? true : false}
-                    />
-                </Grid>
-                <Grid item md={6}>
-                    <TextField
-                        label="Rut"
-                        value={cliente.rutC}
-                        fullWidth
-                        onChange={handleChangeCliente}
-                        error={cliente.rutC == '' ? false : !validarRUT(cliente.rutC)}
-                        name='rutC'
-                        required
-                        disabled={clienteSeleccionado ? true : false}
+        <>
+            <Grid item md={6}>
+                <TextField
+                    label="Nombre"
+                    value={cliente.nombreC}
+                    onChange={handleChangeCliente}
+                    fullWidth
+                    name='nombreC'
+                    data
+                    disabled={clienteSeleccionado ? true : false}
+                />
+            </Grid>
+            <Grid item md={6}>
+                <TextField
+                    label="Apellido"
+                    value={cliente.apellidoC}
+                    fullWidth
+                    onChange={handleChangeCliente}
+                    name='apellidoC'
+                    disabled={clienteSeleccionado ? true : false}
+                />
+            </Grid>
+            <Grid item md={6}>
+                <TextField
+                    label="Rut"
+                    value={cliente.rutC}
+                    fullWidth
+                    onChange={handleChangeCliente}
+                    error={cliente.rutC == '' ? false : !validarRUT(cliente.rutC)}
+                    name='rutC'
+                    required
+                    disabled={clienteSeleccionado ? true : false}
 
-                    />
-                </Grid>
-                <Grid item md={6}>
-                    <TextField
-                        label="Email"
-                        value={cliente.emailC}
-                        fullWidth
-                        onChange={handleChangeCliente}
-                        type='email'
-                        name='emailC'
-                        required
-                        disabled={clienteSeleccionado ? true : false}
-                    />
-                </Grid>
-                <Grid item md={12}>
-                    <Button
-                        fullWidth
-                        type='submit'
-                        disabled={clienteSeleccionado ? true : false}
-                        value="Guardar"
-                        variant="contained"
-                        color="primary"
-                    >
-                        Agregar Cliente
-                    </Button>
-                </Grid>
-            </Grid >
-        </Box>
+                />
+            </Grid>
+            <Grid item md={6}>
+                <TextField
+                    label="Email"
+                    value={cliente.emailC}
+                    fullWidth
+                    onChange={handleChangeCliente}
+                    type='email'
+                    name='emailC'
+                    required
+                    disabled={clienteSeleccionado ? true : false}
+                />
+            </Grid>
+            <Grid item md={12}>
+                <Button
+                    fullWidth
+                    type='submit'
+                    disabled={clienteSeleccionado ? true : false}
+                    value="Guardar"
+                    variant="contained"
+                    color="primary"
+                >
+                    Agregar Cliente
+                </Button>
+            </Grid>
+        </>
     )
 }
 

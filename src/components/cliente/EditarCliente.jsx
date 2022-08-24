@@ -12,8 +12,16 @@ import {
   Modal,
 } from "@mui/material";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import AuthContext from "../../context/AuthContext";
+import ValidarCliente from "../funciones/clientes/ValidarCliente";
+import {
+  validateRut,
+  formatRut,
+  RutFormat,
+  isRutLike,
+} from "@fdograph/rut-utilities";
 
 const style = {
   position: "absolute",
@@ -31,6 +39,7 @@ const EditarCliente = ({ getClientes, row }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { auth } = useContext(AuthContext);
 
   const confirmModal = () => {
     getClientes();
@@ -77,28 +86,37 @@ const EditarCliente = ({ getClientes, row }) => {
   const onSubmit = (e) => {
     e.preventDefault();
     console.log(form);
-    axios
-      .put(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
-      .then((res) => {
-        setForm({
-          rutC: "",
-          emailC: "",
-          nombreC: "",
-          apellidoC: "",
-          direccionC: "",
-          cComuna: "",
-          cCliente: "",
+    if (isRutLike(form.rutC) && ValidarCliente(form)) {
+      axios
+        .put(import.meta.env.VITE_APP_BACKEND_URL + "cliente.php", form)
+        .then((res) => {
+          setForm({
+            rutC: "",
+            emailC: "",
+            nombreC: "",
+            apellidoC: "",
+            direccionC: "",
+            cComuna: "",
+            cCliente: "",
+          });
+          getClientes();
+          if (res.data.msg === "Cliente actualizado") {
+            swal("ACTUALIZADO", "Cliente actualizado correctamente", "success");
+          } else {
+            swal(
+              "ERROR",
+              "No fue posible actualizar al cliente, asegúrese de completar todos los campos",
+              "error"
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        getClientes();
-        if (res.data.msg === "Cliente actualizado") {
-          swal("ACTUALIZADO", "Cliente actualizado correctamente", "success");
-        } else {
-          swal("ERROR", "No fue posible actualizar al cliente, asegúrese de completar todos los campos", "error");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    } else {
+      swal("ERROR", "Uno o mas campos no son validos", "error");
+    }
+
     handleClose();
   };
   const [comunas, setComunas] = useState([]);
@@ -111,6 +129,14 @@ const EditarCliente = ({ getClientes, row }) => {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  const restringirBoton = () => {
+    if (auth.cRolU != 3) {
+      return false;
+    } else {
+      return true;
+    }
   };
 
   useEffect(() => {
@@ -131,6 +157,7 @@ const EditarCliente = ({ getClientes, row }) => {
         name={"crear"}
         size={"small"}
         endIcon={<EditIcon />}
+        disabled={restringirBoton()}
       ></Button>
       <Modal
         open={open}
@@ -155,6 +182,7 @@ const EditarCliente = ({ getClientes, row }) => {
                   label="Email"
                   name="emailC"
                   onChange={onChange}
+                  type="email"
                 />
               </FormControl>
               <FormControl fullWidth>

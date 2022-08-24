@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component';
-import { Button, Grid, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import CrearInsumo from './CrearInsumo';
 import EditarInsumo from './EditarInsumo';
 import EliminarInsumo from './EliminarInsumo';
 import AuthContext from '../../context/AuthContext'
+
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+
 import HistorialInsumo from './HistorialInsumo';
 
 const paginationComponentOptions = {
@@ -142,5 +144,3 @@ const ListaInsumo = () => {
   )
 }
 export default ListaInsumo
-
-//        if(auth.cRolU!=3){

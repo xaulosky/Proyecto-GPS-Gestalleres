@@ -8,7 +8,7 @@ import { display } from '@mui/system'
 
 const Layout = () => {
 
-    const [sidebarOpen, setSidebarOpen] = useState(true)
+    const [sidebarOpen, setSidebarOpen] = useState(true);
 
     const onClick = () => {
         setSidebarOpen(!sidebarOpen)
@@ -23,7 +23,6 @@ const Layout = () => {
     }, true)
 
     return (
-        /* contenedor */
         <Grid container style={{
             backgroundColor: "#f7f7f7",
             position: "relative",
@@ -31,7 +30,8 @@ const Layout = () => {
             {/* sidebar */}
             {
                 sidebarOpen
-                    ? <Grid item xs={true} md={"2"}  >
+                    ?
+                    <Grid item xs={true} md={2}  >
                         <Card style={{
                             margin: "10px",
                             borderRadius: "10px",
@@ -47,7 +47,7 @@ const Layout = () => {
                     : null
             }
             {/* cierre sidebar */}
-            <Grid item xs={12} md={sidebarOpen ? "10" : "12"}>
+            <Grid item xs={12} md={(sidebarOpen ? 10 : 12)}>
                 <Card style={{
                     margin: "10px",
                     borderRadius: "10px",
