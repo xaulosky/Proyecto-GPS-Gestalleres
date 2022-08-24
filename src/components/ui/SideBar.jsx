@@ -7,7 +7,8 @@ import CarRepairIcon from '@mui/icons-material/CarRepair';
 import HomeIcon from '@mui/icons-material/Home';
 import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import PostAddIcon from '@mui/icons-material/PostAdd';
-
+import ConstructionIcon from '@mui/icons-material/Construction';
+import GroupsIcon from '@mui/icons-material/Groups';
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
@@ -86,6 +87,22 @@ const SideBar = () => {
                             <PrecisionManufacturingIcon />
                         </ListItemIcon>
                         <ListItemText primary="Insumos" />
+                    </ListItem>
+                </NavLink>
+                <NavLink to="/trabajo" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <ConstructionIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Trabajos" />
+                    </ListItem>
+                </NavLink>
+                <NavLink to="/empleado" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <GroupsIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Empleados" />
                     </ListItem>
                 </NavLink>
             </List>

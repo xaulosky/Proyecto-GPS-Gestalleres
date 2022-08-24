@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import ClienteScreen from '../components/cliente/ClienteScreen'
 import EditarFicha from '../components/ficha/EditarFicha'
 import FichaScreen from '../components/ficha/FichaScreen'
+import EmpleadoScreen from '../components/empleado/EmpleadoScreen'
 import ListaFichas from '../components/ficha/ListaFichas'
 import ScreenFicha from '../components/ficha/ScreenFicha'
 import VerFicha from '../components/ficha/VerFicha'
@@ -10,6 +11,7 @@ import DashboardHome from '../components/homedashboard/DashboardHome'
 import InsumoScreen from '../components/insumo/InsumoScreen'
 import Layout from '../components/Layout'
 import RepuestosScreen from '../components/repuestos/RepuestosScreen'
+import TrabajoScreen from '../components/trabajo/TrabajoScreen'
 import UsuarioScreen from '../components/usuario/UsuarioScreen'
 import VehiculoScreen from '../components/vehiculo/VehiculoScreen'
 
@@ -21,6 +23,8 @@ const DashboardRoutes = () => {
                 <Route path="cliente" element={<ClienteScreen />} />
                 <Route path="usuarios" element={<UsuarioScreen />} />
                 <Route path="repuestos" element={<RepuestosScreen />} />
+                <Route path="trabajo" element={<TrabajoScreen />} />
+                <Route path="empleado" element={<EmpleadoScreen />} />
                 <Route path="vehiculo" element={<VehiculoScreen />} />
                 <Route path="insumos" element={<InsumoScreen />} />
                 <Route path="/" element={<DashboardHome />} />
