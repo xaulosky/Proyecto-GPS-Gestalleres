@@ -89,6 +89,16 @@ const TablaTrabajos = () => {
             .then(respuesta => {
                 console.log(respuesta.data)
                 obtenerTrabajos();
+                if (respuesta.data.msg === 'Eliminado Correctamente') {
+                
+                    swal("EXITO!", "Trabajo eliminado correctamente", "success");
+                } else {
+                    swal("ERROR", "Error al eliminar el trabajo", "error");
+                    console.log(respuesta.data.msg);
+                }
+                setTimeout(() => {
+                    swal.close()
+                }, 3000);
             }
             )
 

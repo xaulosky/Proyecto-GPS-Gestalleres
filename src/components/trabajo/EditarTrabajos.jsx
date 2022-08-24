@@ -79,6 +79,16 @@ const EditarTrabajos = ({ row, obtenerTrabajos }) => {
             .then(respuesta => {
                 cerrar()
                 console.log(respuesta.data)
+                if (respuesta.data.msg === 'Actualizado Correctamente') {
+
+                    swal("EXITO!", "Cambios efectuados correctamente", "success");
+                } else {
+                    swal("ERROR", "Error al editar el trabajo", "error");
+                    console.log(respuesta.data.msg);
+                }
+                setTimeout(() => {
+                    swal.close()
+                }, 3000);
             })
     }
 

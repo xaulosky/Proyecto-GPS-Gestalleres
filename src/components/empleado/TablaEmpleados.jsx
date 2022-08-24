@@ -87,6 +87,16 @@ const TablaEmpleados = () => {
             .then(respuesta => {
                 console.log(respuesta.data)
                 obtenerEmpleados();
+                if (respuesta.data.msg === 'Eliminado Correctamente') {
+                
+                    swal("EXITO!", "Empleado eliminado correctamente", "success");
+                } else {
+                    swal("ERROR", "Error al eliminar el empleado", "error");
+                    console.log(respuesta.data.msg);
+                }
+                setTimeout(() => {
+                    swal.close()
+                }, 3000);
             }
             )
 
@@ -132,7 +142,9 @@ const TablaEmpleados = () => {
          <CrearEmpleado
         obtenerEmpleados={obtenerEmpleados}   
         />
+        
         </>
+        
         
         
 

@@ -3,6 +3,7 @@ import { useState } from 'react'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
 import { AccountCircle } from '@mui/icons-material';
+import swal from 'sweetalert';
 
 const CrearEmpleado = ({obtenerEmpleados}) => {
   const[open, setOpen] = useState(false)
@@ -35,6 +36,16 @@ const submit= (e) =>{
     obtenerEmpleados()
     setOpen(false)
       console.log(respuesta.data)
+      if (respuesta.data.msg === 'Agregado Correctamente') {
+
+        swal("CREADO!", "Empleado creado correctamente", "success");
+    } else {
+        swal("ERROR", "Error al crear el empleado", "error");
+        console.log(respuesta.data.msg);
+    }
+    setTimeout(() => {
+        swal.close()
+    }, 3000);
   })
 }
 function handle(e){

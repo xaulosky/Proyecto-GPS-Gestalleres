@@ -2,6 +2,7 @@ import {Autocomplete, Button, Dialog, DialogActions, DialogContent, DialogTitle,
 import { useState } from 'react'
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 const opciones = [
   {
@@ -54,6 +55,16 @@ const submit= (e) =>{
     obtenerTrabajos()
     setOpen(false)
       console.log(respuesta.data)
+      if (respuesta.data.msg === 'Agregado Correctamente') {
+
+        swal("CREADO!", "Trabajo creado correctamente", "success");
+    } else {
+        swal("ERROR", "Error al crear el trabajo", "error");
+        console.log(respuesta.data.msg);
+    }
+    setTimeout(() => {
+        swal.close()
+    }, 3000);
   })
 }
 function handle(e){
