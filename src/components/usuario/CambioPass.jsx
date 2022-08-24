@@ -49,6 +49,8 @@ const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
         obtenerUsuarios();
         console.log(newdata)
     }
+
+    
     const cambio = (e) =>{
         e.preventDefault()
         axios.put(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
@@ -61,8 +63,8 @@ const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
         .then(respuesta=>{
             obtenerUsuarios();  
             handleClosePass();
-            if(respuesta.data.msg == 'Contraseña cambiada'){
-              swal("Usuario editado", {
+            if(respuesta.data.msg == 'Actualizado'){
+              swal("Contraseña cambiada", {
                   icon: "success",
                   timer: 1000,
                   buttons: false,
@@ -77,8 +79,6 @@ const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
           }
         })
     }
-
-
     return (
       <div>
         
@@ -117,7 +117,7 @@ const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
                         required
                         placeholder = "Contraseña"   
                         onChange={(e)=>handle(e)}     
-                         />        
+                        />           
                     <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
                     <Button  
                         variant ='contained'
