@@ -77,11 +77,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         }
     }
 
-    function handle(e) {
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value;
-        setData(newdata);
-    }
+
 
     function abrir() {
         obtenerInsumos();
@@ -158,7 +154,6 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             type={'number'}
                             name={'cantidad'}
                             value={data.cantidad}
-                            title='Solo números entre 0 y 999999999'
                             InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
@@ -180,7 +175,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                                         sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
                                         variant="contained"
                                         color="primary"
-                                        name={'crear'}
+                                        name={'editar'}
                                         type={'submit'}
                                     >
                                         Aceptar
