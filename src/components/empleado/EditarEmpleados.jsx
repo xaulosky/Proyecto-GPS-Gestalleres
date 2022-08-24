@@ -36,7 +36,8 @@ const EditarEmpleados = ({ row, obtenerEmpleados }) => {
         emailEmpleado: row.emailEmpleado,
         numeroTelefonoEmpleado: row.numeroTelefonoEmpleado,
         cRolE: row.cRolE,
-        cTaller: row.cTaller
+        cTaller: row.cTaller,
+        cEmpleado: row.cEmpleado
 
     });
 
@@ -53,7 +54,8 @@ const EditarEmpleados = ({ row, obtenerEmpleados }) => {
             emailEmpleado: data.emailEmpleado,
             numeroTelefonoEmpleado: data.numeroTelefonoEmpleado,
             cRolE: data.cRolE,
-            cTaller: data.cTaller
+            cTaller: data.cTaller,
+            cEmpleado: data.cEmpleado
         })
             .then(respuesta => {
                 cerrar()
