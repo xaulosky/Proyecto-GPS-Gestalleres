@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState,useContext } from 'react'
 import { Alert ,Autocomplete,InputLabel, 
         Button,Box , MenuItem, Modal,Stack ,
-        Select,TextField, Typography, Grid, FormControl, 
+        Select,TextField, Typography, Grid, FormControl,useFormControl,
         FormLabel, FormHelperText} from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import axios from 'axios';
+import AuthContext from '../../context/AuthContext';
+import swal from 'sweetalert';
+
 
 const style = {
     position: 'absolute' ,
@@ -20,7 +23,7 @@ const style = {
   const opciones = [
     {
       value: 2,
-      label: 'Secretaria',
+      label: 'Editor',
     },
     {  
       value: 3,
@@ -28,51 +31,95 @@ const style = {
     },
   ];
 
-const AgregarUsuarios = () => {
+const AgregarUsuarios = ({obtenerUsuarios}) => {
   
   const [open, setOpen]  = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const { auth } = useContext(AuthContext)
 
     const[data,setData] = useState({
-        
         nombreU: "",
         clave: "",
         email: "",
-        cTaller: "",
+        cTaller: auth.cTaller,
         cRolU: "",
     })
     
-        function handle(e){
-            
-            const newdata={...data}
-            newdata[e.target.name]= e.target.value
-            setData(newdata)
-            console.log(newdata)
-        }
-
     const submit= (e) =>{
+        e.preventDefault();
         axios.post(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
             
             email: data.email ,
             clave: data.clave  ,
             cRolU: data.cRolU,
             cTaller: data.cTaller,
-            nombreU: data.nombreU,
+            nombreU:data.nombreU,
+            
         })
         .then(respuesta=>{
-            console.log(respuesta.data)
+            obtenerUsuarios();
+            handleClose();
+
+            if(respuesta.data.msg == 'Agregado'){
+                console.log(respuesta.data)
+                swal("Usuario agregado", {
+                    icon: "success",
+                    timer: 1000,
+                    buttons: false,
+                  });
+            }
+            if(respuesta.data.msg == 'Datos insuficientes'){
+                console.log(respuesta.data)
+                swal("No se puedo agregar al usuario",{
+                    icon:"error",
+                    timer: 1000,
+                    buttons: false,
+                  })
+            }
         })
     }
 
+    function rolDisabled(){
+        if(auth.cRolU == 3){
+            return true
+        }
+    }
+
+    function editorRol(){
+        if(auth.cRolU == 2){
+            return true
+        }
+    }
+    
+    function abrir(){
+        setData({
+            nombreU: "",
+            clave: "",
+            email: "",
+            cTaller: auth.cTaller,
+            cRolU: 3,
+        });
+        handleOpen();
+      }
+    function handle(e){
+        const newdata={...data}
+        newdata[e.target.name]= e.target.value;
+        console.log(newdata);
+        setData(newdata);
+    }
+
+
   return (
     <div>
-
+       
         <Button
-            onClick={ handleOpen}
+            onClick={abrir}
             variant="contained" 
             endIcon={<PersonAddAltIcon fontSize='small'/>}
             size = 'medium'
+            type = 'submit'
+            disabled = {rolDisabled()}
         >
             Agregar
         </Button>
@@ -93,8 +140,6 @@ const AgregarUsuarios = () => {
                     sx={{
                         '& .MuiTextField-root': { m: 2, width: '40ch' },
                     }}
-                    noValidate
-                    autoComplete="off"
                     onSubmit={(e) => submit(e)}
                 >
                     
@@ -102,66 +147,54 @@ const AgregarUsuarios = () => {
                         id="nombreU" 
                         type='text' 
                         name = 'nombreU'
-                        value={data.nombreU} 
                         label="Nombre" 
                         variant="outlined" 
                         multiline
+                        required 
                         placeholder = "Nombre"
                         onChange={(e)=>handle(e)} />
                     <TextField 
                         id="clave" 
                         name = 'clave' 
                         type= 'text' 
-                        value={data.clave} 
                         label="Contraseña" 
                         variant="outlined" 
                         multiline
+                        required
                         placeholder = "Contraseña"
                         onChange={(e)=>handle(e)} />
-                    
-                    
                     <TextField 
                         id="email" 
                         name = 'email'
                         type = 'email' 
-                        value={data.email} 
                         label="Email" 
                         fullWidth
+                        required
                         variant="outlined" 
                         onChange={(e)=>handle(e)} />
                     
                     <FormControl>
-                    <InputLabel id="demo-simple-select-label" sx={{mx:2}}>Rol</InputLabel>
-                    <Grid sx={{mx:2, width: 360}} >
+                    <InputLabel sx={{my:2,mx:2}} >Rol</InputLabel> 
+                    <Grid sx={{my:2,mx:2, width: 360}} >
                     <Select
                         id='cRolU'
-                        value={data.cRolU}
                         name='cRolU'
+                        type='number'
                         fullWidth
                         onChange={handle}
                         label = 'Rol'
+                        required
+                        disabled = {editorRol()}
+                        defaultValue = {3}
                     >  
-                     
-                        {opciones.map(opcion => (
-                        <MenuItem key={opcion.value} value={opcion.value}>
-                        {opcion.label}
-                    </MenuItem>
+                        {opciones.map(opcion => (  
+                                <MenuItem key={opcion.value} value={opcion.value} disabled = {editorRol()} >
+                                    {opcion.label}
+                                </MenuItem>
                     ))}                
                     </Select>    
                     </Grid>
                     </FormControl>
-                    
-                          
-                    <TextField 
-                        id="cTaller"
-                        name = 'cTaller'
-                        type = 'number' 
-                        value={data.cTaller} 
-                        label="Taller" 
-                        variant="outlined" 
-                        onChange={(e)=>handle(e)} 
-                    />
-                    
                     
                     <Stack direction="row" spacing={1} justifyContent = 'flex-end' sx={{mx:3}}>
                     <Button  
@@ -176,7 +209,6 @@ const AgregarUsuarios = () => {
                         onClick={handleClose}
                         color = 'error'
                         size = 'medium'
-                        
                     >
                         Cancelar
                     </Button>
@@ -193,4 +225,5 @@ const AgregarUsuarios = () => {
 }
 
 export default AgregarUsuarios
+
 
