@@ -46,7 +46,7 @@ export const getUltimaFicha = async (cTaller) => {
     }) */
 }
 
-export const getFichaById = async ({ cTaller, cFicha }) => {
+export const getFichaById = async (cFicha, cTaller) => {
     const response = await axios.get(
         import.meta.env.VITE_APP_BACKEND_URL + "ficha.php?cFicha=" + cFicha + '&cTaller=' + cTaller
     )

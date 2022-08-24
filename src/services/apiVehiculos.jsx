@@ -7,5 +7,11 @@ export const getVehiculos = async (cTaller) => {
     );
     return response.data
 }
+export const getVehiculoById = async (id) => {
+    const response = await axios.get(
+        import.meta.env.VITE_APP_BACKEND_URL + "vehiculo.php?cVehiculo=" + id
+    );
+    return response.data
+}
 
 

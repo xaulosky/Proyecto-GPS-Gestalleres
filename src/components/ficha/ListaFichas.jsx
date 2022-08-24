@@ -1,4 +1,4 @@
-import { Button, Chip, Grid, Stack } from '@mui/material'
+import { Button, Chip, Grid, IconButton, Stack } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import DataTable from 'react-data-table-component'
@@ -7,12 +7,13 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { Link } from 'react-router-dom'
 import EliminarFicha from './EliminarFicha'
 import { getFichas } from '../../services/apiFicha'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import EditIcon from '@mui/icons-material/Edit';
 
 const ListaFichas = () => {
 
     const { auth } = useAuth()
     const [fichas, setFichas] = useState([])
-    console.log(auth.cTaller)
     const columns = [
         {
             name: 'Patente Vehiculo',
@@ -47,19 +48,32 @@ const ListaFichas = () => {
             name: "Acciones",
             selector: row => {
                 return (
-                    <Stack direction={"row"}>
-                        <EliminarFicha cFicha={row.cFicha} setFichas={setFichas} />
-                    </Stack>
+                    <>
+                        <Stack direction={"row"}>
+                            <Link to={"/ficha/" + row.cFicha}>
+                                <IconButton title="Ver Ficha">
+                                    <VisibilityIcon />
+                                </IconButton>
+                            </Link>
+                           {/*  <Link to={"/editficha/" + row.cFicha}>
+                                <IconButton title="Editar Ficha">
+                                    <EditIcon />
+                                </IconButton>
+                            </Link> */}
+                            <EliminarFicha cFicha={row.cFicha} setFichas={setFichas} />
+                        </Stack>
+
+                    </>
                 )
             }
         }
     ]
 
-  /*   const obtenerFichas = () => {
-        getFichas(auth.cTaller).then(res => {
-            setFichas(res)
-        })
-    } */
+    /*   const obtenerFichas = () => {
+          getFichas(auth.cTaller).then(res => {
+              setFichas(res)
+          })
+      } */
 
 
     useEffect(() => {
@@ -72,13 +86,13 @@ const ListaFichas = () => {
     return (
         <Grid container>
             <Grid item md={6}>
-                <h1>Lista Ingresos</h1>
+                <h1>Lista Fichas</h1>
 
             </Grid>
             <Grid item md={6} display={'flex'} justifyContent={'end'} alignItems={'center'}>
                 <Link to={'/agregar-ficha'} >
                     <Button variant='contained' startIcon={<AddCircleIcon />}>
-                        Ingresar Vehiculo
+                        Recepcionar Vehículo
                     </Button>
                 </Link>
             </Grid>

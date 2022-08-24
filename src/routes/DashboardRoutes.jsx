@@ -5,6 +5,7 @@ import EditarFicha from '../components/ficha/EditarFicha'
 import FichaScreen from '../components/ficha/FichaScreen'
 import ListaFichas from '../components/ficha/ListaFichas'
 import ScreenFicha from '../components/ficha/ScreenFicha'
+import VerFicha from '../components/ficha/VerFicha'
 import DashboardHome from '../components/homedashboard/DashboardHome'
 import InsumoScreen from '../components/insumo/InsumoScreen'
 import Layout from '../components/Layout'
@@ -25,7 +26,8 @@ const DashboardRoutes = () => {
                 <Route path="/" element={<DashboardHome />} />
                 <Route path="/agregar-ficha" element={<ScreenFicha />} />
                 <Route path="/fichas" element={<ListaFichas />} />
-                <Route path='/ficha/:id' element={<EditarFicha />} />
+                <Route path='/ficha/:id' element={<VerFicha />} />
+                <Route path='/editficha/:id' element={<EditarFicha />} />
                 <Route path="*" element={<> <h1>Página no encontrada</h1></>} />
             </Route>
         </Routes>

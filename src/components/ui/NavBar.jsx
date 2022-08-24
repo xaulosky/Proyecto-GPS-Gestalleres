@@ -25,20 +25,10 @@ const NavBar = () => {
     }}>
       <AppBar position="static" style={{
         boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.2)',
-      }}>
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            News
-          </Typography>
+      }} >
+        <Toolbar sx={{ display: "flex", flexDirection: "row-reverse", }} >
+
+
           <Button color="inherit" onClick={cerrarSesion}>Cerrar Sesión</Button>
         </Toolbar>
       </AppBar>

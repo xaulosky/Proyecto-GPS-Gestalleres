@@ -161,10 +161,7 @@ export default function LoginScreen() {
                 autoComplete="current-password"
                 onChange={handleChange('clave')}
               />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Recordarme"
-              />
+
               <Button
                 type="submit"
                 fullWidth
@@ -174,13 +171,7 @@ export default function LoginScreen() {
                 Iniciar Sesión
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Recuperar Contraseña
-                  </Link>
-                </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

@@ -92,7 +92,7 @@ const ScreenFicha = () => {
                         buttons: false,
                     });
                     setTimeout(() => {
-                        window.location.reload()
+                        /* window.location.reload() */
                         swal.close()
                     }, 3000);
                     setEstadoPartes([])
@@ -122,7 +122,16 @@ const ScreenFicha = () => {
 
     return (
         <Box component='form'>
-            <h1>Ingresar Vehículo a Taller</h1>
+            <Grid container>
+                <Grid item xs={6}>
+                    <h1>Recepcionar Vehículo</h1>
+                </Grid>
+                <Grid item xs={6} display={'flex'} justifyContent={'end'} alignItems={'center'}>
+                    <Link to="/fichas">
+                        <Button variant="contained">Lista de fichas</Button>
+                    </Link>
+                </Grid>
+            </Grid>
 
             <Grid item xs={12}>
                 <Grid container spacing={2}>
