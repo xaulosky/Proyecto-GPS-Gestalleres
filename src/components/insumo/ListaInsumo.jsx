@@ -53,7 +53,6 @@ const ListaInsumo = () => {
         setInsumos(respuesta.data);
       })
   }
-
   const columna = [
     {
       name: 'Nombre del insumo',
@@ -101,6 +100,7 @@ const ListaInsumo = () => {
   useEffect(() => {
     obtenerInsumos();
   }, [])
+  
 
   return (
     <>
@@ -115,6 +115,7 @@ const ListaInsumo = () => {
             sx={{ ml: 3, p: '4px 15px' }}
             title='Exportar Excel'
             onClick={(e) => exportXLSX(insumos)}
+            
           >
             Exportar <i
               className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">

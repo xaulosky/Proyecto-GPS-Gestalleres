@@ -103,6 +103,12 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
         handleClose();
     }
 
+    function handle(e) {
+        const newdata = { ...data }
+        newdata[e.target.name] = e.target.value;
+        setData(newdata);
+    }
+
     function deshabilitarBoton() {
 
         if (auth.cRolU != 3) {
@@ -135,7 +141,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }} component={'div'}>
                         <TextField fullWidth
-                            id="standard-basic"
+                            id="nombreInsumo"
                             label="Nombre del insumo"
                             margin="normal"
                             variant="outlined"
@@ -147,7 +153,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
 
                         />
                         <TextField fullWidth
-                            id="standard-basic"
+                            id="cantidad"
                             label="Cantidad"
                             margin="normal"
                             variant="outlined"
@@ -158,7 +164,7 @@ const EditarInsumo = ({ row, obtenerInsumos }) => {
                             onChange={(e) => handle(e)}
                         />
                         <TextField fullWidth
-                            id="standard-basic"
+                            id="costo"
                             label="Precio"
                             margin="normal"
                             variant="outlined"

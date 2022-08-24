@@ -39,7 +39,6 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
                 if (willDelete) {
                     axios.delete(import.meta.env.VITE_APP_BACKEND_URL + '/insumo.php?cInsumo=' + row.cInsumo
                     ).then(respuesta => {
-                        console.log('cInsumo: ', row.cInsumo);
                         obtenerInsumos();
                         setRes(respuesta.data);
                         if (respuesta.data.msg === 'ok') {
