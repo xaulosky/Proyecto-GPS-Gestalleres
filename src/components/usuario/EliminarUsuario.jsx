@@ -155,6 +155,9 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
       if(auth.cRolU == 3){
           return true
       }
+      if(row.cRolU == 1 && auth.cRolU != 1){
+        return true
+      }
   }   
  
     return (
