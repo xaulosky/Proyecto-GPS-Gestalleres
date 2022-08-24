@@ -23,6 +23,7 @@ const style = {
 };
 
 const EliminarRepuesto = ({row, obtenerRepuestos}) => {
+  const { auth } = useContext(AuthContext)
 
   const [res, setRes] = useState({
 
