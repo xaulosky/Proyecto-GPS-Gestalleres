@@ -2,7 +2,6 @@ import { Autocomplete, Button, Grid, IconButton, TextField } from '@mui/material
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
-import { useFichas } from '../../hooks/useFichas'
 import { usePartes } from '../../hooks/usePartes'
 import { useVehiculos } from '../../hooks/useVehiculos'
 import { getFichas, getUltimaFicha, postFicha } from '../../services/apiFicha'
@@ -69,24 +68,25 @@ const ScreenFicha = () => {
                     fichaObservacion: '',
                 })
 
-        }).then(() => {
-            postEstadosPV(estadoPartes).then(response => {
-                console.log(response)
             }).then(() => {
-                setPartesSeleccionadas([])
-                setVehiculoSeleccionado()
+                postEstadosPV(estadoPartes).then(response => {
+                    console.log(response)
+                }).then(() => {
+                    setPartesSeleccionadas([])
+                    setVehiculoSeleccionado()
+                })
+            }).then(() => {
+                swal(
+                    'Ficha creada!', {
+                    icon: 'success',
+                    buttons: false,
+                });
+                setTimeout(() => {
+                    swal.close()
+                }, 2000);
+                setEstadoPartes([])
             })
-        }).then(() => {
-            swal(
-                'Ficha creada!', {
-                icon: 'success',
-                buttons: false,
-            });
-            setTimeout(() => {
-                swal.close()
-            }, 2000);
-            setEstadoPartes([])
-        })
+        }
     }
 
     useEffect(() => {
@@ -104,7 +104,6 @@ const ScreenFicha = () => {
             <h1>Ingresar Vehículo a Taller</h1>
 
             <Grid item xs={12}>
-
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <TextField label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} />
@@ -132,42 +131,42 @@ const ScreenFicha = () => {
                                         cVehiculo: ''
                                     })
 
+                                }
+                            }
+                            }
+                            renderInput={(params) => <TextField {...params} label="Selecciona Vehiculo" variant="outlined" fullWidth />}
+                            isOptionEqualToValue={(option, value) => option.cVehiculo === value.cVehiculo}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        {/* autocomplete multiple partes */}
+                        <Autocomplete
+                            multiple={true}
+                            value={partesSeleccionadas}
+                            id="partes"
+                            options={partes || []}
+                            getOptionLabel={(option) => option.nombrePV}
+                            onChange={(event, value) => {
+                                if (value) {
+                                    setPartesSeleccionadas(value)
+                                    setEstadoPartes(value.map(parte => {
+                                        return {
+                                            cParteV: parte.cParteV,
+                                            cFicha: ultimaFicha.cFicha + 1,
+                                            estado: true
                                         }
                                     }
-                                    }
-                                    renderInput={(params) => <TextField {...params} label="Selecciona Vehiculo" variant="outlined" fullWidth />}
-                                    isOptionEqualToValue={(option, value) => option.cVehiculo === value.cVehiculo}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                {/* autocomplete multiple partes */}
-                                <Autocomplete
-                                    multiple={true}
-                                    value={partesSeleccionadas}
-                                    id="partes"
-                                    options={partes || []}
-                                    getOptionLabel={(option) => option.nombrePV}
-                                    onChange={(event, value) => {
-                                        if (value) {
-                                            setPartesSeleccionadas(value)
-                                            setEstadoPartes(value.map(parte => {
-                                                return {
-                                                    cParteV: parte.cParteV,
-                                                    cFicha: ultimaFicha.cFicha + 1,
-                                                    estado: true
-                                                }
-                                            }
-                                            ))
-                                        } else {
-                                            setPartesSeleccionadas([])
-                                            setEstadoPartes([])
-                                        }
+                                    ))
+                                } else {
+                                    setPartesSeleccionadas([])
+                                    setEstadoPartes([])
+                                }
 
-                                    }
-                                    }
-                                    renderInput={(params) => <TextField {...params} label="Selecciona Partes" variant="outlined" fullWidth />}
-                                    isOptionEqualToValue={(option, value) => option.cParteV === value.cParteV}
-                                />
+                            }
+                            }
+                            renderInput={(params) => <TextField {...params} label="Selecciona Partes" variant="outlined" fullWidth />}
+                            isOptionEqualToValue={(option, value) => option.cParteV === value.cParteV}
+                        />
 
 
                     </Grid>

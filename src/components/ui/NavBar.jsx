@@ -10,7 +10,7 @@ import { Navigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../../context/AuthContext';
 
-const NavBar = ({ onClick }) => {
+const NavBar = () => {
 
   const { setAuth } = useContext(AuthContext);
 
@@ -26,18 +26,18 @@ const NavBar = ({ onClick }) => {
       <AppBar position="static" style={{
         boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.2)',
       }}>
-        <Toolbar  >
+        <Toolbar>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
             sx={{ mr: 2 }}
-            onClick={() => onClick()}
           >
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            News
           </Typography>
           <Button color="inherit" onClick={cerrarSesion}>Cerrar Sesión</Button>
         </Toolbar>
