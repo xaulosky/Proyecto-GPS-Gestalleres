@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import {
     Table, TableBody, TableCell,
     TableContainer, TableHead,
@@ -10,7 +10,7 @@ import {
     MenuItem, InputLabel, Select, Modal, Box, makeStyles, Stack
 } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit';
-=======
+
 import { Table, TableBody, TableCell, 
     TableContainer, TableHead, 
     TableRow, Button, IconButton, 
@@ -19,12 +19,14 @@ import { Table, TableBody, TableCell,
     FormControl, FormLabel, FormGroup, 
     FormHelperText, TextField, Grid, Divider, 
     MenuItem, InputLabel, Select, Modal, Box, makeStyles, Stack, Typography } from '@mui/material'
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
 import axios from 'axios';
 import React, { useEffect, useState, useContext } from 'react'
 import DataTable from 'react-data-table-component'
 import AgregarUsuarios from './AgregarUsuarios'
-<<<<<<< HEAD
+import EliminarUsuario from './EliminarUsuario'
+import EditarUsuario from './EditarUsuario'
+import AuthContext from '../../context/AuthContext';
+import BuscarUsuario from './BuscarUsuario';
 import EliminarUsuario from './EliminarUsuario';
 
 function btnEditar(row) {
@@ -51,20 +53,10 @@ function btnEditar(row) {
     )
 }
 
-function rol(row) {
-    if (row.cRolU == 1) {
-        return (
-=======
-import EliminarUsuario from './EliminarUsuario'
-import EditarUsuario from './EditarUsuario'
-import AuthContext from '../../context/AuthContext';
-import BuscarUsuario from './BuscarUsuario';
-
 //Roles usuarios
 function rol(row){
     if(row.cRolU == 1){
         return(
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
             <div>
                 Administrador
             </div>
@@ -100,25 +92,18 @@ const ListaUsuarios = () => {
         {
             name: 'Nombre',
             selector: row => row.nombreU,
-<<<<<<< HEAD
             grow: 1,
-=======
             grow : 1,
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
         },
         {
             name: 'Email',
             selector: row => row.email,
-<<<<<<< HEAD
             grow: 1,
-=======
             grow : 1,
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
         },
         {
             name: 'Rol',
             cell: (row) =>
-<<<<<<< HEAD
                 rol(row),
 
         },
@@ -128,7 +113,6 @@ const ListaUsuarios = () => {
                 <Stack direction={"row"}>
                     <EliminarUsuario row={row} />
                     {btnEditar(row)}
-=======
             rol(row),
             grow : 0.6,
            
@@ -140,16 +124,12 @@ const ListaUsuarios = () => {
                 <Stack direction="row" textAlign="center">
                         <EditarUsuario row={row} obtenerUsuarios = {obtenerUsuarios}/>                
                         <EliminarUsuario row={row} obtenerUsuarios = {obtenerUsuarios}/>
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
                 </Stack>
             ),
             ignoreRowClick: true,
             allowOverflow: true,
             button: true,
-<<<<<<< HEAD
-=======
             width: '150px',
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
         },
     ];
     
@@ -170,7 +150,6 @@ const ListaUsuarios = () => {
     return (
       
         <DataTable
-<<<<<<< HEAD
             title='Lista de usuarios'
             columns={columns}
             data={usuarios}
@@ -186,7 +165,6 @@ const ListaUsuarios = () => {
             subHeader
             subHeaderComponent={<AgregarUsuarios />}
         />
-=======
         title='Lista de usuarios'
         columns ={columns}
         data = {usuarios}
@@ -208,7 +186,6 @@ const ListaUsuarios = () => {
         paginationComponentOptions={paginationComponentOptions}
         actions={<AgregarUsuarios obtenerUsuarios = {obtenerUsuarios}/>}
     />  
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
     )
 }
 
