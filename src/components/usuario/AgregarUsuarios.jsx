@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react'
 import {
     Alert, Autocomplete, InputLabel,
     Button, Box, MenuItem, Modal, Stack,
-    Select, TextField, Typography, Grid, FormControl,
+    Select, TextField, Typography, Grid, FormControl, useFormControl,
     FormLabel, FormHelperText
 } from "@mui/material";
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
@@ -33,15 +33,14 @@ const opciones = [
     },
 ];
 
-const AgregarUsuarios = () => {
-    const { auth } = useContext(AuthContext)
+const AgregarUsuarios = ({ obtenerUsuarios }) => {
 
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const { auth } = useContext(AuthContext)
 
     const [data, setData] = useState({
-
         nombreU: "",
         clave: "",
         email: "",
@@ -49,15 +48,8 @@ const AgregarUsuarios = () => {
         cRolU: "",
     })
 
-    function handle(e) {
-
-        const newdata = { ...data }
-        newdata[e.target.name] = e.target.value
-        setData(newdata)
-        console.log(newdata)
-    }
-
     const submit = (e) => {
+        e.preventDefault();
         axios.post(import.meta.env.VITE_APP_BACKEND_URL + 'usuario.php', {
 
             email: data.email,
@@ -120,15 +112,16 @@ const AgregarUsuarios = () => {
     }
 
 
-
     return (
         <div>
 
             <Button
-                onClick={handleOpen}
+                onClick={abrir}
                 variant="contained"
                 endIcon={<PersonAddAltIcon fontSize='small' />}
                 size='medium'
+                type='submit'
+                disabled={rolDisabled()}
             >
                 Agregar
             </Button>
@@ -149,8 +142,6 @@ const AgregarUsuarios = () => {
                         sx={{
                             '& .MuiTextField-root': { m: 2, width: '40ch' },
                         }}
-                        noValidate
-                        autoComplete="off"
                         onSubmit={(e) => submit(e)}
                     >
 
@@ -158,31 +149,29 @@ const AgregarUsuarios = () => {
                             id="nombreU"
                             type='text'
                             name='nombreU'
-                            value={data.nombreU}
                             label="Nombre"
                             variant="outlined"
                             multiline
+                            required
                             placeholder="Nombre"
                             onChange={(e) => handle(e)} />
                         <TextField
                             id="clave"
                             name='clave'
                             type='text'
-                            value={data.clave}
                             label="Contraseña"
                             variant="outlined"
                             multiline
+                            required
                             placeholder="Contraseña"
                             onChange={(e) => handle(e)} />
-
-
                         <TextField
                             id="email"
                             name='email'
                             type='email'
-                            value={data.email}
                             label="Email"
                             fullWidth
+                            required
                             variant="outlined"
                             onChange={(e) => handle(e)} />
 
@@ -191,8 +180,8 @@ const AgregarUsuarios = () => {
                             <Grid sx={{ my: 2, mx: 2, width: 360 }} >
                                 <Select
                                     id='cRolU'
-                                    value={data.cRolU}
                                     name='cRolU'
+                                    type='number'
                                     fullWidth
                                     onChange={handle}
                                     label='Rol'
@@ -209,18 +198,6 @@ const AgregarUsuarios = () => {
                             </Grid>
                         </FormControl>
 
-
-                        <TextField
-                            id="cTaller"
-                            name='cTaller'
-                            type='number'
-                            value={data.cTaller}
-                            label="Taller"
-                            variant="outlined"
-                            onChange={(e) => handle(e)}
-                        />
-
-
                         <Stack direction="row" spacing={1} justifyContent='flex-end' sx={{ mx: 3 }}>
                             <Button
                                 variant='contained'
@@ -234,7 +211,6 @@ const AgregarUsuarios = () => {
                                 onClick={handleClose}
                                 color='error'
                                 size='medium'
-
                             >
                                 Cancelar
                             </Button>
