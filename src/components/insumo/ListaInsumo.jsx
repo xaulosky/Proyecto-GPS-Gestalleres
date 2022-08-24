@@ -6,8 +6,10 @@ import CrearInsumo from './CrearInsumo';
 import EditarInsumo from './EditarInsumo';
 import EliminarInsumo from './EliminarInsumo';
 import AuthContext from '../../context/AuthContext'
+
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
+
 import HistorialInsumo from './HistorialInsumo';
 
 const paginationComponentOptions = {

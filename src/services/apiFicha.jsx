@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-export const getFichas = async () => {
+export const getFichas = async (cTaller) => {
     const response = await axios.get(
-        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php"
+        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php?cTaller=" + cTaller
     );
     return response.data
 }
@@ -25,16 +25,16 @@ export const putFicha = async (data) => {
     return response.data
 }
 
-export const deleteFicha = async (data) => {
+export const deleteFicha = async (cFicha) => {
     const response = await axios.delete(
-        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php" + data
+        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php?cFicha=" + cFicha
     );
     return response.data
 }
 
-export const getUltimaFicha = async () => {
+export const getUltimaFicha = async (cTaller) => {
     const response = await axios.get(
-        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php"
+        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php?cTaller=" + cTaller
     );
     return response.data[response.data.length - 1]
 
@@ -44,4 +44,11 @@ export const getUltimaFicha = async () => {
     }).catch(error => {
         console.log(error)
     }) */
+}
+
+export const getFichaById = async ({ cTaller, cFicha }) => {
+    const response = await axios.get(
+        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php?cFicha=" + cFicha + '&cTaller=' + cTaller
+    )
+    return response.data
 }

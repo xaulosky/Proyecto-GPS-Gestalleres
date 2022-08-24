@@ -24,8 +24,6 @@ const style = {
 
 const EliminarRepuesto = ({row, obtenerRepuestos}) => {
 
-  const { auth } = useContext(AuthContext)
-
   const [res, setRes] = useState({
 
     msg: ''
@@ -52,7 +50,7 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
               obtenerRepuestos();
               setRes(respuesta.data)
               if (respuesta.data.msg === 'Repuesto Eliminado') {
-                
+
                 swal("El repuesto ha sido eliminado", {
 
                   icon: "success",
@@ -68,7 +66,7 @@ const EliminarRepuesto = ({row, obtenerRepuestos}) => {
                 });
               }
             })
-          }
+        }
       });
   }
 

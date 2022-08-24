@@ -1,14 +1,14 @@
-import { Autocomplete, Button, Grid, TextField } from '@mui/material'
+import { Autocomplete, Button, Grid, IconButton, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
-import { useFichas } from '../../hooks/useFichas'
 import { usePartes } from '../../hooks/usePartes'
 import { useVehiculos } from '../../hooks/useVehiculos'
-import { getFichas, getUltimaFicha, postFicha } from '../../api/apiFicha'
-import { postEstadosPV } from '../../api/apiEstadoPV'
+import { getFichas, getUltimaFicha, postFicha } from '../../services/apiFicha'
+import { postEstadosPV } from '../../services/apiEstadoPV'
 import swal from 'sweetalert'
-
+import { Link } from 'react-router-dom'
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 
 
 /* screen final */
@@ -16,6 +16,8 @@ const ScreenFicha = () => {
 
     /* usuario loggeado */
     const { auth } = useAuth()
+
+    console.log(auth)
     /* getVehiculos  */
     const { result: vehiculos } = useVehiculos({ action: 'get' })
     const { result: partes } = usePartes({ action: 'get' }) /* getPartes */
@@ -45,39 +47,49 @@ const ScreenFicha = () => {
 
     const submitFicha = async (event) => {
         event.preventDefault()
-        postFicha(dataFicha).then(response => {
-            setDataFicha({
-                fechaIngresoFicha: new Date().toISOString().substring(0, 10),
-                fechaEntregaEstimada: new Date().toISOString().substring(0, 10),
-                fechaEntrega: "",
-                cTaller: auth.cTaller,
-                cVehiculo: '',
-                cUsuario: auth.cUsuario,
-                fichaObservacion: '',
-            })
-
-        }).then(() => {
-            postEstadosPV(estadoPartes).then(response => {
-                console.log(response)
-            }).then(() => {
-                setPartesSeleccionadas([])
-                setVehiculoSeleccionado()
-            })
-        }).then(() => {
+        if (dataFicha.cVehiculo == '' || dataFicha.fichaObservacion == '') {
             swal(
-                'Ficha creada!', {
-                icon: 'success',
+                'Todos los campos son requeridos', {
+                icon: 'error',
                 buttons: false,
             });
             setTimeout(() => {
                 swal.close()
             }, 2000);
-            setEstadoPartes([])
-        })
-    }
+        } else {
+            postFicha(dataFicha).then(response => {
+                setDataFicha({
+                    fechaIngresoFicha: new Date().toISOString().substring(0, 10),
+                    fechaEntregaEstimada: new Date().toISOString().substring(0, 10),
+                    fechaEntrega: "",
+                    cTaller: auth.cTaller,
+                    cVehiculo: '',
+                    cUsuario: auth.cUsuario,
+                    fichaObservacion: '',
+                })
 
+            }).then(() => {
+                postEstadosPV(estadoPartes).then(response => {
+                    console.log(response)
+                }).then(() => {
+                    setPartesSeleccionadas([])
+                    setVehiculoSeleccionado()
+                })
+            }).then(() => {
+                swal(
+                    'Ficha creada!', {
+                    icon: 'success',
+                    buttons: false,
+                });
+                setTimeout(() => {
+                    swal.close()
+                }, 2000);
+                setEstadoPartes([])
+            })
+        }
+    }
     useEffect(() => {
-        getUltimaFicha().then(response => {
+        getUltimaFicha(auth.cTaller).then(response => {
             setUltimaFicha(response)
             console.log(response)
         }).catch(error => {
@@ -91,7 +103,6 @@ const ScreenFicha = () => {
             <h1>Ingresar Vehículo a Taller</h1>
 
             <Grid item xs={12}>
-
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <TextField label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} />
