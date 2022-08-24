@@ -8,7 +8,7 @@ export const getFichas = async (cTaller) => {
     return response.data
 }
 
-export const postFicha = async (data) => {
+export const postFicha = async (data, idFicha) => {
     const response = await axios.post(
         import.meta.env.VITE_APP_BACKEND_URL + "ficha.php",
         data
@@ -34,7 +34,7 @@ export const deleteFicha = async (cFicha) => {
 
 export const getUltimaFicha = async (cTaller) => {
     const response = await axios.get(
-        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php?cTaller=" + cTaller
+        import.meta.env.VITE_APP_BACKEND_URL + "ficha.php?Ultima=1&cTaller=" + cTaller
     );
     return response.data[response.data.length - 1]
 

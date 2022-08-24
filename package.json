@@ -2,7 +2,7 @@
   "name": "proyectogps",
   "private": true,
   "version": "0.0.0",
-  "homepage": "http://146.83.194.142:1075/",
+  "homepage": "http://146.83.194.142:1075/gps-front/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

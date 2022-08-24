@@ -9,6 +9,8 @@ import { postEstadosPV } from '../../services/apiEstadoPV'
 import swal from 'sweetalert'
 import { Link } from 'react-router-dom'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import { getVehiculos } from '../../services/apiVehiculos'
+import { getPartesv } from '../../services/apiPartesVehiculo'
 
 
 /* screen final */
@@ -17,13 +19,11 @@ const ScreenFicha = () => {
     /* usuario loggeado */
     const { auth } = useAuth()
 
-    console.log(auth)
-    /* getVehiculos  */
-    const { result: vehiculos } = useVehiculos({ action: 'get' })
-    const { result: partes } = usePartes({ action: 'get' }) /* getPartes */
-
+    const [vehiculos, setVehiculos] = useState([]);
+    const [partes, setPartes] = useState([])
     const [fichas, setFichas] = useState([]) /* fichas */
     const [ultimaFicha, setUltimaFicha] = useState({}) /* ultima ficha */
+
     const [dataFicha, setDataFicha] = useState({
         fechaIngresoFicha: new Date().toISOString().substring(0, 10),
         fechaEntregaEstimada: new Date().toISOString().substring(0, 10),
@@ -38,6 +38,8 @@ const ScreenFicha = () => {
     const [vehiculoSeleccionado, setVehiculoSeleccionado] = useState()
     const [estadoPartes, setEstadoPartes] = useState([]);
 
+
+
     const handleChange = (event) => {
         setDataFicha({
             ...dataFicha,
@@ -46,55 +48,75 @@ const ScreenFicha = () => {
     }
 
     const submitFicha = async (event) => {
-        event.preventDefault()
-        if (dataFicha.cVehiculo == '' || dataFicha.fichaObservacion == '') {
-            swal(
-                'Todos los campos son requeridos', {
-                icon: 'error',
-                buttons: false,
-            });
-            setTimeout(() => {
-                swal.close()
-            }, 2000);
-        } else {
-            postFicha(dataFicha).then(response => {
-                setDataFicha({
-                    fechaIngresoFicha: new Date().toISOString().substring(0, 10),
-                    fechaEntregaEstimada: new Date().toISOString().substring(0, 10),
-                    fechaEntrega: "",
-                    cTaller: auth.cTaller,
-                    cVehiculo: '',
-                    cUsuario: auth.cUsuario,
-                    fichaObservacion: '',
-                })
 
-            }).then(() => {
-                postEstadosPV(estadoPartes).then(response => {
-                    console.log(response)
-                }).then(() => {
-                    setPartesSeleccionadas([])
-                    setVehiculoSeleccionado()
-                })
-            }).then(() => {
+        event.preventDefault()
+        getUltimaFicha(auth.cTaller).then(res => setUltimaFicha(res.cFicha)).then(() => {
+            if (dataFicha.cVehiculo == '' || dataFicha.fichaObservacion == '') {
                 swal(
-                    'Ficha creada!', {
-                    icon: 'success',
+                    'Todos los campos son requeridos', {
+                    icon: 'error',
                     buttons: false,
                 });
+
                 setTimeout(() => {
+
+
                     swal.close()
+
                 }, 2000);
-                setEstadoPartes([])
-            })
-        }
+                window.location.reload()
+            } else {
+                postFicha(dataFicha).then(response => {
+                    setDataFicha({
+                        fechaIngresoFicha: new Date().toISOString().substring(0, 10),
+                        fechaEntregaEstimada: new Date().toISOString().substring(0, 10),
+                        fechaEntrega: "",
+                        cTaller: auth.cTaller,
+                        cVehiculo: '',
+                        cUsuario: auth.cUsuario,
+                        fichaObservacion: '',
+                    })
+
+                }).then(() => {
+
+                    postEstadosPV(estadoPartes, ultimaFicha).then(response => {
+                        console.log(response)
+                    }).then(() => {
+                        setPartesSeleccionadas([])
+                        setVehiculoSeleccionado()
+                    })
+                }).then(() => {
+                    swal(
+                        'Ficha creada!', {
+                        icon: 'success',
+                        buttons: false,
+                    });
+                    setTimeout(() => {
+                        window.location.reload()
+                        swal.close()
+                    }, 3000);
+                    setEstadoPartes([])
+                })
+            }
+        })
+
+
     }
     useEffect(() => {
-        getUltimaFicha(auth.cTaller).then(response => {
-            setUltimaFicha(response)
-            console.log(response)
-        }).catch(error => {
-            console.log(error)
+        /*  getUltimaFicha(auth.cTaller).then(response => {
+             setUltimaFicha(response)
+             console.log(response)
+         }).catch(error => {
+             console.log(error)
+         }) */
+
+
+        getVehiculos(auth.cTaller).then(res => {
+            setVehiculos(res)
         })
+        getPartesv().then(res => setPartes(res))
+
+
     }, [])
 
 
@@ -105,10 +127,10 @@ const ScreenFicha = () => {
             <Grid item xs={12}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} />
+                        <TextField fullWidth label="Fecha Ingreso" type="date" name="fechaIngresoFicha" onChange={handleChange} value={dataFicha.fechaIngresoFicha} />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField label="Fecha Entrega Estimada" type="date" name="fechaEntregaEstimada" onChange={handleChange} value={dataFicha.fechaEntregaEstimada} />
+                        <TextField fullWidth label="Fecha Entrega Estimada" type="date" name="fechaEntregaEstimada" onChange={handleChange} value={dataFicha.fechaEntregaEstimada} />
                     </Grid>
                     <Grid item xs={12}>
                         <Autocomplete
@@ -151,7 +173,6 @@ const ScreenFicha = () => {
                                     setEstadoPartes(value.map(parte => {
                                         return {
                                             cParteV: parte.cParteV,
-                                            cFicha: ultimaFicha.cFicha + 1,
                                             estado: true
                                         }
                                     }

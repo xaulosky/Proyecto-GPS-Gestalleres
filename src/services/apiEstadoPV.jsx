@@ -7,9 +7,9 @@ export const getEstadosPV = async () => {
     );
     return response.data
 }
-export const postEstadosPV = async (data) => {
+export const postEstadosPV = async (data, ultimaFicha) => {
     const response = await axios.post(
-        import.meta.env.VITE_APP_BACKEND_URL + "estadoPV.php",
+        import.meta.env.VITE_APP_BACKEND_URL + "estadoPV.php?ultima=" + ultimaFicha,
         data
     );
 
