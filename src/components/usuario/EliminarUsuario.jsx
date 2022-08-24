@@ -4,86 +4,6 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import AuthContext from '../../context/AuthContext';
 
-<<<<<<< HEAD
-const EliminarUsuario = ({ row }) => {
-
-  function prueba(row) {
-
-    eliminar(row)
-    handleClose()
-  }
-
-  const [open, setOpen] = useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const eliminar = (row) => {
-    console.log(row.cUsuario)
-    axios.delete(import.meta.env.VITE_APP_BACKEND_URL + 'usuario.php?id=' + row.cUsuario)
-      .then(respuesta => {
-        console.log(respuesta)
-      })
-
-  }
-
-  return (
-    <div>
-
-      <Button
-        sx={{
-          '& > :not(style)': {
-            m: -0.05,
-            py: 1.5
-          },
-        }}
-        color='error'
-        size="small"
-        onClick={handleOpen}
-        endIcon={<DeleteIcon />}
-        title="Eliminar Usuario"
-      />
-
-
-
-
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{
-          "Eliminar usuario "
-        }</DialogTitle>
-
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <p>
-              ¿Esta seguro de eliminar a {' '}
-              <span style={{ color: 'black' }}>{row.nombreU} </span>{' '}
-              ?
-            </p>
-
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => prueba(row)} autoFocus >
-            Aceptar
-          </Button>
-          <Button onClick={handleClose}>
-            Cancelar
-          </Button>
-
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
-=======
 import {  Button, 
     Dialog, DialogActions, DialogContent, 
     DialogContentText, DialogTitle, Slide, 
@@ -123,7 +43,7 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
     const alerta=(row)=>{
       swal({
         title: "Eliminar Usuario",
-        text: "¿Esta seguro de eliminar a "+row.nombreU,
+        text: "Â¿Esta seguro de eliminar a "+row.nombreU,
         icon: "warning",
         dangerMode:true,
         buttons:{
@@ -171,7 +91,6 @@ const EliminarUsuario = ({row,obtenerUsuarios}) => {
               />       
       </div>
     );
->>>>>>> 02b20192149bff93656308b9db1f054e1c540c42
 }
 
 export default EliminarUsuario

@@ -1,16 +1,3 @@
-
-import {
-    Table, TableBody, TableCell,
-    TableContainer, TableHead,
-    TableRow, Button, IconButton,
-    Dialog, DialogActions, DialogContent,
-    DialogContentText, DialogTitle, Slide,
-    FormControl, FormLabel, FormGroup,
-    FormHelperText, TextField, Grid, Divider,
-    MenuItem, InputLabel, Select, Modal, Box, makeStyles, Stack
-} from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit';
-
 import { Table, TableBody, TableCell, 
     TableContainer, TableHead, 
     TableRow, Button, IconButton, 
@@ -27,31 +14,6 @@ import EliminarUsuario from './EliminarUsuario'
 import EditarUsuario from './EditarUsuario'
 import AuthContext from '../../context/AuthContext';
 import BuscarUsuario from './BuscarUsuario';
-import EliminarUsuario from './EliminarUsuario';
-
-function btnEditar(row) {
-    return (
-
-
-        <Button
-            sx={{
-                '& > :not(style)': {
-                    mx: 0.8,
-                    py: 1.5
-                },
-            }}
-            color='primary'
-            size="small"
-
-            endIcon={<EditIcon />}
-        >
-
-        </Button>
-
-
-
-    )
-}
 
 //Roles usuarios
 function rol(row){
@@ -92,27 +54,16 @@ const ListaUsuarios = () => {
         {
             name: 'Nombre',
             selector: row => row.nombreU,
-            grow: 1,
             grow : 1,
         },
         {
             name: 'Email',
             selector: row => row.email,
-            grow: 1,
             grow : 1,
         },
         {
             name: 'Rol',
             cell: (row) =>
-                rol(row),
-
-        },
-        {
-            name: "Acciones",
-            cell: (row) => (
-                <Stack direction={"row"}>
-                    <EliminarUsuario row={row} />
-                    {btnEditar(row)}
             rol(row),
             grow : 0.6,
            
@@ -150,21 +101,6 @@ const ListaUsuarios = () => {
     return (
       
         <DataTable
-            title='Lista de usuarios'
-            columns={columns}
-            data={usuarios}
-            direction="auto"
-            fixedHeader
-            fixedHeaderScrollHeight="300px"
-            highlightOnHover
-            noContextMenu
-            pagination
-            persistTableHead
-            pointerOnHover
-            responsive
-            subHeader
-            subHeaderComponent={<AgregarUsuarios />}
-        />
         title='Lista de usuarios'
         columns ={columns}
         data = {usuarios}
