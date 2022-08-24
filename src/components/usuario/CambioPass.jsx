@@ -19,26 +19,24 @@ const style = {
     p: 4,
   };
 
-const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
+const CambioPass = ({row, obtenerUsuarios}) => {
     const [open, setOpen]  = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClosePass = () => setOpen(false);  
     const[data,setData] = useState({
         cUsuario : row.cUsuario,
-        nombreU: row.nombreU,
-        clave: "",
-        email: row.email,
-        cRolU: row.cRolU,
+       
+        clave: row.clave,
+       
     })
 
     const abrir =() =>{
         obtenerUsuarios();
         setData({
             cUsuario : row.cUsuario,
-            nombreU: row.nombreU,
+           
             clave: row.clave,
-            email: row.email,
-            cRolU: row.cRolU,
+            
         });
         handleOpen();
       }
@@ -55,14 +53,12 @@ const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
         e.preventDefault()
         axios.put(import.meta.env.VITE_APP_BACKEND_URL+'usuario.php',{
             cUsuario: data.cUsuario,
-            email: data.email ,
             clave: data.clave  ,
-            cRolU: data.cRolU,
-            nombreU: data.nombreU,
         })
         .then(respuesta=>{
             obtenerUsuarios();  
             handleClosePass();
+            console.log(respuesta.data.msg)
             if(respuesta.data.msg == 'Actualizado'){
               swal("Contraseña cambiada", {
                   icon: "success",
@@ -110,7 +106,7 @@ const CambioPass = ({row, obtenerUsuarios, handleClose}) => {
                     <TextField 
                         id="clave" 
                         name = 'clave' 
-                        type= "password"
+                        type= "text"
                         label="Contraseña" 
                         variant="outlined" 
                         multiline
