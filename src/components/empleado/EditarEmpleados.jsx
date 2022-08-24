@@ -37,16 +37,13 @@ const EditarEmpleados = ({ row, obtenerEmpleados }) => {
         numeroTelefonoEmpleado: row.numeroTelefonoEmpleado,
         cRolE: row.cRolE,
         cTaller: row.cTaller,
-        cEmpleado: row.cEmpleado
-
     });
+    console.log("FFFFFFFFFFFF")
 
-    
+    console.log(data.cEmpleado)
     const submit = (e) => {
         e.preventDefault();
 
-        console.log("FFFFFFFFFFFF")
-        console.log(data.cEmpleado)
         axios.put(import.meta.env.VITE_APP_BACKEND_URL + 'empleado.php', {
             rutEmpleado: data.rutEmpleado,
             nombreEmpleado: data.nombreEmpleado,
@@ -55,7 +52,7 @@ const EditarEmpleados = ({ row, obtenerEmpleados }) => {
             numeroTelefonoEmpleado: data.numeroTelefonoEmpleado,
             cRolE: data.cRolE,
             cTaller: data.cTaller,
-            cEmpleado: data.cEmpleado
+            cEmpleado: row.cEmpleado
         })
             .then(respuesta => {
                 cerrar()
