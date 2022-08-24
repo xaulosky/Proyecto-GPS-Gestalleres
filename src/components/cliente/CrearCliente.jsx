@@ -9,7 +9,7 @@ import {
   Container,
   Button,
   Box,
-  Modal,
+  Modal, Grid, DialogActions,
 } from "@mui/material";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
@@ -211,9 +211,23 @@ const CrearCliente = ({ getClientes }) => {
                 </Select>
               </FormControl>
               <FormControl fullWidth>
-                <Button variant="contained" color="primary" type="submit">
+                <Grid item xs={12} sm={12} style={{ height: '70px' }}>
+                  <DialogActions>
+                  <Button variant="contained" color="primary" type="submit" sx={{ m1: 10, p: '5px 20px' }}>
                   Crear Cliente
                 </Button>
+                <Button
+                  onClick={handleClose}
+                  sx={{ m1: 10, p: '5px 20px' }}
+                  variant="contained"
+                  color="error"
+                  name={"cancelar"}
+                >
+                  Cancelar
+                </Button>
+                  </DialogActions>
+                
+                </Grid>
               </FormControl>
             </Stack>
           </Box>

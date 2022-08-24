@@ -153,7 +153,7 @@ const CrearInsumo = ({ obtenerInsumos }) => {
                             InputLabelProps={{ shrink: true }}
                             onChange={(e) => handle(e)}
                         />
-                        <Grid item xs={12} sm={12} style={{ height: '70px' }}>
+                        <Grid item xs={50} sm={50} style={{ height: '70px' }}>
                             <DialogActions >
                                 <Button
                                     sx={{ ml: 10, p: '5px 20px', mt: '20px' }}
