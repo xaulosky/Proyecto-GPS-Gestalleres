@@ -38,7 +38,6 @@ export const getUltimaFicha = async (cTaller) => {
     );
     return response.data[response.data.length - 1]
 
-
     /* getFichas().then(response => {
         return response.length - 1
     }).catch(error => {

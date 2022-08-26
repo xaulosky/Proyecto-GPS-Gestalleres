@@ -89,7 +89,6 @@ export default function FichaScreen() {
   /* setea vehiculos por cliente seleccionado */
   useEffect(() => {
     if (clienteSeleccionado) {
-
       getVehiculos();
       setFicha({ ...ficha, cCliente: clienteSeleccionado.cCliente });
       setVehiculo({ ...vehiculo, cCliente: clienteSeleccionado.cCliente });

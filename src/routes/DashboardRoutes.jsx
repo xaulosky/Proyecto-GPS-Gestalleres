@@ -14,6 +14,7 @@ import RepuestosScreen from '../components/repuestos/RepuestosScreen'
 import TrabajoScreen from '../components/trabajo/TrabajoScreen'
 import UsuarioScreen from '../components/usuario/UsuarioScreen'
 import VehiculoScreen from '../components/vehiculo/VehiculoScreen'
+import Repuestos2Screen from '../components/repuestos/Repuestos2Screen'
 
 
 const DashboardRoutes = () => {
@@ -23,6 +24,7 @@ const DashboardRoutes = () => {
                 <Route path="cliente" element={<ClienteScreen />} />
                 <Route path="usuarios" element={<UsuarioScreen />} />
                 <Route path="repuestos" element={<RepuestosScreen />} />
+                <Route path="repuestos2" element={<Repuestos2Screen />} />
                 <Route path="trabajo" element={<TrabajoScreen />} />
                 <Route path="empleado" element={<EmpleadoScreen />} />
                 <Route path="vehiculo" element={<VehiculoScreen />} />

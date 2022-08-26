@@ -11,10 +11,12 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import GroupsIcon from '@mui/icons-material/Groups';
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth';
 
 
 const SideBar = () => {
 
+    const { auth } = useAuth()
 
     return (
         <Box component="nav" className='bg-gradient-primary sidebar'>
@@ -61,7 +63,15 @@ const SideBar = () => {
                         <ListItemIcon>
                             <CarRepairIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Repuestos" />
+                        <ListItemText primary="Pedido Repuestos" />
+                    </ListItem>
+                </NavLink>
+                <NavLink to="/repuestos2" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <CarRepairIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Lista Repuestos" />
                     </ListItem>
                 </NavLink>
                 <NavLink to="/vehiculo" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
