@@ -9,6 +9,7 @@ import AuthContext from '../../context/AuthContext'
 import * as XLSX from 'xlsx';
 import * as FileSaver from 'file-saver';
 import HistorialInsumo from './HistorialInsumo';
+import RestaurarInsumoEliminado from './RestaurarInsumoEliminado';
 
 const paginationComponentOptions = {
   rowsPerPageText: 'Filas por página',
@@ -100,7 +101,7 @@ const ListaInsumo = () => {
   useEffect(() => {
     obtenerInsumos();
   }, [])
-  
+
 
   return (
     <>
@@ -115,7 +116,7 @@ const ListaInsumo = () => {
             sx={{ ml: 3, p: '4px 15px' }}
             title='Exportar Excel'
             onClick={(e) => exportXLSX(insumos)}
-            
+
           >
             Exportar <i
               className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">
@@ -139,6 +140,12 @@ const ListaInsumo = () => {
         noDataComponent="No hay insumos registrados."
         paginationComponentOptions={paginationComponentOptions}
       />
+
+      <>
+        <RestaurarInsumoEliminado
+          obtenerInsumos={obtenerInsumos}
+        />
+      </>
     </>
   )
 }

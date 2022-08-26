@@ -4,6 +4,7 @@ import axios from 'axios';
 import Button from '@mui/material/Button';
 import swal from 'sweetalert';
 import AuthContext from '../../context/AuthContext';
+import RestaurarInsumoEliminado from './RestaurarInsumoEliminado';
 
 const style = {
     position: 'absolute',
@@ -31,7 +32,6 @@ const EliminarInsumo = ({ row, obtenerInsumos, idAuth }) => {
         swal({
             title: "¿Estas seguro de eliminar el insumo " + row.nombreInsumo + "?",
             icon: "warning",
-            //buttons: true,
             buttons: ["Cancelar", "Eliminar"],
             dangerMode: true,
         })
