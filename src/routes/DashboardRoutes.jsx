@@ -24,6 +24,7 @@ const DashboardRoutes = () => {
                 <Route path="cliente" element={<ClienteScreen />} />
                 <Route path="usuarios" element={<UsuarioScreen />} />
                 <Route path="repuestos" element={<RepuestosScreen />} />
+                <Route path="repuestos2" element={<Repuestos2Screen />} />
                 <Route path="trabajo" element={<TrabajoScreen />} />
                 <Route path="empleado" element={<EmpleadoScreen />} />
                 <Route path="vehiculo" element={<VehiculoScreen />} />

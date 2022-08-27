@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Grid, IconButton, TextField } from '@mui/material'
+import { Autocomplete, Button, Checkbox, FormControlLabel, FormGroup, Grid, IconButton, TextField } from '@mui/material'
 import { Box } from '@mui/system'
 import React, { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth'
@@ -48,23 +48,20 @@ const ScreenFicha = () => {
     }
 
     const submitFicha = async (event) => {
-
         event.preventDefault()
-        getUltimaFicha(auth.cTaller).then(res => setUltimaFicha(res.cFicha)).then(() => {
+        getUltimaFicha(auth.cTaller).then(res => {
+            setUltimaFicha(res.cFicha)
+            return res.cFicha;
+        }).then((res) => {
             if (dataFicha.cVehiculo == '' || dataFicha.fichaObservacion == '') {
                 swal(
                     'Todos los campos son requeridos', {
                     icon: 'error',
                     buttons: false,
                 });
-
                 setTimeout(() => {
-
-
                     swal.close()
-
                 }, 2000);
-                window.location.reload()
             } else {
                 postFicha(dataFicha).then(response => {
                     setDataFicha({
@@ -76,11 +73,9 @@ const ScreenFicha = () => {
                         cUsuario: auth.cUsuario,
                         fichaObservacion: '',
                     })
-
                 }).then(() => {
 
-                    postEstadosPV(estadoPartes, ultimaFicha).then(response => {
-                        console.log(response)
+                    postEstadosPV(estadoPartes, res + 1).then(response => {
                     }).then(() => {
                         setPartesSeleccionadas([])
                         setVehiculoSeleccionado()
@@ -113,6 +108,7 @@ const ScreenFicha = () => {
 
         getVehiculos(auth.cTaller).then(res => {
             setVehiculos(res)
+            console.log(res)
         })
         getPartesv().then(res => setPartes(res))
 
@@ -170,7 +166,7 @@ const ScreenFicha = () => {
                     </Grid>
                     <Grid item xs={12}>
                         {/* autocomplete multiple partes */}
-                        <Autocomplete
+                        {/*  <Autocomplete
                             multiple={true}
                             value={partesSeleccionadas}
                             id="partes"
@@ -196,8 +192,14 @@ const ScreenFicha = () => {
                             renderInput={(params) => <TextField {...params} label="Selecciona Partes" variant="outlined" fullWidth />}
                             isOptionEqualToValue={(option, value) => option.cParteV === value.cParteV}
                         />
-
-
+ */}
+                        <FormGroup sx={{ display: "flex", flexDirection: "row" }}>
+                            {
+                                partes.map(parte => (
+                                    <FormControlLabel width="300px" key={parte.cParteV} control={<Checkbox />} label={parte.nombrePV} />
+                                ))
+                            }
+                        </FormGroup>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField label="Observaciones" name="fichaObservacion" onChange={handleChange} value={dataFicha.fichaObservacion} fullWidth multiline rows={"4"} />

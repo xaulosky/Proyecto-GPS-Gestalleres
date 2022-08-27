@@ -57,7 +57,6 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
         setData({
             cUsuario : row.cUsuario,
             nombreU: row.nombreU,
-            clave: row.clave,
             email: row.email,
             cRolU: row.cRolU,
         });
@@ -81,7 +80,6 @@ const EditarUsuario = ({row, obtenerUsuarios}) => {
               
               cUsuario: data.cUsuario,
               email: data.email ,
-              clave: data.clave  ,
               cRolU: data.cRolU,
               nombreU: data.nombreU,
           })

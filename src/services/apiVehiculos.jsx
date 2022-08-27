@@ -13,5 +13,3 @@ export const getVehiculoById = async (id) => {
     );
     return response.data
 }
-
-
