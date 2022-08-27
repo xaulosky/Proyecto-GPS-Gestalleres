@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState, useContext} from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { Box, Button, DialogActions, Grid, Modal, TextField, Typography, Autocomplete } from '@mui/material';
 import DataTable from 'react-data-table-component';
 import EditIcon from '@mui/icons-material/Edit';
@@ -162,11 +162,11 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
             })
     }, []);
 
-    const deshabilitarBoton = () =>{
+    const deshabilitarBoton = () => {
 
-        if(auth.cRolU!=3){
+        if (auth.cRolU != 3) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -227,16 +227,21 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                             onChange={(e) => handle(e)}
                             disabled={deshabilitarBoton()}
                         />
+
                         <Autocomplete
                             options={opciones1}
+                            includeInputInList
                             getOptionLabel={(option) => option.label}
-
-                            onChange={(e, value) => {
+                            //value={data.estadoV}
+                            onChange={(event, newVal) => {
                                 setData({
                                     ...data,
-                                    estadoV: value.label
+                                    estadoV: newVal.label
                                 })
                             }}
+                            /*getOptionSelected={(options = {}, selection = {}) =>
+                                options.value === selection.value
+                            }*/
                             renderInput={(params) => <TextField {...params} value={data.estadoV} label="Estado Vehiculo" id="estadoV"
                                 name={'estadoV'}
                                 required />}
@@ -251,7 +256,7 @@ const EditarVehiculo = ({ row, obtenerVehiculos }) => {
                                     estadoRevisionTecnicaV: value.label
                                 })
                             }}
-                            renderInput={(params) => <TextField {...params} value={data.estadoRevisionTecnicaV} label="Estado de revision tecnica" id="estadoRevisionTecnicaV"
+                            renderInput={(params) => <TextField {...params} value={data.estadoRevisionTecnicaV} label="Estado de revision tecnica " id="estadoRevisionTecnicaV"
                                 name={'estadoRevisionTecnicaV'}
                                 required />}
                         />

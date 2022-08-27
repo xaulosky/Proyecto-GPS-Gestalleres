@@ -11,6 +11,7 @@ import ConstructionIcon from '@mui/icons-material/Construction';
 import GroupsIcon from '@mui/icons-material/Groups';
 import React from 'react'
 import { NavLink } from 'react-router-dom'
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 
 const SideBar = () => {
@@ -103,6 +104,14 @@ const SideBar = () => {
                             <GroupsIcon />
                         </ListItemIcon>
                         <ListItemText primary="Empleados" />
+                    </ListItem>
+                </NavLink>
+                <NavLink to="/Aseguradora" className={({ isActive }) => "nav-link" + (isActive ? " activated" : "")}>
+                    <ListItem button>
+                        <ListItemIcon>
+                            <FileDownloadIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Aseguradora" />
                     </ListItem>
                 </NavLink>
             </List>

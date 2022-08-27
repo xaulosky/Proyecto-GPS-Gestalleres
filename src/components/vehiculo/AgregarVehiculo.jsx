@@ -22,6 +22,7 @@ const style = {
     p: 4,
 };
 
+
 const opciones = [
     {
         value: 1,
@@ -141,15 +142,15 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'aseguradora.php')
             .then(respuesta => {
                 setAseguradoras(respuesta.data);
-        })
+            })
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'TipoCarroceria.php')
             .then(respuesta => {
                 setTipoCarrocerias(respuesta.data);
-        })
+            })
         axios.get(import.meta.env.VITE_APP_BACKEND_URL + 'vehiculo_cliente.php?cTaller=' + auth.cTaller)
             .then(respuesta => {
                 setClientes(respuesta.data);
-        })
+            })
     }, []);
 
     const deshabilitarBoton = () => {
@@ -188,7 +189,9 @@ const AgregarVehiculo = ({ row, obtenerVehiculos }) => {
                     <Typography id="modal-modal-description" sx={{ mt: 1 }} component={'div'}>
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
-                                <TextField id="patenteV" name="patenteV" label="Patente" type={'text'} required onChange={(e) => handle(e)} />
+                                <TextField id="patenteV" name="patenteV" label="Patente" required onChange={(e) => handle(e)}
+                                    inputProps={{ maxLength: 6, minLength: 6, pattern: "^[a-z-A-Z]{4}[0-9]{2}$", title: "El formato de la patente son 4 letras y 2 numeros respectivamente" }}
+                                />
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField id="modeloV" name="modeloV" label="Modelo" type={'text'} required onChange={(e) => handle(e)} />

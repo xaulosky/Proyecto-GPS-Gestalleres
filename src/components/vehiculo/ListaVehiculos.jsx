@@ -8,14 +8,16 @@ import AgregarVehiculo from './AgregarVehiculo';
 import AuthContext from '../../context/AuthContext';
 
 
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+
 function formatoNumeros(numero) {
     return numero.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
-/*const formatoDinero = (numero) => {
+const formatoDinero = (numero) => {
     return ' $ ' + formatoNumeros(numero);
-}*/
-
+}
 
 const ListaVehiculos = () => {
 
@@ -48,7 +50,7 @@ const ListaVehiculos = () => {
         },
         {
             name: 'Monto Aseguradora',
-            selector: row => (formatoNumeros(row.montoAseguradora)),
+            selector: row => formatoDinero(formatoNumeros(row.montoAseguradora)),
         },
         {
             name: 'Tipo Carroceria',
@@ -111,12 +113,43 @@ const ListaVehiculos = () => {
         selectAllRowsItemText: 'Todos',
     };
 
+    const exportXLSX = (vehiculos) => {
+
+        const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+        const fileExtension = '.xlsx';
+        const fileName = 'Lista de Vehículos';
+        const ws = XLSX.utils.json_to_sheet(vehiculos
+          .map(vehiculos => ({
+            "Rut Cliente": vehiculos.rutC,
+            "Patente": vehiculos.patenteV,
+            "Modelo": vehiculos.modeloV,
+            "Tipo Carroceria": vehiculos.tipoCarroceria,
+            "Aseguradora": vehiculos.montoAseguradora,
+          })));
+        const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        const data = new Blob([excelBuffer], { type: fileType });
+        FileSaver.saveAs(data, fileName + fileExtension);
+      }
+
     return (
         <>
             <Grid item align='right' xs={12} >
                 <AgregarVehiculo obtenerVehiculos={obtenerVehiculos} />
+                <Button
+                align='right'
+                size='small'
+                variant="contained"
+                sx={{ ml: 3, p: '1px 12px' }}
+                title='Exportar Excel'
+                onClick={(e) => exportXLSX(vehiculos)}
+            >
+                Exportar <i
+                className="mdi mdi-table-arrow-down" style={{ fontSize: '20px', marginLeft: '5px' }} aria-hidden="true">
+                </i>
+                </Button>
             </Grid>
-
+            
             <DataTable
                 title=""
                 columns={columns}

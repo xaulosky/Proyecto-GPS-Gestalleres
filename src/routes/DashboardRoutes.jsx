@@ -14,6 +14,7 @@ import RepuestosScreen from '../components/repuestos/RepuestosScreen'
 import TrabajoScreen from '../components/trabajo/TrabajoScreen'
 import UsuarioScreen from '../components/usuario/UsuarioScreen'
 import VehiculoScreen from '../components/vehiculo/VehiculoScreen'
+import AseguradoraScreen from '../components/Aseguradora/AseguradoraScreen'
 
 
 const DashboardRoutes = () => {
@@ -32,6 +33,7 @@ const DashboardRoutes = () => {
                 <Route path="/fichas" element={<ListaFichas />} />
                 <Route path='/ficha/:id' element={<VerFicha />} />
                 <Route path='/editficha/:id' element={<EditarFicha />} />
+                <Route path='/Aseguradora/' element={<AseguradoraScreen/>} />
                 <Route path="*" element={<> <h1>Página no encontrada</h1></>} />
             </Route>
         </Routes>
