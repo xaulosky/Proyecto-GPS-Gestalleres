@@ -22,6 +22,8 @@ const style = {
   pb: 3
 };
 
+rafce
+
 const EliminarRepuesto = ({row, obtenerRepuestos}) => {
   const { auth } = useContext(AuthContext)
 
